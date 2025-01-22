@@ -13,6 +13,7 @@ body {
     align-items: center;
     position: relative;
 }
+
 body::after,
 body::before {
     position: absolute;
@@ -26,6 +27,7 @@ body::before {
     filter: blur(100px);
     pointer-events: none;
 }
+
 body::after {
     top: unset;
     right: unset;
@@ -33,15 +35,18 @@ body::after {
     left: 0;
     border-radius: 100px 30px 600px 100px;
 }
+
 * {
     padding: 0;
     margin: 0;
     list-style: none;
 }
+
 .logo img {
     width: 40px;
     opacity: .4;
 }
+
 .logo {
     width: 60px;
     height: 60px;
@@ -54,15 +59,18 @@ body::after {
     box-shadow: 0 10px 30px #0004;
     margin-bottom: 30px;
 }
+
 h1 {
     font-weight: 500;
     color: #fff;
     font-size: x-large;
     margin-bottom: 10px;
 }
+
 .text-white {
     color: #fff;
 }
+
 form {
     display: flex;
     margin: auto;
@@ -71,7 +79,9 @@ form {
     gap: 15px;
     flex-wrap: wrap;
 }
+
 form input,
+form select,
 form button {
     all: unset;
     padding: 10px;
@@ -82,22 +92,32 @@ form button {
     transition: background-image 0.5s, opacity .5s, border .5s;
 
 }
+
 form * {
-    width: 100%!important;
+    width: 100% !important;
 }
+
 form input {
     color: #fff;
 }
+
+form select {
+    color: #fff;
+}
+
 form button {
     cursor: pointer;
 }
+
 form button[type="submit"] {
     background-color: #fff;
     color: #1C1C1E;
 }
+
 .or {
     position: relative;
 }
+
 .or::before {
     position: absolute;
     width: 100%;
@@ -105,41 +125,74 @@ form button[type="submit"] {
     content: '';
     left: 0;
     top: 45%;
-    background-image: linear-gradient(
-        to right, 
-        #71717155 0 40%, transparent 40% 60%, #71717155 60%
-    );
+    background-image: linear-gradient(to right,
+            #71717155 0 40%, transparent 40% 60%, #71717155 60%);
 }
+
 p a {
     border-bottom: 1px solid #717171;
 }
-input + p {
+
+input+p {
     font-size: small;
     text-align: left;
 }
-.sso {
-    margin-bottom: 30px;
+
+select+p {
+    font-size: small;
+    text-align: left;
 }
-.sso + p {
+
+.sso+p {
     font-size: small;
 }
+
 input:invalid:not(:placeholder-shown) {
     border-color: red;
     background-image: url(checked_red.png);
 }
+
 input:valid:not(:placeholder-shown) {
     background-image: url(checked_green.png);
 }
-input:invalid:not(:placeholder-shown), 
+
+input:invalid:not(:placeholder-shown),
 input:valid:not(:placeholder-shown) {
     background-size: 20px;
     background-repeat: no-repeat;
     background-position: calc(100% - 10px);
 }
-input:invalid:not(:placeholder-shown) + p {
+
+input:invalid:not(:placeholder-shown)+p {
     color: #a20e0e;
 }
-input:invalid ~ button[type="submit"] {
+
+input:invalid~button[type="submit"] {
+    opacity: .6;
+    pointer-events: none;
+}
+
+select:invalid:not(:placeholder-shown) {
+    border-color: red;
+    background-image: url(checked_red.png);
+}
+
+select:valid:not(:placeholder-shown) {
+    background-image: url(checked_green.png);
+}
+
+select:invalid:not(:placeholder-shown),
+select:valid:not(:placeholder-shown) {
+    background-size: 20px;
+    background-repeat: no-repeat;
+    background-position: calc(100% - 10px);
+}
+
+select:invalid:not(:placeholder-shown)+p {
+    color: #a20e0e;
+}
+
+select:invalid~button[type="submit"] {
     opacity: .6;
     pointer-events: none;
 }
