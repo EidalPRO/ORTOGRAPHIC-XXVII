@@ -13,7 +13,11 @@ class AuthController extends Controller
 
     public function registro()
     {
-        return view("modules/auth/registro");
+        return view("auth.register");
+    }
+    public function login()
+    {
+        return view("auth.login");
     }
     public function registrar(Request $request)
     {
@@ -43,10 +47,6 @@ class AuthController extends Controller
     {
         Session::flush();
         Auth::logout();
-        return to_route('login');
-    }
-    public function home()
-    {
-        return view('modules/dashboard/home');
+        return to_route('index');
     }
 }

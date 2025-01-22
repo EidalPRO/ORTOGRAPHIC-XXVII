@@ -12,7 +12,7 @@ class HomeController extends Controller
     }
 
     public function home() {
-        return view('home');
+        return view('private.home');
     }
 
     public function about()

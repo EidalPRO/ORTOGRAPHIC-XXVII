@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('index');
 Route::get('/acerca-de', [HomeController::class, 'about'])->name('about');
 Route::get('/galeria', [HomeController::class, 'galeria'])->name('galeria');
 
@@ -19,5 +19,6 @@ Route::get('/jugar/invitado', [JugarController::class, 'invitado'])->name('invit
 Route::get('/home', [HomeController::class, 'home'])->name('home');
 
 Route::get('/registro', [AuthController::class, 'registro'])->name('registro');
+Route::get('/iniciar_sesion',[AuthController::class, 'login'])->name('login');
 Route::post('/registrar', [AuthController::class, 'registrar'])->name('registrar');
 Route::post('/logear', [AuthController::class, 'logear'])->name('logear');
