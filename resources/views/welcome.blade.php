@@ -7,14 +7,21 @@
     <li><a href="" class="active">Inicio<br></a></li>
     <li><a href="/acerca-de">Acerca de Ortographic</a></li>
     <li><a href="/galeria">Galeria de imagenes</a></li>
-    <li class="dropdown"><a href="#"><span>Acciones de usuario</span> <i
-                class="bi bi-chevron-down toggle-dropdown"></i></a>
-        <ul>
-            <li><a href="{{route('login')}}">Iniciar sesión</a></li>
-            <li><a href="{{route('registro')}}">Registrarse</a></li>
-            <li><a href="{{route('invitado')}}">Jugar como invitado</a></li>
-        </ul>
-    </li>
+    @if (Route::has('login'))
+        @auth
+        <li><a href="{{ route('home') }}">Empezar a practicar</a></li>
+        <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
+        @else
+        <li class="dropdown"><a href="#"><span>Acciones de usuario</span> <i
+                    class="bi bi-chevron-down toggle-dropdown"></i></a>
+            <ul>
+                <li><a href="{{route('login')}}">Iniciar sesión</a></li>
+                <li><a href="{{route('registro')}}">Registrarse</a></li>
+                <li><a href="{{route('invitado')}}">Jugar como invitado</a></li>
+            </ul>
+        </li>
+        @endauth
+    @endif
 </ul>
 @endsection
 
@@ -37,7 +44,7 @@
                         que haga que aprender ortografía sea más fácil y entretenido que nunca.</p>
                 </blockquote>
                 <div class="d-flex" data-aos="fade-up" data-aos-delay="200">
-                    <a href="" class="btn-get-started">Empezar a practicar</a>
+                    <a href="{{route('home')}}" class="btn-get-started">Empezar a practicar</a>
                     <!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
                 </div>
             </div>
