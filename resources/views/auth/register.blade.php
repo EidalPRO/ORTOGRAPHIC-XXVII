@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <header>
@@ -8,9 +8,11 @@
     <h1>Hola, Bienvenido a Ortographic!</h1>
     <p>¿Ya tienes cuenta? <a href="{{route('login')}}" class="text-white">Inicia sesión</a></p>
 </header>
-<form>
+<form action="{{ route('registrar') }}" method="post">
+    @csrf
+    @method('POST')
     <input type="text"
-        name="usuario"
+        name="name"
         placeholder="Nombre de usuario"
         required>
 

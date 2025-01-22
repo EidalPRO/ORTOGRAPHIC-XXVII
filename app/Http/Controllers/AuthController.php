@@ -21,10 +21,22 @@ class AuthController extends Controller
     }
     public function registrar(Request $request)
     {
+        $rol = $request->rol;
+        if ($rol == "alumno") {
+            $rolN = 1;
+        } else if ($rol == "docente") {
+            $rolN = 2;
+        } else if ($rol == "administrador") {
+            $rolN = 3;
+        } else {
+            $rolN = 4;
+        }
+
         $item = new User();
         $item->name = $request->name;
         $item->email = $request->email;
         $item->password = Hash::make($request->password);
+        $item->roles_id_roles = $rolN;
         $item->save();
         return to_route('login');
     }

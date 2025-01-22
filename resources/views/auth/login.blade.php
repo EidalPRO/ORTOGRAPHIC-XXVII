@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.auth')
 
 @section('content')
 <header>
@@ -8,8 +8,9 @@
     <h1>Hola, Bienvenido de nuevo!</h1>
     <p>¿No tienes cuenta? <a href="{{route('registro')}}" class="text-white">Registrate gratis</a></p>
 </header>
-<form>
-
+<form action="{{ route('logear') }}" method="post">
+    @csrf
+    @method('post')
     <input
         type="email"
         name="email"
