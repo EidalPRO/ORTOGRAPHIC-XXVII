@@ -1,0 +1,26 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class Evaluacion extends Model
+{
+    use HasFactory;
+
+    protected $table = 'evaluacion';
+
+    protected $fillable = ['tipo', 'sala_id', 'reactivos'];
+
+    public function sala()
+    {
+        return $this->belongsTo(Sala::class, 'sala_id');
+    }
+
+    public function reactivos()
+    {
+        return $this->belongsToMany(Reactivo::class, 'evaluacion_reactivos')
+            ->withPivot(['user_id', 'fallo']);
+    }
+}

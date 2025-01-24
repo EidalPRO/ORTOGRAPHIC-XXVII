@@ -23,7 +23,7 @@ class User extends Authenticatable
         'password',
         'avatar',
         'esPremium',
-        'roles_id_roles',        
+        'roles_id_roles',
     ];
 
     /**
@@ -48,31 +48,25 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
-
-    public function rol()
+    public function role()
     {
-        return $this->belongsTo(Rol::class, 'rol_id');
+        return $this->belongsTo(Roles::class, 'roles_id_roles', 'id_roles');
+    }
+
+    public function lecciones()
+    {
+        return $this->belongsToMany(Leccion::class, 'usuario_leccion')
+            ->withPivot(['aciertos', 'fallados', 'reactivos_de_leccion']);
     }
 
     public function salas()
     {
-        return $this->hasMany(Sala::class, 'user_id');
+        return $this->belongsToMany(Sala::class, 'sala_usuario');
     }
 
-    public function evaluaciones()
+    public function minijuegos()
     {
-        return $this->hasMany(Evaluacion::class, 'usuario_id');
-    }
-
-    public function premios()
-    {
-        return $this->belongsToMany(Premio::class, 'premios_usuario', 'user_id', 'premio_id')
-            ->withPivot('estado', 'fecha_desbloqueo')
-            ->withTimestamps();
-    }
-
-    public function progreso()
-    {
-        return $this->hasMany(Progreso::class, 'user_id');
+        return $this->belongsToMany(Minijuego::class, 'sala_minijuegos_usuario')
+            ->withPivot('progreso');
     }
 }

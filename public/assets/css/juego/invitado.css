@@ -332,3 +332,39 @@ header h1 {
     margin: 10px 0;
     display: inline-block;
 }
+
+.categorias {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+}
+
+.btn-leccion {
+    text-decoration: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.categoria {
+    background: transparent;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 10px;
+    text-align: center;
+    transition: transform 0.3s, background-color 0.3s;
+    cursor: pointer;
+}
+
+.categoria:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+    transform: scale(1.05);
+}
+
+h3 {
+    font-size: 18px;
+    /* margin: 10px 0; */
+}
+
+

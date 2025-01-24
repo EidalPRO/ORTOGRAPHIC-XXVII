@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JugarController;
+use App\Http\Controllers\SalasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,4 +29,9 @@ Route::middleware("guest")->group(function () {
 Route::middleware("auth")->group(function () {
     Route::get('/home', [HomeController::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    Route::get('/sala-global', [SalasController::class, 'entrar'])->name('entrarGlobal');
+    Route::get('/sala-global/lecciones', [SalasController::class, 'leccionesGlobal'])->name('globalLecciones');
+    Route::get('/sala-glonal/lecciones/trivia/{id_leccion}', [SalasController::class, 'mostrarTrivia'])->name('trivia');
+    Route::get('/sala-global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
 });

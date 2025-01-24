@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +17,20 @@ return new class extends Migration
             $table->string('nombre', 45);
             $table->timestamps();
         });
+
+        DB::table('minijuegos')->insert([
+            [
+                'nombre' => 'Pasapalabras',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'nombre' => 'Reglas de acentuación, agudas, graves y esdrújulas',
+                'tema' => 'Desordenados',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+        ]);
     }
 
     /**
