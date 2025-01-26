@@ -18,7 +18,7 @@ Route::middleware("guest")->group(function () {
     // Invitado 
     // Route::get('/jugar/invitado/trivia', [JugarController::class, 'jugarInvitado']);
     // Route::get('/preguntas-sin-login', [JugarController::class, 'obtenerPreguntasInvitado']);
-    
+
     // login register 
     Route::get('/registro', [AuthController::class, 'registro'])->name('registro');
     Route::get('/iniciar_sesion', [AuthController::class, 'login'])->name('login');
@@ -27,11 +27,17 @@ Route::middleware("guest")->group(function () {
 });
 
 Route::middleware("auth")->group(function () {
-    Route::get('/home', [HomeController::class, 'home'])->name('home');
+    Route::get('/inicio', [HomeController::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+
+    // crear salas 
+    Route::post('/sala/create', [HomeController::class, 'createSala'])->name('sala.create');
+
 
     Route::get('/sala-global', [SalasController::class, 'entrar'])->name('entrarGlobal');
     Route::get('/sala-global/lecciones', [SalasController::class, 'leccionesGlobal'])->name('globalLecciones');
     Route::get('/sala-glonal/lecciones/trivia/{id_leccion}', [SalasController::class, 'mostrarTrivia'])->name('trivia');
     Route::get('/sala-global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
+
+    Route::get('/sala-global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
 });

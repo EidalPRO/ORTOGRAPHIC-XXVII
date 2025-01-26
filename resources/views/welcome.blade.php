@@ -1,6 +1,6 @@
 @extends('layouts.home')
 
-@section('title', 'Ortographic - la app que hace de la ortografía un juego')
+@section('title', 'Ortographic - La app que hace de la ortografía un juego')
 
 @section('nav')
 <ul>

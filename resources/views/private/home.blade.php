@@ -1,107 +1,674 @@
-@extends('layouts.home')
+<!DOCTYPE html>
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
+<head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <title>Ortographic - Inicio</title>
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+
+    <!-- Favicons -->
+    <link href="assets/img/logo-ortographic.webp" rel="icon">
+    <link href="{{asset('assets/img/logo-ortographic.webp')}}" rel="apple-touch-icon">
 
 
-@section('title', 'Ortographic - Inicio')
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Nunito:ital,wght@0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 
-@section('nav')
-<ul>
-    <li><a href="/home" class="active">Inicio<br></a></li>
-    <li><a href="/acerca-de">Acerca de Ortographic</a></li>
-    <li><a href="/galeria">Galeria de imagenes</a></li>
-    @if (Route::has('login'))
-    @auth
-    <li><a href="">{{ Auth::user()->name }}</a></li>
-    @endauth
-    @endif
+    <!-- Vendor CSS Files -->
+    <link href="{{asset('assets/vendor/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/vendor/bootstrap-icons/bootstrap-icons.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/vendor/aos/aos.css" rel="stylesheet')}}">
+    <link href="{{asset('assets/vendor/glightbox/css/glightbox.min.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/vendor/swiper/swiper-bundle.min.css')}}" rel="stylesheet">
 
-    <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
-</ul>
-@endsection
+    <!-- Main CSS File -->
+    <link href="{{asset('assets/css/home.css')}}" rel="stylesheet">
 
-@section('content')
-<!-- Page Title -->
-<div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/hero-bg.webp);">
-    <div class="container">
-        <h1>Bienvenido, {{ Auth::user()->name }}</h1>
-    </div>
-</div><!-- End Page Title -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
 
-<section id="tutoliares" class="tutoliares section" data-aos="fade-up">
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>Salas</h2>
-        <p>Si deseas practicar puedes ingresar a nuestra sala global, pero si tu profesor te ha desafiado, ingresa a una sala mediante su código</p>
-    </div><!-- End Section Title -->
+<body class="index-page">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <header id="header" class="header d-flex align-items-center fixed-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
+            <a href="{{route('home')}}" class="logo d-flex align-items-center me-auto">
+                <!-- Uncomment the line below if you also wish to use an image logo -->
+                <img src="{{asset('assets/img/logo-ortographic(1000x10000).webp')}}" alt="">
+                <h1 class="sitename">Ortographic</h1>
+            </a>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-sm-6 mb-3 mb-sm-0">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Sala Global</h5>
-                        <p class="card-text">La Sala Global es una funcionalidad destinada a la práctica en tiempo real. Permite a los usuarios participar en ejercicios interactivos y minijuegos de ortografía, fomentando el aprendizaje dinámico y colaborativo. Sin embargo, no almacena el progreso ni registra resultados, ofreciendo un espacio exclusivamente para practicar y mejorar habilidades de manera libre..</p>
-                        <p class="card-text">Código de sala: ORT001</p>
-                        <a href="{{ route('entrarGlobal') }}" class="btn btn-primary">Entrar</a>
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="" class="active">Inicio<br></a></li>
+                    <li><a href="/acerca-de">Acerca de Ortographic</a></li>
+                    <li><a href="/galeria">Galeria de imagenes</a></li>
+                    <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main">
+
+        <!-- Hero Section -->
+        <section id="hero" class="hero section">
+
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                        <h1 data-aos="fade-up">¡Bienvenido {{ Auth::user()->name }} a Ortographic!</h1>
+                        <p data-aos="fade-up" data-aos-delay="100">La app que hace de la ortografía un juego</p>
+                        <div class="d-flex flex-column flex-md-row" data-aos="fade-up" data-aos-delay="200">
+                            <a href="#salas" class="btn-get-started">Empezar a practicar<i class="bi bi-arrow-right"></i></a>
+                            <!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center justify-content-center ms-0 ms-md-4 mt-4 mt-md-0"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
+                        </div>
+                    </div>
+                    <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out">
+                        <img src="{{asset('assets/img/logo-ortographic(1000x10000).webp')}}" class="img-fluid animated" alt="" style="width: 500px">
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">Salas personalizadas</h5>
-                        <p class="card-text">Las Salas Personalizadas son espacios creados por docentes para un aprendizaje más estructurado y adaptado a las necesidades de sus estudiantes. En estas salas, se guarda el progreso de cada estudiante, permitiéndoles visualizar su nivel de mejora a lo largo del tiempo. Además, los docentes pueden aplicar evaluaciones, tanto diagnósticas como de fin de curso, para medir el avance y el dominio de las habilidades ortográficas. Esta funcionalidad combina seguimiento personalizado con herramientas de evaluación para un aprendizaje efectivo.</p>
-                        <a href="#" class="btn btn-primary">Agregar una sala</a>
+
+        </section><!-- /Hero Section -->
+
+        <!-- Values Section -->
+        <section id="salas" class="values section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Salas</h2>
+                <p>Sala global y salas personalizadas<br></p>
+            </div><!-- End Section Title -->
+
+            <div class="container">
+
+                <div class="row gy-4">
+                    <div class="col-lg-2" data-aos="fade-up" data-aos-delay="100"></div>
+
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card glob">
+                            <img src="{{asset('assets/img/Education.svg')}}" class="img-fluid" alt="">
+                            <h3>Sala global</h3>
+                            <p>La Sala Global es una funcionalidad diseñada exclusivamente para la práctica en tiempo real. Los usuarios pueden acceder a minijuegos y retos interactivos de ortografía, pero no se guarda ningún progreso</p>
+                            <button class="btn btn-outline-primary" style="position:absolute; bottom:10px" id="btn1">Entrar</button>
+                        </div>
+                    </div><!-- End Card Item -->
+
+                    <div class="col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card p">
+                            <img src="{{asset('assets/img//Task list.svg')}}" class="img-fluid" alt="">
+                            <h3>Salas personalizadas</h3>
+                            <p>Las Salas Personalizadas son espacios creados por docentes para un aprendizaje más estructurado y adaptado a las necesidades de sus estudiantes. En estas salas, se guarda el progreso de cada estudiante, permitiéndoles visualizar su nivel de mejora a lo largo del tiempo. Además, los docentes pueden aplicar evaluaciones, tanto diagnósticas como de fin de curso, para medir el avance y el dominio de las habilidades ortográficas.</p>
+                            <button class="btn btn-outline-primary" style="position:absolute; bottom:10px" data-bs-toggle="modal" data-bs-target="#salasModal">Entrar</button>
+                        </div>
+                    </div><!-- End Card Item -->
+                    <div class="col-lg-2" data-aos="fade-up" data-aos-delay="100"></div>
+                </div>
+
+            </div>
+
+        </section><!-- /Values Section -->
+
+        <!-- Stats Section -->
+        <section id="stats" class="stats section">
+
+            <div class="container " data-aos="fade-up" data-aos-delay="100">
+
+                <div class="row gy-4">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stats-item d-flex align-items-center w-100 h-100">
+                            <i class="bi bi-emoji-smile color-blue flex-shrink-0"></i>
+                            <div>
+                                <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                                <p>Usuarios</p>
+                            </div>
+                        </div>
+                    </div><!-- End Stats Item -->
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stats-item d-flex align-items-center w-100 h-100">
+                            <i class="bi bi-journal-richtext color-orange flex-shrink-0" style="color: #ee6c20;"></i>
+                            <div>
+                                <span data-purecounter-start="0" data-purecounter-end="3" data-purecounter-duration="1" class="purecounter"></span>
+                                <p>Modos de practica</p>
+                            </div>
+                        </div>
+                    </div><!-- End Stats Item -->
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+        </section><!-- /Stats Section -->
+
+        <!-- Services Section -->
+        <section id="services" class="services section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>información</h2>
+                <p>Retroalimentación sobre la ortografía y sus ramas.<br></p>
+            </div><!-- End Section Title -->
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="service-item item-cyan position-relative">
+                            <i class="bi bi-activity icon"></i>
+                            <h3>¿Qué es la Ortografía?</h3>
+                            <p>La ortografía es el conjunto de reglas que regulan la escritura correcta de las palabras. Es esencial para garantizar una comunicación clara y efectiva en cualquier idioma.</p>
+                            <a href="#" class="read-more stretched-link"><span>Read More</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="service-item item-orange position-relative">
+                            <i class="bi bi-broadcast icon"></i>
+                            <h3>Acentuación</h3>
+                            <p>La acentuación es una de las reglas fundamentales de la ortografía. Define cuándo y cómo se deben colocar las tildes en las palabras, lo cual puede cambiar su significado.</p>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+                        <div class="service-item item-teal position-relative">
+                            <i class="bi bi-easel icon"></i>
+                            <h3>Uso de Mayúsculas</h3>
+                            <p>Las mayúsculas se utilizan al inicio de una oración, para nombres propios, y en ciertos casos de énfasis. Su uso correcto es crucial para evitar confusiones y errores gramaticales.</p>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+                        <div class="service-item item-red position-relative">
+                            <i class="bi bi-bounding-box-circles icon"></i>
+                            <h3>Signos de Puntuación</h3>
+                            <p>El uso adecuado de los signos de puntuación (como comas, puntos, signos de interrogación y exclamación) es clave para darle sentido y estructura a los textos.</p>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+                        <div class="service-item item-indigo position-relative">
+                            <i class="bi bi-calendar4-week icon"></i>
+                            <h3>Homófonos y Parónimos</h3>
+                            <p>Las palabras homófonas suenan igual pero tienen significados diferentes, mientras que los parónimos son palabras que se parecen en su forma pero no son idénticas. Ambas pueden causar errores comunes al escribir.</p>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+                    <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+                        <div class="service-item item-pink position-relative">
+                            <i class="bi bi-chat-square-text icon"></i>
+                            <h3>Uso de la S y la C</h3>
+                            <p>El uso correcto de las letras "s" y "c" es esencial en muchas palabras. La confusión entre estas puede alterar el significado de una palabra y generar errores ortográficos.</p>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
+                        </div>
+                    </div><!-- End Service Item -->
+
+
+                </div>
+
+            </div>
+
+        </section><!-- /Services Section -->
+
+        <!-- Pricing Section -->
+        <section id="pricing" class="pricing section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Ortographic Premium</h2>
+                <p>Pendiente<br></p>
+            </div><!-- End Section Title -->
+
+            <div class="container">
+
+                <div class="row gy-4">
+
+                    <!-- <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="100">
+                        <div class="pricing-tem">
+                            <h3 style="color: #20c997;">Free Plan</h3>
+                            <div class="price"><sup>$</sup>0<span> / mo</span></div>
+                            <div class="icon">
+                                <i class="bi bi-box" style="color: #20c997;"></i>
+                            </div>
+                            <ul>
+                                <li>Aida dere</li>
+                                <li>Nec feugiat nisl</li>
+                                <li>Nulla at volutpat dola</li>
+                                <li class="na">Pharetra massa</li>
+                                <li class="na">Massa ultricies mi</li>
+                            </ul>
+                            <a href="#" class="btn-buy">Buy Now</a>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3 col-md-6" data-aos="zoom-in" data-aos-delay="200">
+                        <div class="pricing-tem">
+                            <span class="featured">Featured</span>
+                            <h3 style="color: #0dcaf0;">Starter Plan</h3>
+                            <div class="price"><sup>$</sup>19<span> / mo</span></div>
+                            <div class="icon">
+                                <i class="bi bi-send" style="color: #0dcaf0;"></i>
+                            </div>
+                            <ul>
+                                <li>Aida dere</li>
+                                <li>Nec feugiat nisl</li>
+                                <li>Nulla at volutpat dola</li>
+                                <li>Pharetra massa</li>
+                                <li class="na">Massa ultricies mi</li>
+                            </ul>
+                            <a href="#" class="btn-buy">Buy Now</a>
+                        </div>
+                    </div> -->
+
+                </div><!-- End pricing row -->
+
+            </div>
+
+        </section><!-- /Pricing Section -->
+
+        <!-- Testimonials Section -->
+        <section id="testimonials" class="testimonials section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Testimonios</h2>
+                <p>¿Que te parecio Ortographic?<br></p>
+            </div><!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="swiper init-swiper">
+                    <script type="application/json" class="swiper-config">
+                        {
+                            "loop": true,
+                            "speed": 600,
+                            "autoplay": {
+                                "delay": 5000
+                            },
+                            "slidesPerView": "auto",
+                            "pagination": {
+                                "el": ".swiper-pagination",
+                                "type": "bullets",
+                                "clickable": true
+                            },
+                            "breakpoints": {
+                                "320": {
+                                    "slidesPerView": 1,
+                                    "spaceBetween": 40
+                                },
+                                "1200": {
+                                    "slidesPerView": 3,
+                                    "spaceBetween": 1
+                                }
+                            }
+                        }
+                    </script>
+                    <div class="swiper-wrapper">
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
+                                    <h3>Saul Goodman</h3>
+                                    <h4>Ceo &amp; Founder</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid cillum eram malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
+                                    <h3>Sara Wilsson</h3>
+                                    <h4>Designer</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
+                                    <h3>Jena Karlis</h3>
+                                    <h4>Store Owner</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat minim velit minim dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
+                                    <h3>Matt Brandon</h3>
+                                    <h4>Freelancer</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                        <div class="swiper-slide">
+                            <div class="testimonial-item">
+                                <div class="stars">
+                                    <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                </div>
+                                <p>
+                                    Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam enim culpa labore duis sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.
+                                </p>
+                                <div class="profile mt-auto">
+                                    <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
+                                    <h3>John Larson</h3>
+                                    <h4>Entrepreneur</h4>
+                                </div>
+                            </div>
+                        </div><!-- End testimonial item -->
+
+                    </div>
+                    <div class="swiper-pagination"></div>
+                </div>
+
+            </div>
+
+        </section><!-- /Testimonials Section -->
+
+        <!-- Contact Section -->
+        <section id="contact" class="contact section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>Contacto</h2>
+                <p>Contactanos</p>
+            </div><!-- End Section Title -->
+
+            <div class="container" data-aos="fade-up" data-aos-delay="100">
+
+                <div class="row gy-4">
+
+                    <div class="col-lg-6">
+
+                        <div class="row gy-4">
+                            <!-- <div class="col-md-6">
+                                <div class="info-item" data-aos="fade" data-aos-delay="200">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <h3>Address</h3>
+                                    <p>A108 Adam Street</p>
+                                    <p>New York, NY 535022</p>
+                                </div>
+                            </div> -->
+
+                            <!-- <div class="col-md-6">
+                                <div class="info-item" data-aos="fade" data-aos-delay="300">
+                                    <i class="bi bi-telephone"></i>
+                                    <h3>Call Us</h3>
+                                    <p>+1 5589 55488 55</p>
+                                    <p>+1 6678 254445 41</p>
+                                </div>
+                            </div> -->
+
+                            <div class="col-md-6">
+                                <div class="info-item" data-aos="fade" data-aos-delay="400">
+                                    <i class="bi bi-envelope"></i>
+                                    <h3>Correo eletronico</h3>
+                                    <p>soporte.ortographic@gmail.com</p>
+                                </div>
+                            </div><!-- End Info Item -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <form action="forms/contact.php" method="post" class="php-email-form" data-aos="fade-up" data-aos-delay="200">
+                            <div class="row gy-4">
+
+                                <div class="col-md-6">
+                                    <input type="text" name="name" class="form-control" placeholder="Usuario" required="">
+                                </div>
+
+                                <div class="col-md-6 ">
+                                    <input type="email" class="form-control" name="email" placeholder="Correo electronico" required="">
+                                </div>
+
+                                <div class="col-12">
+                                    <input type="text" class="form-control" name="subject" placeholder="Asunto" required="">
+                                </div>
+
+                                <div class="col-12">
+                                    <textarea class="form-control" name="message" rows="6" placeholder="Mensaje" required=""></textarea>
+                                </div>
+
+                                <div class="col-12 text-center">
+                                    <div class="loading">cargando</div>
+                                    <div class="error-message"></div>
+                                    <div class="sent-message">Su mensaje se envio con exito.</div>
+
+                                    <button type="submit">Enviar mensaje</button>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div><!-- End Contact Form -->
+
+                </div>
+
+            </div>
+
+        </section><!-- /Contact Section -->
+
+        <!-- Modales -->
+        <div class="modal fade" id="salasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Salas personalizadas</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul id="listaSalasDisponibles" class="list-group">
+                            <!-- Aquí se mostrarán las salas -->
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" data-bs-target="#agregarSalaModal" data-bs-toggle="modal">Agregar sala</button>
+                        <button type="button" class="btn btn-warning" data-bs-target="#crearSalaModal" data-bs-toggle="modal">Crear sala</button>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
 
-
-<!-- Services Section -->
-<section id="services" class="services section">
-
-    <!-- Section Title -->
-    <div class="container section-title" data-aos="fade-up">
-        <h2>¿Comó funciona Ortographic?</h2>
-        <p>Puedes dercargar cualquiera de nuestros dos manuales en cualquier momento.</p>
-    </div><!-- End Section Title -->
-
-    <div class="container">
-
-        <div class="row gy-4">
-
-            <script type="module" src="https://unpkg.com/@splinetool/viewer@1.9.54/build/spline-viewer.js"></script>
-
-            <div class="col-lg-6 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="200">
-                <div class="icon flex-shrink-0"><i class="bi bi-cloud-arrow-down" style="color: #15a04a;"></i>
+        <div class="modal fade" id="crearSalaModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Crear sala</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="crearSalaForm" method="POST">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="nombre">Nombre de la sala</label>
+                                <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-target="#salasModal" data-bs-toggle="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Crear</button>
+                        </div>
+                    </form>
                 </div>
-                <div>
-                    <h4 class="title">Manual de usuario.</h4>
-                    <p class="description">Obtén consejos y trucos útiles en nuestra guía del usuario para
-                        aprovechar al máximo Ortographic.</p>
-                    <a href="#" class="readmore stretched-link"><span>Descargar</span><i
-                            class="bi bi-arrow-right"></i></a>
-                </div>
-            </div><!-- End Service Item -->
-
-            <div class="col-lg-6 col-md-6 service-item d-flex" data-aos="fade-up" data-aos-delay="600">
-                <div class="icon flex-shrink-0"><i class="bi bi-cloud-arrow-down" style="color: #1335f5;"></i>
-                </div>
-                <div>
-                    <h4 class="title">Manual de instalación.</h4>
-                    <p class="description">Descarga nuestra guía de instalación para configurar rápidamente
-                        Ortographic en tu dispositivo.</p>
-                    <a href="#" class="readmore stretched-link"><span>Descargar</span><i
-                            class="bi bi-arrow-right"></i></a>
-                </div>
-            </div><!-- End Service Item -->
-
+            </div>
         </div>
 
-    </div>
+        <script>
+            document.getElementById('crearSalaForm').addEventListener('submit', function(event) {
+                event.preventDefault();
 
-</section><!-- /Services Section -->
-@endsection
+                let formData = new FormData(this);
+                let nombre = formData.get('nombre');
+
+                fetch("{{ route('sala.create') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            nombre: nombre,
+                            user_id: '{{ Auth::id() }}' // Incluir el ID del usuario autenticado
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            Swal.fire({
+                                title: 'Sala creada',
+                                text: `El código de la sala es: ${data.sala.codigo_sala}`,
+                                icon: 'success',
+                                showCancelButton: true,
+                                confirmButtonText: 'Copiar código',
+                                cancelButtonText: 'Cerrar'
+                            }).then((result) => {
+                                // Cerrar el modal de creación de sala
+                                $('#crearSalaModal').modal('hide');
+
+                                if (result.isConfirmed) {
+                                    navigator.clipboard.writeText(data.sala.codigo_sala);
+                                    Swal.fire('Copiado!', 'El código ha sido copiado al portapapeles.', 'success');
+                                }
+
+                                // Abrir el modal de salas personalizadas
+                                $('#salasModal').modal('show');
+                            });
+                        } else {
+                            Swal.fire({
+                                title: 'Error',
+                                text: data.message,
+                                icon: 'error'
+                            }).then(() => {
+                                // Cerrar el modal de creación de sala
+                                $('#crearSalaModal').modal('hide');
+
+                                // Abrir el modal de salas personalizadas
+                                $('#salasModal').modal('show');
+                            });
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire({
+                            title: 'Error',
+                            text: 'Ha ocurrido un error al crear la sala.',
+                            icon: 'error'
+                        }).then(() => {
+                            // Cerrar el modal de creación de sala
+                            $('#crearSalaModal').modal('hide');
+
+                            // Abrir el modal de salas personalizadas
+                            $('#salasModal').modal('show');
+                        });
+                    });
+            });
+        </script>
+    </main>
+
+    <footer id="footer" class="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row gy-4">
+                    <div class="col-lg-5 col-md-12 footer-about">
+                        <a href="" class="logo d-flex align-items-center">
+                            <span class="sitename">Ortographic</span>
+                        </a>
+                        <p>© 2024 Copyright DGETI - CBTis No. 150.</p>
+                        <div class="social-links d-flex mt-4">
+                            <a href=""><i class="bi bi-facebook"></i></a>
+                            <a href=""><i class="bi bi-instagram"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="col-6 footer-links">
+                        {{-- <h4>Useful Links</h4> --}}
+                        <ul>
+                            <p>Proyecto presentado como prototipo de software para la DEGETI.</p>
+                            <p>CBTis No 150.</p>
+                            <p>Ocotlán de Morelos, Oaxaca, México.</p>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="container copyright text-center">
+            <!-- <p>© <span>Copyright</span> <strong class="px-1 sitename">Nova</strong> <span>All Rights
+            Reserved</span></p> -->
+            <div class="credits">
+                <!-- All the links in the footer should remain intact. -->
+                <!-- You can delete the links only if you've purchased the pro version. -->
+                <!-- Licensing information: https://bootstrapmade.com/license/ -->
+                <!-- Purchase the pro version with working PHP/AJAX contact form: [buy-url] -->
+                Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+
+    <!-- Vendor JS Files -->
+    <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/php-email-form/validate.js')}}"></script>
+    <script src="{{asset('assets/vendor/aos/aos.js')}}"></script>
+    <script src="{{asset('assets/vendor/glightbox/js/glightbox.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/purecounter/purecounter_vanilla.js')}}"></script>
+    <script src="{{asset('assets/vendor/imagesloaded/imagesloaded.pkgd.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/isotope-layout/isotope.pkgd.min.js')}}"></script>
+    <script src="{{asset('assets/vendor/swiper/swiper-bundle.min.js')}}"></script>
+
+    <!-- Main JS File -->
+    <script src="{{asset('assets/js/home.js')}}"></script>
+    <script>
+        const gb = document.getElementById('btn1');
+        gb.addEventListener('click', function() {
+            window.location.href = "{{route('entrarGlobal')}}";
+        });
+    </script>
+
+</body>
+
+</html>

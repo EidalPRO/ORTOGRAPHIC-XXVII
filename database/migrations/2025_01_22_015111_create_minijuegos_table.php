@@ -25,8 +25,7 @@ return new class extends Migration
                 'updated_at' => now(),
             ],
             [
-                'nombre' => 'Reglas de acentuación, agudas, graves y esdrújulas',
-                'tema' => 'Desordenados',
+                'nombre' => 'Escuchanos',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

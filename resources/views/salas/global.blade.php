@@ -17,7 +17,7 @@
     <header>
         <div class="logo">Ortographic</div>
         <ul class="menu">
-            <li><a href="/home">Inicio</a></li>
+            <li><a href="{{route('home')}}">Inicio</a></li>
             <li><button class="ques"><i class="bi bi-question-circle"></i></button></li>
         </ul>
 
@@ -43,9 +43,9 @@
                 <img src="{{asset('assets/img/salas/ordena.webp')}}">
                 <div class="content">
                     <p>Minijuego</p>
-                    <h2>Desordenados</h2>
+                    <h2>Escuchanos</h2>
                     <p>
-                        ¡Pon a prueba tu mente! Reorganiza palabras desordenadas para escribirlas correctamente. ¿Cuántas podrás resolver?
+                        ¡Pon a prueba tu mente! Escucha las palabras para escribirlas correctamente. ¿Cuántas podrás resolver?
                     </p>
                 </div>
             </div>
@@ -92,9 +92,15 @@
     <script src="{{asset('assets/js/sala/app.js')}}"></script>
     <script>
         const bt1 = document.getElementById('1');
+        const bt2 = document.getElementById('2');
 
         bt1.addEventListener('click', function() {
             window.location.href = "{{route('globalPalabras')}}";
+        });
+
+        
+        bt2.addEventListener('click', function() {
+            window.location.href = "{{route('globalDictado')}}";
         });
     </script>
 </body>

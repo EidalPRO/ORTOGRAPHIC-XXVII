@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Leccion;
+use App\Models\Palabra;
 use App\Models\Reactivo;
 use App\Models\ReactivoLeccion;
 use Illuminate\Http\Request;
@@ -33,5 +34,13 @@ class SalasController extends Controller
         $reactivos = Reactivo::all()->shuffle();
 
         return view('jugar.global.palabras', compact('reactivos'));
+    }
+
+    public function dictadoGlobal()
+    {
+
+        $reactivos = Palabra::all()->shuffle();
+
+        return view('jugar.global.dictado', compact('reactivos'));
     }
 }

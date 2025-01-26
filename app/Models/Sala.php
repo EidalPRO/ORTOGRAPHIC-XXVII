@@ -11,11 +11,16 @@ class Sala extends Model
 
     protected $table = 'sala';
 
-    protected $fillable = ['codigo_sala', 'nombre'];
+    protected $fillable = ['codigo_sala', 'nombre', 'user_id'];
 
     public function usuarios()
     {
         return $this->belongsToMany(User::class, 'sala_usuario');
+    }
+
+    public function creador()
+    {
+        return $this->belongsTo(User::class, 'user_id');
     }
 
     public function minijuegos()

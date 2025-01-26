@@ -64,6 +64,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Sala::class, 'sala_usuario');
     }
 
+    public function salasCreador()
+    {
+        return $this->hasMany(Sala::class, 'user_id');
+    }
+
     public function minijuegos()
     {
         return $this->belongsToMany(Minijuego::class, 'sala_minijuegos_usuario')

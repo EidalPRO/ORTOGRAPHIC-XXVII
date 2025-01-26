@@ -38,6 +38,7 @@
         <span id="acertadas">10</span>
         <h3 id="score">40% de acierto</h3>
         <button id="recomenzar">Jugar de Nuevo</button>
+        <button id="salir">Salir</button>
         <div id="detalle-respuestas">
             <h3>Retroalimentación</h3>
             <ul id="lista-respuestas" style="text-align: justify;">
@@ -227,6 +228,11 @@
         var recomenzar = document.getElementById("recomenzar");
         recomenzar.addEventListener("click", function() {
             location.reload();
+        });
+
+        var salir = document.getElementById("salir");
+        salir.addEventListener("click", function() {
+         window.location.href = "{{route('entrarGlobal')}}";
         });
     </script>
 </body>
