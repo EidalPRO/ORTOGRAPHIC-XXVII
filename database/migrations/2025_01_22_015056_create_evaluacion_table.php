@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id_evaluacion');
             $table->string('tipo', 45);
             $table->unsignedBigInteger('sala_id');
-            $table->string('reactivos', 255);
+            $table->json('reactivos');
             $table->timestamps();
         
             $table->foreign('sala_id')->references('id_sala')->on('sala')->onDelete('cascade');

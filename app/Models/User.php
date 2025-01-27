@@ -48,9 +48,20 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function isPremium()
+    {
+        return $this->esPremium;
+    } 
     public function role()
     {
-        return $this->belongsTo(Roles::class, 'roles_id_roles', 'id_roles');
+        return $this->belongsTo(Roles::class, 'roles_id_roles');
+    }
+
+    // Verifica si el usuario tiene un rol específico
+    public function hasRole($role)
+    {
+        return $this->role->name === $role;
     }
 
     public function lecciones()

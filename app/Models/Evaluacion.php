@@ -15,7 +15,7 @@ class Evaluacion extends Model
 
     public function sala()
     {
-        return $this->belongsTo(Sala::class, 'sala_id');
+        return $this->belongsTo(Sala::class, 'sala_id'); // Relación con sala
     }
 
     public function reactivos()

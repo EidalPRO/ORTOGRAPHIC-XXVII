@@ -17,12 +17,16 @@
     <header>
         <div class="logo">Ortographic</div>
         <ul class="menu">
-            <li><a href="{{route(name: 'home')}}">Inicio</a></li>
+            <li><a href="{{ route('home') }}">Inicio</a></li>
+
+            <!-- Verifica si el usuario es premium y tiene un rol específico -->
+            @if(auth()->check() && auth()->user()->esPremium || in_array(auth()->user()->roles_id_roles, [2, 3]))
+            <li><a href="{{ route('panelEstadisticas') }}">Administrar Evaluaciones y Estadísticas</a></li>
+            @endif
+
             <li><a href="" id="codigoText"></a></li>
-            <li><button class="ques"><i class="bi bi-question-circle"></i></button></li>
         </ul>
     </header>
-
     <!-- slider -->
 
     <div class="slider">
@@ -99,7 +103,7 @@
         const bt1 = document.getElementById('1');
         const bt2 = document.getElementById('2');
         const codigoText = document.getElementById('codigoText');
-        codigoText.innerText ="Sala: " + codigoSala;
+        codigoText.innerText = "Sala: " + codigoSala;
 
         bt1.addEventListener('click', function() {
             window.location.href = `/sala/personalizada/pasapalabras/${codigoSala}`;

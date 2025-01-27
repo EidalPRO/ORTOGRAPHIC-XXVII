@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evaluacion;
+use App\Models\Reactivo;
 use App\Models\Sala;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -61,8 +63,7 @@ class HomeController extends Controller
             $codigo_sala = $this->generateUniqueCodigoSala();
             $nombre = $request->input('nombre');
 
-            Log:
-            info('Creando sala', [
+            Log::info('Creando sala', [
                 'codigo_sala' => $codigo_sala,
                 'nombre' => $nombre,
                 'user_id' => Auth::id()
@@ -71,13 +72,32 @@ class HomeController extends Controller
             $sala = Sala::create([
                 'codigo_sala' => $codigo_sala,
                 'nombre' => $nombre,
-                'user_id' => Auth::id(), // Obtener el ID del usuario autenticado
+                'user_id' => Auth::id(),
+            ]);
+            // Verifica que la sala tenga el ID
+            Log::info('Sala creada:', ['sala_id' => $sala->id]);
+
+            $reactivos = Reactivo::inRandomOrder()->limit(15)->get();
+
+            $evaluacion = Evaluacion::create([
+                'tipo' => 'Evaluación Diagnóstica',
+                'sala_id' => $sala->id_sala,
+                'reactivos' => $reactivos->pluck('id_reactivos')->toJson(),
             ]);
 
-            return response()->json(['success' => true, 'sala' => $sala]);
+            return response()->json([
+                'success' => true,
+                'sala' => $sala,
+                'evaluacion' => $evaluacion
+            ]);
         } catch (\Exception $e) {
+            // Registrar el error
             Log::error('Error al crear sala', ['error' => $e->getMessage()]);
-            return response()->json(['success' => false, 'message' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
         }
     }
 

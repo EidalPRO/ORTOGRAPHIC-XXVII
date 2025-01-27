@@ -10,6 +10,16 @@
     <link href="{{asset('assets/img/logo-ortographic.webp')}}" rel="apple-touch-icon">
     <title>Ortographic - Pasapalabras</title>
     <link rel="stylesheet" href="{{asset('assets/css/juego/palabras.css')}}">
+    <style>
+        .opciones {
+            margin: 20px;
+        }
+
+        .opcion {
+            margin: 20px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,6 +36,9 @@
             <span id="letra-pregunta">Z</span>
             <h2 id="pregunta">Pregunta...</h2>
             <input type="text" id="respuesta">
+            <div class="opciones" id="opciones">
+                <!-- Aquí se generara las opciones -->
+            </div>
             <div class="botones">
                 <button id="responder">Responder</button>
                 <button id="pasar">Pasa Palabra</button>
@@ -42,7 +55,7 @@
         <div id="detalle-respuestas">
             <h3>Retroalimentación</h3>
             <ul id="lista-respuestas" style="text-align: justify;">
-                <!-- Aquí se generará dinámicamente la lista -->
+                <!-- Aquí se generara la lista -->
             </ul>
         </div>
     </section>
@@ -60,6 +73,9 @@
                 id: index + 1,
                 pregunta: reactivo.reactivo,
                 respuesta: reactivo.respuesta,
+                distractor1: reactivo.distractor1,
+                distractor2: reactivo.distractor2,
+                distractor3: reactivo.distractor3,
                 retroalimentacion: reactivo.retroalimentacion
             };
         });
@@ -115,10 +131,34 @@
 
                 var letra = bd_juego[numPreguntaActual].id;
                 document.getElementById(`circle-${letra}`).classList.add("pregunta-actual");
+
+                mostrarOpciones();
             } else {
                 clearInterval(countdown);
                 mostrarPantallaFinal();
             }
+        }
+
+        function mostrarOpciones() {
+            const opciones = [
+                `1- ${bd_juego[numPreguntaActual].respuesta}`,
+                `2- ${bd_juego[numPreguntaActual].distractor1}`,
+                `3- ${bd_juego[numPreguntaActual].distractor2}`,
+                `4- ${bd_juego[numPreguntaActual].distractor3}`
+            ];
+
+            // Función para mezclar las opciones
+            function mezclarOpciones(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            mezclarOpciones(opciones);
+
+            const opcionesElemento = document.getElementById("opciones");
+            opcionesElemento.innerHTML = opciones.map(opcion => `<span class="opcion">${opcion}</span>`).join('');
         }
 
         var respuesta = document.getElementById("respuesta");
@@ -126,7 +166,7 @@
 
         function controlarRespuesta(txtRespuesta) {
             respuestasUsuario[numPreguntaActual] = txtRespuesta;
-            if (txtRespuesta == bd_juego[numPreguntaActual].respuesta) {
+            if (txtRespuesta === bd_juego[numPreguntaActual].respuesta) {
                 cantidadAcertadas++;
                 estadoPreguntas[numPreguntaActual] = 1;
                 var letra = bd_juego[numPreguntaActual].id;
@@ -143,7 +183,7 @@
         }
 
         botonResponder.addEventListener("click", function() {
-            if (respuesta.value == "") {
+            if (respuesta.value === "") {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -151,13 +191,12 @@
                 });
                 return;
             }
-            var txtRespuesta = respuesta.value.toLowerCase();
-            controlarRespuesta(txtRespuesta);
+            controlarRespuesta(respuesta.value);
         });
 
         respuesta.addEventListener("keyup", function(event) {
             if (event.key === "Enter") {
-                if (respuesta.value == "") {
+                if (respuesta.value === "") {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
@@ -165,8 +204,7 @@
                     });
                     return;
                 }
-                var txtRespuesta = respuesta.value.toLowerCase();
-                controlarRespuesta(txtRespuesta);
+                controlarRespuesta(respuesta.value);
             }
         });
 

@@ -527,6 +527,9 @@
                                 <label for="nombre">Nombre de la sala</label>
                                 <input type="text" class="form-control" id="nombre" name="nombre" required>
                             </div>
+                            <div class="container" style="margin-top: 20px; text-align:justify;">
+                                <p>Al crear una sala, se generará automáticamente una evaluación diagnóstica compuesta por 15 preguntas, seleccionadas de manera aleatoria entre los reactivos disponibles. Además, tendrás la opción de crear evaluaciones adicionales dentro de la misma sala. También podrás consultar las estadísticas de los resultados obtenidos, así como realizar comparaciones entre los diferentes resultados de las evaluaciones.</p>
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-target="#salasModal" data-bs-toggle="modal">Cancelar</button>

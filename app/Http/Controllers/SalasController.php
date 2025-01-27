@@ -34,7 +34,7 @@ class SalasController extends Controller
     public function palabrasGlobal()
     {
 
-        $reactivos = Reactivo::all()->shuffle();
+        $reactivos = Reactivo::all()->shuffle()->take(10);
 
         return view('jugar.global.palabras', compact('reactivos'));
     }
@@ -60,7 +60,7 @@ class SalasController extends Controller
     // pasapalabras 
     public function palabrasPrivada($codigo_sala)
     {
-        $reactivos = Reactivo::all()->shuffle();
+        $reactivos = Reactivo::all()->shuffle()->take(10);
         $sala = Sala::where('codigo_sala', $codigo_sala)->first();
 
         return view('jugar.privada.palabras', compact('reactivos', 'sala'));
@@ -107,7 +107,7 @@ class SalasController extends Controller
     {
         $sala_id = $request->input('sala_id');
         $codigo_sala = $request->input('codigo_sala');
-        $minijuego_id = 1;
+        $minijuego_id = 2;
         $user_id = Auth::id();
         $acerto = $request->input('acerto');
         $fallo = $request->input('fallo');

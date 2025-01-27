@@ -10,6 +10,16 @@
     <link href="{{asset('assets/img/logo-ortographic.webp')}}" rel="apple-touch-icon">
     <title>Ortographic - Pasapalabras</title>
     <link rel="stylesheet" href="{{asset('assets/css/juego/palabras.css')}}">
+    <style>
+        .opciones {
+            margin: 20px;
+        }
+
+        .opcion {
+            margin: 20px;
+            font-size: 15px;
+        }
+    </style>
 </head>
 
 <body>
@@ -26,6 +36,9 @@
             <span id="letra-pregunta">Z</span>
             <h2 id="pregunta">Pregunta...</h2>
             <input type="text" id="respuesta">
+            <div class="opciones" id="opciones">
+                <!-- Aquí se generara las opciones -->
+            </div>
             <div class="botones">
                 <button id="responder">Responder</button>
                 <button id="pasar">Pasa Palabra</button>
@@ -42,10 +55,11 @@
         <div id="detalle-respuestas">
             <h3>Retroalimentación</h3>
             <ul id="lista-respuestas" style="text-align: justify;">
-                <!-- Aquí se generará dinámicamente la lista -->
+                <!-- Aquí se generara la lista -->
             </ul>
         </div>
     </section>
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -58,26 +72,25 @@
         const bd_juego = reactivos.map((reactivo, index) => {
             return {
                 id: index + 1,
-                pregunta: reactivo.reactivo, 
-                respuesta: reactivo.respuesta, 
-                retroalimentacion: reactivo.retroalimentacion 
+                pregunta: reactivo.reactivo,
+                respuesta: reactivo.respuesta,
+                distractor1: reactivo.distractor1,
+                distractor2: reactivo.distractor2,
+                distractor3: reactivo.distractor3,
+                retroalimentacion: reactivo.retroalimentacion
             };
         });
 
-        // Preguntas que ya han sido contestadas (0 = no respondida, 1 = respondida)
         var estadoPreguntas = new Array(bd_juego.length).fill(0);
         var respuestasUsuario = new Array(bd_juego.length).fill(null);
         var cantidadAcertadas = 0;
 
-        // Variable que mantiene el número de la pregunta actual
         var numPreguntaActual = -1;
 
-        // Obtener el elemento del cronómetro
         const timer = document.getElementById("tiempo");
         let timeLeft = TIEMPO_DEL_JUEGO;
         var countdown;
 
-        // Botón comenzar
         var comenzar = document.getElementById("comenzar");
         comenzar.addEventListener("click", function(event) {
             document.getElementById("pantalla-inicial").style.display = "none";
@@ -86,7 +99,6 @@
             cargarPregunta();
         });
 
-        // Crear círculos del 1 al 10, basados en la cantidad de reactivos
         const container = document.querySelector(".container");
         for (let i = 1; i <= bd_juego.length; i++) {
             const circle = document.createElement("div");
@@ -102,7 +114,6 @@
             circle.style.top = `${y}px`;
         }
 
-        // Función que carga la pregunta
         function cargarPregunta() {
             numPreguntaActual++;
             if (numPreguntaActual >= bd_juego.length) {
@@ -117,27 +128,48 @@
                     }
                 }
 
-                // Mostrar la pregunta actual
                 document.getElementById("letra-pregunta").textContent = bd_juego[numPreguntaActual].id;
                 document.getElementById("pregunta").textContent = bd_juego[numPreguntaActual].pregunta;
 
-                // Marcar el círculo de la pregunta actual
                 var letra = bd_juego[numPreguntaActual].id;
                 document.getElementById(`circle-${letra}`).classList.add("pregunta-actual");
+
+                mostrarOpciones();
             } else {
                 clearInterval(countdown);
                 mostrarPantallaFinal();
             }
         }
 
-        // Detecto el cambio de tecla en el input
+        function mostrarOpciones() {
+            const opciones = [
+                `1- ${bd_juego[numPreguntaActual].respuesta}`,
+                `2- ${bd_juego[numPreguntaActual].distractor1}`,
+                `3- ${bd_juego[numPreguntaActual].distractor2}`,
+                `4- ${bd_juego[numPreguntaActual].distractor3}`
+            ];
+
+            // Función para mezclar las opciones
+            function mezclarOpciones(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+            }
+
+            mezclarOpciones(opciones);
+
+            const opcionesElemento = document.getElementById("opciones");
+            opcionesElemento.innerHTML = opciones.map(opcion => `<span class="opcion">${opcion}</span>`).join('');
+        }
+
+
         var respuesta = document.getElementById("respuesta");
         var botonResponder = document.getElementById("responder");
 
-        // Función que controla la respuesta cuando se da clic en "Responder" o al presionar Enter
         function controlarRespuesta(txtRespuesta) {
-            respuestasUsuario[numPreguntaActual] = txtRespuesta; // Guardar respuesta del usuario
-            if (txtRespuesta == bd_juego[numPreguntaActual].respuesta) {
+            respuestasUsuario[numPreguntaActual] = txtRespuesta;
+            if (txtRespuesta === bd_juego[numPreguntaActual].respuesta) {
                 cantidadAcertadas++;
                 estadoPreguntas[numPreguntaActual] = 1;
                 var letra = bd_juego[numPreguntaActual].id;
@@ -154,7 +186,7 @@
         }
 
         botonResponder.addEventListener("click", function() {
-            if (respuesta.value == "") {
+            if (respuesta.value === "") {
                 Swal.fire({
                     icon: "error",
                     title: "Error",
@@ -162,13 +194,12 @@
                 });
                 return;
             }
-            var txtRespuesta = respuesta.value.toLowerCase();
-            controlarRespuesta(txtRespuesta);
+            controlarRespuesta(respuesta.value);
         });
 
         respuesta.addEventListener("keyup", function(event) {
             if (event.key === "Enter") {
-                if (respuesta.value == "") {
+                if (respuesta.value === "") {
                     Swal.fire({
                         icon: "error",
                         title: "Error",
@@ -176,12 +207,10 @@
                     });
                     return;
                 }
-                var txtRespuesta = respuesta.value.toLowerCase();
-                controlarRespuesta(txtRespuesta);
+                controlarRespuesta(respuesta.value);
             }
         });
 
-        // Botón para pasar de pregunta sin contestar
         var pasar = document.getElementById("pasar");
         pasar.addEventListener("click", function(event) {
             var letra = bd_juego[numPreguntaActual].id;
@@ -189,7 +218,6 @@
             cargarPregunta();
         });
 
-        // Función que actualiza el cronómetro cada segundo
         function largarTiempo() {
             countdown = setInterval(() => {
                 timeLeft--;
@@ -202,12 +230,11 @@
             }, 1000);
         }
 
-
         function mostrarPantallaFinal() {
             document.getElementById("acertadas").textContent = cantidadAcertadas;
             document.getElementById("score").textContent = ((cantidadAcertadas * 100) / bd_juego.length).toFixed(2) + "% de acierto";
             const listaRespuestas = document.getElementById("lista-respuestas");
-            listaRespuestas.innerHTML = ""; 
+            listaRespuestas.innerHTML = "";
             bd_juego.forEach((pregunta, index) => {
                 const li = document.createElement("li");
                 const estado = respuestasUsuario[index] === pregunta.respuesta ? "Correcta" : "Incorrecta";
@@ -224,7 +251,6 @@
             document.getElementById("pantalla-final").style.display = "block";
         }
 
-        
         var recomenzar = document.getElementById("recomenzar");
         recomenzar.addEventListener("click", function() {
             location.reload();
@@ -232,9 +258,10 @@
 
         var salir = document.getElementById("salir");
         salir.addEventListener("click", function() {
-         window.location.href = "{{route('entrarGlobal')}}";
+            window.location.href = "{{route('entrarGlobal')}}";
         });
     </script>
+
 </body>
 
 </html>

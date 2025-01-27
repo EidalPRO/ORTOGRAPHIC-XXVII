@@ -11,6 +11,8 @@ class Sala extends Model
 
     protected $table = 'sala';
 
+    protected $primaryKey = 'id_sala';
+
     protected $fillable = ['codigo_sala', 'nombre', 'user_id'];
 
     public function usuarios()

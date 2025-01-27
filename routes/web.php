@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JugarController;
+use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\SalasController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -48,4 +49,13 @@ Route::middleware("auth")->group(function () {
 
     Route::post('/juego/guardarResultados/palabras', [SalasController::class, 'guardarResultados'])->name('guardarResultados');
     Route::post('/juego/guardarResultados/dictado', [SalasController::class, 'guardarResultadosDic'])->name('guardarResultados2');
+
+
+    
+    // personalizar sala 
+    Route::get('/panel-estadisticas', [PersonalizarController::class, 'index'])->name('panelEstadisticas');
+    Route::get('/estadisticas', [PersonalizarController::class, 'index'])->name('estadisticas');
+    Route::get('/crear-evaluacion', [PersonalizarController::class, 'create'])->name('crearEvaluacion');
+    Route::post('/eliminar-usuario', [PersonalizarController::class, 'eliminarUsuario'])->name('eliminarUsuario');
+
 });
