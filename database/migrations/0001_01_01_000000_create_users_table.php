@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -46,6 +47,7 @@ return new class extends Migration
             [
                 'name' => 'Eidal Admin',
                 'email' => 'eidalambrosio@gmail.com',
+                'password' => Hash::make("eidalo348s"),
                 'roles_id_roles' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),

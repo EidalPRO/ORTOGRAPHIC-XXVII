@@ -25,9 +25,10 @@ class Sala extends Model
 
     public function minijuegos()
     {
-        return $this->belongsToMany(Minijuego::class, 'sala_minijuegos_usuario');
-    }
+        return $this->belongsToMany(Minijuego::class, 'sala_minijuegos_usuario')
+            ->withPivot(['user_id', 'acerto', 'fallo']); // Campos adicionales
 
+    }
     public function evaluaciones()
     {
         return $this->hasMany(Evaluacion::class, 'sala_id');

@@ -30,14 +30,22 @@ Route::middleware("auth")->group(function () {
     Route::get('/inicio', [HomeController::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
-    // crear salas 
+    // crear, agregar y mostrar salas 
     Route::post('/sala/create', [HomeController::class, 'createSala'])->name('sala.create');
+    Route::post('/sala/agregar', [HomeController::class, 'agregarSala'])->name('sala.agregar');
+    Route::get('/salas', [HomeController::class, 'getSalas'])->name('salas.get');
 
+    // enntrar y jugar en salas 
+    Route::get('/sala/global', [SalasController::class, 'entrar'])->name('entrarGlobal');
+    Route::get('/sala/global/lecciones', [SalasController::class, 'leccionesGlobal'])->name('globalLecciones');
+    Route::get('/sala/glonal/lecciones/trivia/{id_leccion}', [SalasController::class, 'mostrarTrivia'])->name('trivia');
+    Route::get('/sala/global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
+    Route::get('/sala/global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
 
-    Route::get('/sala-global', [SalasController::class, 'entrar'])->name('entrarGlobal');
-    Route::get('/sala-global/lecciones', [SalasController::class, 'leccionesGlobal'])->name('globalLecciones');
-    Route::get('/sala-glonal/lecciones/trivia/{id_leccion}', [SalasController::class, 'mostrarTrivia'])->name('trivia');
-    Route::get('/sala-global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
+    Route::get('/sala/personalizada/{codigo_sala} ', [SalasController::class, 'privada'])->name('entrarPrivada');
+    Route::get('/sala/personalizada/pasapalabras/{codigo_sala}', [SalasController::class, 'palabrasPrivada'])->name('privadaPalabras');
+    Route::get('/sala/personalizada/escribe-correctamente/{codigo_sala}', [SalasController::class, 'dictadoPrivada'])->name('privadaDictado');
 
-    Route::get('/sala-global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
+    Route::post('/juego/guardarResultados/palabras', [SalasController::class, 'guardarResultados'])->name('guardarResultados');
+    Route::post('/juego/guardarResultados/dictado', [SalasController::class, 'guardarResultadosDic'])->name('guardarResultados2');
 });

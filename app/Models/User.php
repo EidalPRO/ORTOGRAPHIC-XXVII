@@ -72,6 +72,6 @@ class User extends Authenticatable
     public function minijuegos()
     {
         return $this->belongsToMany(Minijuego::class, 'sala_minijuegos_usuario')
-            ->withPivot('progreso');
+            ->withPivot(['progreso', 'acerto', 'fallo']); // Agregar campos adicionales
     }
 }

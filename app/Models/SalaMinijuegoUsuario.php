@@ -9,14 +9,18 @@ class SalaMinijuegoUsuario extends Model
 {
     use HasFactory;
 
-    protected $table = 'sala_minijuegos_usuario'; // Nombre de la tabla pivot
+    protected $table = 'sala_minijuegos_usuario';
 
     protected $fillable = [
         'sala_id',
         'minijuegos_id',
         'user_id',
-        'progreso',
+        'acerto',
+        'fallo',
+        'fecha',
     ];
+
+    public $timestamps = false;
 
     /**
      * Relación con la tabla sala.

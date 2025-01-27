@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('sala_minijuegos_usuario', function (Blueprint $table) {
             $table->unsignedBigInteger('sala_id');
             $table->unsignedBigInteger('minijuegos_id');
-            $table->unsignedBigInteger('user_id'); // Relación con tabla users
-            $table->integer('progreso');
-            $table->timestamps();
+            $table->unsignedBigInteger('user_id');
+            $table->json('acerto');
+            $table->json("fallo");
+            $table->timestamp('fecha');
         
-            $table->primary(['sala_id', 'minijuegos_id', 'user_id']);
             $table->foreign('sala_id')->references('id_sala')->on('sala')->onDelete('cascade');
             $table->foreign('minijuegos_id')->references('idminijuegos')->on('minijuegos')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

@@ -15,6 +15,7 @@ class Minijuego extends Model
 
     public function salas()
     {
-        return $this->belongsToMany(Sala::class, 'sala_minijuegos_usuario');
+        return $this->belongsToMany(Sala::class, 'sala_minijuegos_usuario')
+            ->withPivot(['user_id', 'acerto', 'fallo']); // Campos adicionales de la tabla intermedia
     }
 }

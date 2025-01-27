@@ -48,6 +48,7 @@
                     <li><a href="" class="active">Inicio<br></a></li>
                     <li><a href="/acerca-de">Acerca de Ortographic</a></li>
                     <li><a href="/galeria">Galeria de imagenes</a></li>
+                    <li><a href=""> {{Auth::user()->name}} </a></li>
                     <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
@@ -511,6 +512,8 @@
             </div>
         </div>
 
+
+
         <div class="modal fade" id="crearSalaModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -534,76 +537,28 @@
             </div>
         </div>
 
-        <script>
-            document.getElementById('crearSalaForm').addEventListener('submit', function(event) {
-                event.preventDefault();
+        <div class="modal fade" id="agregarSalaModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalToggleLabel2">Agregar sala</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <form id="agregarSalaForm" method="POST">
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label for="codigo">Código de la sala</label>
+                                <input type="text" class="form-control" id="codigo" name="codigo" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-target="#salasModal" data-bs-toggle="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Agregar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-                let formData = new FormData(this);
-                let nombre = formData.get('nombre');
-
-                fetch("{{ route('sala.create') }}", {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({
-                            nombre: nombre,
-                            user_id: '{{ Auth::id() }}' // Incluir el ID del usuario autenticado
-                        })
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire({
-                                title: 'Sala creada',
-                                text: `El código de la sala es: ${data.sala.codigo_sala}`,
-                                icon: 'success',
-                                showCancelButton: true,
-                                confirmButtonText: 'Copiar código',
-                                cancelButtonText: 'Cerrar'
-                            }).then((result) => {
-                                // Cerrar el modal de creación de sala
-                                $('#crearSalaModal').modal('hide');
-
-                                if (result.isConfirmed) {
-                                    navigator.clipboard.writeText(data.sala.codigo_sala);
-                                    Swal.fire('Copiado!', 'El código ha sido copiado al portapapeles.', 'success');
-                                }
-
-                                // Abrir el modal de salas personalizadas
-                                $('#salasModal').modal('show');
-                            });
-                        } else {
-                            Swal.fire({
-                                title: 'Error',
-                                text: data.message,
-                                icon: 'error'
-                            }).then(() => {
-                                // Cerrar el modal de creación de sala
-                                $('#crearSalaModal').modal('hide');
-
-                                // Abrir el modal de salas personalizadas
-                                $('#salasModal').modal('show');
-                            });
-                        }
-                    })
-                    .catch(error => {
-                        Swal.fire({
-                            title: 'Error',
-                            text: 'Ha ocurrido un error al crear la sala.',
-                            icon: 'error'
-                        }).then(() => {
-                            // Cerrar el modal de creación de sala
-                            $('#crearSalaModal').modal('hide');
-
-                            // Abrir el modal de salas personalizadas
-                            $('#salasModal').modal('show');
-                        });
-                    });
-            });
-        </script>
     </main>
 
     <footer id="footer" class="footer">
@@ -663,6 +618,211 @@
     <!-- Main JS File -->
     <script src="{{asset('assets/js/home.js')}}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch("{{ route('salas.get') }}")
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        const salas = data.salas;
+                        const rol = data.rol;
+                        const esPremium = data.esPremium;
+                        const user = data.user;
+                        const listaSalas = document.getElementById('listaSalasDisponibles');
+
+                        if (salas.length > 0) {
+                            salas.forEach(sala => {
+                                let listItem = document.createElement('li');
+                                listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'mb-2');
+
+                                listItem.innerHTML = `
+                                <div class="texto-salas">
+                                    <strong>${sala.codigo_sala}</strong><br>
+                                    ${sala.nombre}
+                                </div>
+                                <div>
+                                    <a href="/sala/personalizada/${sala.codigo_sala}" class="btn btn-success btn-sm">Entrar</a>
+                                    <a class="btn btn-danger btn-sm" onclick="confirmarSalida('${sala.id_sala}')">Salir</a>
+                                </div>
+                            `;
+                                listaSalas.appendChild(listItem);
+                            });
+                        } else {
+                            listaSalas.innerHTML = '<li class="list-group-item">No se encontraron salas para este usuario.</li>';
+                        }
+
+                        // Manejar la lógica para mostrar/ocultar botones según el rol y el tipo de cuenta
+                        const crearSalaButton = document.querySelector('.btn-warning[data-bs-target="#crearSalaModal"]');
+                        const agregarSalaButton = document.querySelector('.btn-primary[data-bs-target="#agregarSalaModal"]');
+
+                        // Administradores pueden crear salas
+                        if (rol === 3) {
+                            crearSalaButton.style.display = 'block';
+                            agregarSalaButton.style.display = 'block';
+                        }
+
+                        // Docentes pueden crear salas
+                        if (rol === 2) {
+                            if (esPremium) {
+                                crearSalaButton.style.display = 'block';
+                                agregarSalaButton.style.display = 'block';
+                            } else {
+                                // Límite de 5 salas para docentes con cuenta gratuita
+                                if (salas.length < 5) {
+                                    crearSalaButton.style.display = 'block';
+                                } else {
+                                    crearSalaButton.style.display = 'none';
+                                }
+                                agregarSalaButton.style.display = 'block';
+                            }
+                        }
+
+                        // Alumnos no pueden crear salas
+                        if (rol === 1) {
+                            if (esPremium) {
+                                // Límite de 10 salas creadas para alumnos con cuenta premium
+                                if (salas.length < 10) {
+                                    crearSalaButton.style.display = 'block';
+                                } else {
+                                    crearSalaButton.style.display = 'none';
+                                }
+                                agregarSalaButton.style.display = 'block';
+                            } else {
+                                // Límite de 2 salas para alumnos con cuenta gratuita
+                                if (salas.length < 2) {
+                                    agregarSalaButton.style.display = 'block';
+                                } else {
+                                    agregarSalaButton.style.display = 'none';
+                                }
+                                crearSalaButton.style.display = 'none';
+                            }
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al obtener las salas:', error);
+                });
+        });
+        document.getElementById('crearSalaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            let nombre = formData.get('nombre');
+
+            fetch("{{ route('sala.create') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        nombre: nombre,
+                        user_id: '{{ Auth::id() }}' // Incluir el ID del usuario autenticado
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Sala creada',
+                            text: `El código de la sala es: ${data.sala.codigo_sala}`,
+                            icon: 'success',
+                            showCancelButton: true,
+                            confirmButtonText: 'Copiar código',
+                            cancelButtonText: 'Cerrar'
+                        }).then((result) => {
+                            // Cerrar el modal de creación de sala
+                            $('#crearSalaModal').modal('hide');
+
+                            if (result.isConfirmed) {
+                                navigator.clipboard.writeText(data.sala.codigo_sala);
+                                Swal.fire('Copiado!', 'El código ha sido copiado al portapapeles.', 'success');
+                            }
+
+                            // Abrir el modal de salas personalizadas
+                            $('#salasModal').modal('show');
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error'
+                        }).then(() => {
+                            // Cerrar el modal de creación de sala
+                            $('#crearSalaModal').modal('hide');
+
+                            // Abrir el modal de salas personalizadas
+                            $('#salasModal').modal('show');
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error al crear la sala.',
+                        icon: 'error'
+                    }).then(() => {
+                        // Cerrar el modal de creación de sala
+                        $('#crearSalaModal').modal('hide');
+
+                        // Abrir el modal de salas personalizadas
+                        $('#salasModal').modal('show');
+                    });
+                });
+        });
+
+        document.getElementById('agregarSalaForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            let codigo = formData.get('codigo');
+
+            fetch("{{ route('sala.agregar') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        codigo: codigo,
+                        user_id: '{{ Auth::id() }}' // Incluir el ID del usuario autenticado
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            title: 'Éxito',
+                            text: data.message,
+                            icon: 'success'
+                        }).then(() => {
+                            location.reload();
+                            // Abrir el modal de salas personalizadas
+                            $('#salasModal').modal('show');
+                        });
+                    } else {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.message,
+                            icon: 'error'
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: 'Ha ocurrido un error al agregar la sala.',
+                        icon: 'error'
+                    }).then(() => {
+                        // Cerrar el modal de agregar sala
+                        $('#agregarSalaModal').modal('hide');
+
+                        // Abrir el modal de salas personalizadas
+                        $('#salasModal').modal('show');
+                    });
+                });
+        });
         const gb = document.getElementById('btn1');
         gb.addEventListener('click', function() {
             window.location.href = "{{route('entrarGlobal')}}";
