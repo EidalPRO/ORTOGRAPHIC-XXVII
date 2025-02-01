@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Evaluacion;
+use App\Models\EvaluacionReactivo;
 use App\Models\Leccion;
 use App\Models\Palabra;
 use App\Models\Reactivo;
@@ -10,6 +12,8 @@ use App\Models\Sala;
 use App\Models\SalaMinijuegoUsuario;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class SalasController extends Controller
 {
@@ -52,9 +56,20 @@ class SalasController extends Controller
 
     public function privada($codigo_sala)
     {
-        $sala = Sala::where('codigo_sala', $codigo_sala)->first();
+        // Obtener la sala actual
+        $sala = Sala::where('codigo_sala', $codigo_sala)->firstOrFail();
 
-        return view('salas.privada', compact('sala'));
+        // Obtener evaluaciones pendientes (sin completarlas aún por el usuario)
+        $evaluacionesPendientes = Evaluacion::where('sala_id', $sala->id_sala)
+            ->whereNotIn('id_evaluacion', function ($query) use ($sala) { // Asegurar acceso a $sala
+                $query->select('evaluacion_id')
+                    ->from('evaluacion_reactivos')
+                    ->where('user_id', Auth::id())
+                    ->where('sala_id', $sala->id_sala);
+            })
+            ->get();
+
+        return view('salas.privada', compact('sala', 'evaluacionesPendientes'));
     }
 
     // pasapalabras 
@@ -125,5 +140,83 @@ class SalasController extends Controller
         $resultados->save();
 
         return response()->json(['success' => true, 'message' => 'Resultados guardados exitosamente']);
+    }
+
+    // evaluaciones
+    public function mostrarEvaluacion($id, $codigo_sala)
+    {
+        $evaluacion = Evaluacion::findOrFail($id);
+        $reactivosJson = json_decode($evaluacion->reactivos, true);
+
+        $sala = Sala::where('codigo_sala', $codigo_sala)->firstOrFail();
+
+        $usuario = Auth::user();
+        if (!$usuario) {
+            return redirect()->route('login')->with('error', 'Debes iniciar sesión para acceder a esta evaluación.');
+        }
+
+        $reactivos = Reactivo::whereIn('id_reactivos', $reactivosJson)->get();
+        
+        $evaluacionRealizada = EvaluacionReactivo::where('evaluacion_id', $id)
+            ->where('sala_id', $sala->id_sala)
+            ->where('user_id', $usuario->id)
+            ->exists();
+
+        if ($evaluacionRealizada) {
+            return view('private.evaluacion', compact('evaluacion', 'reactivos', 'sala', 'usuario'))
+                ->with('evaluacionRealizada', true);
+        }
+
+        return view('private.evaluacion', compact('evaluacion', 'reactivos', 'sala', 'usuario'))
+            ->with('evaluacionRealizada', false);
+    }
+
+    public function guardarEvaluacion(Request $request, $evaluacion_id, $sala_id, $user_id)
+    {
+        Log::info('Entrando a la función guardarEvaluacion.');
+
+        try {
+            Log::info('ID de Evaluación: ' . $evaluacion_id . ', Sala ID: ' . $sala_id . ', User ID: ' . $user_id);
+
+            // Obtener las respuestas correctas e incorrectas
+            $correctas = $request->input('correctas', []);
+            $incorrectas = $request->input('incorrectas', []);
+
+            // Asegurarse de que tanto acerto como fallo tengan un valor, incluso si están vacíos
+            $acerto = json_encode($correctas);
+            $fallo = json_encode($incorrectas);
+
+            Log::info('Aciertos JSON: ' . $acerto);
+            Log::info('Fallos JSON: ' . $fallo);
+
+            // Crear el registro en la tabla evaluacion_reactivos
+            $evaluacionReactivo = EvaluacionReactivo::create([
+                'evaluacion_id' => $evaluacion_id,
+                'sala_id' => $sala_id,
+                'user_id' => $user_id,
+                'acerto' => $acerto,
+                'fallo' => $fallo,
+            ]);
+
+            Log::info('Resultados guardados correctamente: ' . $evaluacionReactivo);
+
+            $total = count($correctas) + count($incorrectas);
+            $calificacion = (count($correctas) / $total) * 10;
+
+            Log::info('Total respuestas: ' . $total . ', Aciertos: ' . count($correctas) . ', Calificación: ' . $calificacion);
+            Log::info('Registro creado: ' . json_encode($evaluacionReactivo));
+
+            return response()->json([
+                'message' => 'Evaluación guardada correctamente',
+                'aciertos' => count($correctas),
+                'calificacion' => $calificacion,
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error al guardar evaluación: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Ocurrió un error al guardar la evaluación',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
     }
 }

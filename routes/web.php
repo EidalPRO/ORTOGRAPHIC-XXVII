@@ -25,6 +25,10 @@ Route::middleware("guest")->group(function () {
     Route::get('/iniciar_sesion', [AuthController::class, 'login'])->name('login');
     Route::post('/registrar', [AuthController::class, 'registrar'])->name('registrar');
     Route::post('/logear', [AuthController::class, 'logear'])->name('logear');
+
+    // socialite 
+    Route::get('/auth/redirect/facebook', [AuthController::class, 'redirect'])->name('facebook.redirect');
+    Route::get('/auth/callback/facebook', [AuthController::class, 'callback'])->name('facebook.callback');
 });
 
 Route::middleware("auth")->group(function () {
@@ -43,7 +47,7 @@ Route::middleware("auth")->group(function () {
     Route::get('/sala/global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
     Route::get('/sala/global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
 
-    Route::get('/sala/personalizada/{codigo_sala} ', [SalasController::class, 'privada'])->name('entrarPrivada');
+    Route::get('/sala/personalizada/{codigo_sala}', [SalasController::class, 'privada'])->name('entrarPrivada');
     Route::get('/sala/personalizada/pasapalabras/{codigo_sala}', [SalasController::class, 'palabrasPrivada'])->name('privadaPalabras');
     Route::get('/sala/personalizada/escribe-correctamente/{codigo_sala}', [SalasController::class, 'dictadoPrivada'])->name('privadaDictado');
 
@@ -51,11 +55,18 @@ Route::middleware("auth")->group(function () {
     Route::post('/juego/guardarResultados/dictado', [SalasController::class, 'guardarResultadosDic'])->name('guardarResultados2');
 
 
-    
+
     // personalizar sala 
-    Route::get('/panel-estadisticas', [PersonalizarController::class, 'index'])->name('panelEstadisticas');
+    Route::get('/sala/{codigo_sala}/administrar', [PersonalizarController::class, 'index'])->name('panelEstadisticas');
+    Route::get('/sala/pesonalizada/{codigo_sala}/evaluacion/{tipo}', [SalasController::class, 'evaluacion']);
     Route::get('/estadisticas', [PersonalizarController::class, 'index'])->name('estadisticas');
-    Route::get('/crear-evaluacion', [PersonalizarController::class, 'create'])->name('crearEvaluacion');
+    Route::get('/crear-evaluacion', [PersonalizarController::class, 'create'])->name(name: 'crearEvaluacion');
     Route::post('/eliminar-usuario', [PersonalizarController::class, 'eliminarUsuario'])->name('eliminarUsuario');
 
+    // evaluaciones 
+    Route::get('/sala/personalizada/evaluacion/{id}/{codigoSala}', [SalasController::class, 'mostrarEvaluacion'])->name('evaluacion.mostrar');
+    Route::post('/evaluacion/{id}/{sala_id}/{user_id}', [SalasController::class, 'guardarEvaluacion'])->name('evaluacion.guardar');
+
+    Route::get('/reactivos', [PersonalizarController::class, 'obtenerReactivos'])->name('reactivos.obtener');
+    Route::post('/guardar-evaluacion', [PersonalizarController::class, 'crearEvaluacion'])->name('guardarEvaluacion');
 });

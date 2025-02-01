@@ -16,6 +16,7 @@ class EvaluacionReactivo extends Model
         'reactivos_id',
         'sala_id',
         'user_id',
+        'acerto',
         'fallo',
     ];
 

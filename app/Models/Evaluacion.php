@@ -10,17 +10,16 @@ class Evaluacion extends Model
     use HasFactory;
 
     protected $table = 'evaluacion';
-
+    protected $primaryKey = 'id_evaluacion';
     protected $fillable = ['tipo', 'sala_id', 'reactivos'];
 
     public function sala()
     {
         return $this->belongsTo(Sala::class, 'sala_id'); // Relación con sala
     }
-
     public function reactivos()
     {
-        return $this->belongsToMany(Reactivo::class, 'evaluacion_reactivos')
-            ->withPivot(['user_id', 'fallo']);
+        return $this->belongsToMany(Reactivo::class, 'evaluacion_reactivos', 'evaluacion_id', 'reactivo_id')
+            ->withPivot('user_id', 'fallo'); // Si necesitas esos valores adicionales en la tabla pivote
     }
 }

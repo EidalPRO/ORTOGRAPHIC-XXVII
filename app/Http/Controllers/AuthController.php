@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
@@ -60,5 +61,18 @@ class AuthController extends Controller
         Session::flush();
         Auth::logout();
         return to_route('index');
+    }
+
+    // socualite 
+    public function redirect()
+    {
+        return Socialite::driver('facebook')->redirect();
+    }
+
+    public function callback()
+    {
+        $user = Socialite::driver('facebook')->user();
+
+        // $user->token
     }
 }

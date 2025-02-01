@@ -13,14 +13,13 @@ return new class extends Migration
     {
         Schema::create('evaluacion_reactivos', function (Blueprint $table) {
             $table->unsignedBigInteger('evaluacion_id');
-            $table->unsignedBigInteger('reactivos_id');
             $table->unsignedBigInteger('sala_id');
             $table->unsignedBigInteger('user_id'); // Relación con tabla users
-            $table->boolean('fallo');
+            $table->json('acerto')->nullable()->default(json_encode([]));
+            $table->json('fallo')->nullable()->default(json_encode([]));
             $table->timestamps();
 
             $table->foreign('evaluacion_id')->references('id_evaluacion')->on('evaluacion')->onDelete('cascade');
-            $table->foreign('reactivos_id')->references('id_reactivos')->on('reactivos')->onDelete('cascade');
             $table->foreign('sala_id')->references('id_sala')->on('sala')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });

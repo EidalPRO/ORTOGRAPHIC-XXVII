@@ -21,7 +21,13 @@
 
             <!-- Verifica si el usuario es premium y tiene un rol específico -->
             @if(auth()->check() && auth()->user()->esPremium || in_array(auth()->user()->roles_id_roles, [2, 3]))
-            <li><a href="{{ route('panelEstadisticas') }}">Administrar Evaluaciones y Estadísticas</a></li>
+            <li><a id="admin" style="cursor: pointer;">Administrar Evaluaciones y Estadísticas</a></li>
+
+            <script>
+                admin.addEventListener('click', function() {
+                    window.location.href = `/sala/${codigoSala}/administrar`;
+                });
+            </script>
             @endif
 
             <li><a href="" id="codigoText"></a></li>
@@ -63,6 +69,18 @@
                     </p>
                 </div>
             </div> -->
+            @foreach($evaluacionesPendientes as $evaluacion)
+            <div class="item">
+                <img src="{{ asset('assets/img/salas/evaluacion.webp') }}" alt="Evaluación">
+                <div class="content">
+                    <p>Evaluación</p>
+                    <h2>{{ $evaluacion->tipo }}</h2>
+                    <p>
+                        ¡Completa la evaluación "{{ $evaluacion->tipo }}" para avanzar!
+                    </p>
+                </div>
+            </div>
+            @endforeach
         </div>
         <!-- button arrows -->
         <div class="arrows">
@@ -90,6 +108,18 @@
                     Trivia
                 </div>
             </div> -->
+            @foreach($evaluacionesPendientes as $evaluacion)
+            <div class="item">
+                <a href="{{ route('evaluacion.mostrar', ['id' => $evaluacion->id_evaluacion, 'codigoSala' => $sala->codigo_sala]) }}" class="link">
+                    <img src="{{ asset('assets/img/salas/evaluacion.webp') }}" alt="Evaluación">
+                    <div class="content">
+                        <p style="color: black;">{{ $evaluacion->tipo }}</p>
+                    </div>
+                </a>
+            </div>
+            @endforeach
+
+
         </div>
     </div>
 
@@ -104,6 +134,7 @@
         const bt2 = document.getElementById('2');
         const codigoText = document.getElementById('codigoText');
         codigoText.innerText = "Sala: " + codigoSala;
+        const admin = document.getElementById('admin');
 
         bt1.addEventListener('click', function() {
             window.location.href = `/sala/personalizada/pasapalabras/${codigoSala}`;

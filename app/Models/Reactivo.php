@@ -22,7 +22,7 @@ class Reactivo extends Model
 
     public function evaluaciones()
     {
-        return $this->belongsToMany(Evaluacion::class, 'evaluacion_reactivos')
-            ->withPivot(['user_id', 'fallo']);
+        return $this->belongsToMany(Evaluacion::class, 'evaluacion_reactivos', 'reactivo_id', 'evaluacion_id')
+            ->withPivot('user_id', 'fallo'); // Si necesitas esos valores adicionales en la tabla pivote
     }
 }
