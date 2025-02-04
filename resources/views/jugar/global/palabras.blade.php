@@ -25,11 +25,11 @@
 <body>
     <section id="pantalla-inicial">
         <h1>PASAPALABRAS</h1>
-        <button id="comenzar">COMENZAR JUEGO</button>
+        <button id="comenzar">Comenzar juego</button>
     </section>
     <section id="pantalla-juego">
         <div class="container">
-            <span id="tiempo">60</span>
+            <span id="tiempo"></span>
         </div>
 
         <div class="contendor-pregunta">

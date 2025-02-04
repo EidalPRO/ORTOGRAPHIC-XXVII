@@ -39,8 +39,8 @@
     <button type="submit">Registrarse</button>
 
     <div class="or">o</div>
-    <!-- <button class="sso" type="button" ><i class="bi bi-google"></i> Inicia con google</button> -->
-    <button class="sso" type="button"onclick="facebook()"><i class="bi bi-facebook"></i> Inicia con facebook</button>
+    <button class="sso" type="button" onclick="google()"><i class="bi bi-google"></i> Inicia con google</button>
+    <!-- <button class="sso" type="button" onclick="facebook()"><i class="bi bi-facebook"></i> Inicia con facebook</button> -->
     <p>
         Al iniciar sesion usted esta aceptando <a>Los terminos del servicio</a> y la<a>Politica de privacidad</a>.
     </p>
@@ -48,6 +48,9 @@
     <script>
         function facebook() {
             window.location.href = "{{ route('facebook.redirect') }}";
+        }
+        function google() {
+            window.location.href = "{{ route('google.redirect') }}";
         }
     </script>
 </form>

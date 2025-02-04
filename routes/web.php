@@ -9,9 +9,10 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
 
-Route::get('/', [HomeController::class, 'index'])->name('index');
+Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/acerca-de', [HomeController::class, 'about'])->name('about');
 Route::get('/galeria', [HomeController::class, 'galeria'])->name('galeria');
+Route::get('/inicio', [HomeController::class, 'home'])->name('home');
 
 
 Route::middleware("guest")->group(function () {
@@ -26,19 +27,23 @@ Route::middleware("guest")->group(function () {
     Route::post('/registrar', [AuthController::class, 'registrar'])->name('registrar');
     Route::post('/logear', [AuthController::class, 'logear'])->name('logear');
 
-    // socialite 
+    // socialite facebook
     Route::get('/auth/redirect/facebook', [AuthController::class, 'redirect'])->name('facebook.redirect');
-    Route::get('/auth/callback/facebook', [AuthController::class, 'callback'])->name('facebook.callback');
+    Route::get('/auth/facebook/callback', [AuthController::class, 'callback'])->name('facebook.callback');
+
+    // Rutas para Google
+    Route::get('/auth/google/redirect', [AuthController::class, 'redirectToGoogle'])->name('google.redirect');
+    Route::get('/auth/google/callback', [AuthController::class, 'handleGoogleCallback']);
 });
 
 Route::middleware("auth")->group(function () {
-    Route::get('/inicio', [HomeController::class, 'home'])->name('home');
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 
     // crear, agregar y mostrar salas 
     Route::post('/sala/create', [HomeController::class, 'createSala'])->name('sala.create');
     Route::post('/sala/agregar', [HomeController::class, 'agregarSala'])->name('sala.agregar');
     Route::get('/salas', [HomeController::class, 'getSalas'])->name('salas.get');
+    Route::delete('/salir-sala/{salaId}', [HomeController::class, 'salirSala']);
 
     // enntrar y jugar en salas 
     Route::get('/sala/global', [SalasController::class, 'entrar'])->name('entrarGlobal');

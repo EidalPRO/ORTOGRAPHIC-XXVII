@@ -12,15 +12,13 @@ use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    public function index()
-    {
-        return view('welcome');
-    }
+    // public function index()
+    // {
+    //     return view('welcome');
+    // }
 
     public function home()
     {
-
-
         return view('private.home');
     }
 
@@ -138,6 +136,21 @@ class HomeController extends Controller
             }
         } else {
             return response()->json(['success' => false, 'message' => 'La sala no existe']);
+        }
+    }
+
+    public function salirSala($salaId)
+    {
+        $userId = Auth::id();
+
+        try {
+            // Eliminar registros del usuario en las tablas relacionadas
+            DB::table('sala_usuario')->where('sala_id', $salaId)->where('user_id', $userId)->delete();
+            DB::table('sala_minijuegos_usuario')->where('sala_id', $salaId)->where('user_id', $userId)->delete();
+
+            return response()->json(['success' => true]);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 500);
         }
     }
 }

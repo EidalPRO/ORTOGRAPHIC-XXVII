@@ -15,13 +15,13 @@
 <body>
     <!-- header -->
     <header>
-        <div class="logo">Ortographic</div>
-        <ul class="menu">
-            <li><a href="{{ route('home') }}">Inicio</a></li>
+        <div class="logo"></div>
+        <ul class="menu" style="margin-top: 20px;">
+            <li><a href="{{ route('home') }}" style="cursor: pointer;  font-weight:bold;">Inicio</a></li>
 
             <!-- Verifica si el usuario es premium y tiene un rol específico -->
             @if(auth()->check() && auth()->user()->esPremium || in_array(auth()->user()->roles_id_roles, [2, 3]))
-            <li><a id="admin" style="cursor: pointer;">Administrar Evaluaciones y Estadísticas</a></li>
+            <li><a id="admin" style="cursor: pointer;  font-weight:bold;">Administrar</a></li>
 
             <script>
                 admin.addEventListener('click', function() {
@@ -30,10 +30,49 @@
             </script>
             @endif
 
-            <li><a href="" id="codigoText"></a></li>
+            <li><a href="" id="codigoText" style="cursor: pointer;   font-weight:bold;"></a></li>
         </ul>
     </header>
     <!-- slider -->
+    <div id="spinner" class="spinner-container">
+        <!-- From Uiverse.io by Nawsome -->
+        <div class="loader">
+            <div>
+                <ul>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                    <li>
+                        <svg fill="currentColor" viewBox="0 0 90 120">
+                            <path d="M90,0 L90,120 L11,120 C4.92486775,120 0,115.075132 0,109 L0,11 C0,4.92486775 4.92486775,0 11,0 L90,0 Z M71.5,81 L18.5,81 C17.1192881,81 16,82.1192881 16,83.5 C16,84.8254834 17.0315359,85.9100387 18.3356243,85.9946823 L18.5,86 L71.5,86 C72.8807119,86 74,84.8807119 74,83.5 C74,82.1745166 72.9684641,81.0899613 71.6643757,81.0053177 L71.5,81 Z M71.5,57 L18.5,57 C17.1192881,57 16,58.1192881 16,59.5 C16,60.8254834 17.0315359,61.9100387 18.3356243,61.9946823 L18.5,62 L71.5,62 C72.8807119,62 74,60.8807119 74,59.5 C74,58.1192881 72.8807119,57 71.5,57 Z M71.5,33 L18.5,33 C17.1192881,33 16,34.1192881 16,35.5 C16,36.8254834 17.0315359,37.9100387 18.3356243,37.9946823 L18.5,38 L71.5,38 C72.8807119,38 74,36.8807119 74,35.5 C74,34.1192881 72.8807119,33 71.5,33 Z"></path>
+                        </svg>
+                    </li>
+                </ul>
+            </div><span>Cargando</span>
+        </div>
+    </div>
 
     <div class="slider">
         <!-- list Items -->
@@ -84,9 +123,8 @@
         </div>
         <!-- button arrows -->
         <div class="arrows">
-            <button id="prev">
-                < </button>
-                    <button id="next">></button>
+            <button id="prev"><</button>
+            <button id="next">></button>
         </div>
         <!-- thumbnail -->
         <div class="thumbnail">
@@ -102,12 +140,6 @@
                     Desordenados
                 </div>
             </div>
-            <!-- <div class="item" id="3">
-                <img src="{{asset('assets/img/salas/ordena.webp')}}">
-                <div class="content">
-                    Trivia
-                </div>
-            </div> -->
             @foreach($evaluacionesPendientes as $evaluacion)
             <div class="item">
                 <a href="{{ route('evaluacion.mostrar', ['id' => $evaluacion->id_evaluacion, 'codigoSala' => $sala->codigo_sala]) }}" class="link">
@@ -118,15 +150,16 @@
                 </a>
             </div>
             @endforeach
-
-
         </div>
     </div>
 
     <script src="{{asset('assets/js/sala/app.js')}}"></script>
     <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('spinner').style.display = 'none';
+        });
         let datosSala = @json($sala);
-        console.log(datosSala);
+        // console.log(datosSala);
         var codigoSala = datosSala.codigo_sala;
         var idSala = datosSala.id_sala;
         var nombreSala = datosSala.nombre;
@@ -136,13 +169,42 @@
         codigoText.innerText = "Sala: " + codigoSala;
         const admin = document.getElementById('admin');
 
-        bt1.addEventListener('click', function() {
-            window.location.href = `/sala/personalizada/pasapalabras/${codigoSala}`;
+        // Mostrar spinner al hacer clic en cualquier elemento interactivo
+        function showSpinner() {
+            document.getElementById('spinner').style.display = 'flex';
+        }
+
+        // Eventos para los botones principales
+        bt1.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSpinner();
+            setTimeout(() => {
+                window.location.href = `/sala/personalizada/pasapalabras/${codigoSala}`;
+            }, 100);
         });
 
+        bt2.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSpinner();
+            setTimeout(() => {
+                window.location.href = `/sala/personalizada/escribe-correctamente/${codigoSala}`;
+            }, 100);
+        });
 
-        bt2.addEventListener('click', function() {
-            window.location.href = `/sala/personalizada/escribe-correctamente/${codigoSala}`;
+        // Eventos para los enlaces de evaluación
+        document.querySelectorAll('a.link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                showSpinner();
+                setTimeout(() => {
+                    window.location.href = this.href;
+                }, 100);
+            });
+        });
+
+        // Opcional: Ocultar spinner si la página carga rápidamente
+        window.addEventListener('load', function() {
+            document.getElementById('spinner').style.display = 'none';
         });
     </script>
 </body>

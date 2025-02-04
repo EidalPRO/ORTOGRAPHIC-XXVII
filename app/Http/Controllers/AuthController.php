@@ -60,7 +60,7 @@ class AuthController extends Controller
     {
         Session::flush();
         Auth::logout();
-        return to_route('index');
+        return to_route('home');
     }
 
     // socualite 
@@ -71,8 +71,54 @@ class AuthController extends Controller
 
     public function callback()
     {
-        $user = Socialite::driver('facebook')->user();
+        try {
+            $facebookUser = Socialite::driver('facebook')->user();
 
-        // $user->token
+            $user = User::firstOrCreate(
+                ['email' => $facebookUser->getEmail()],
+                [
+                    'name' => $facebookUser->getName(),
+                    'email'=> $facebookUser->getEmail(),
+                    'avatar' => $facebookUser->getAvatar(),
+                    'roles_id_roles' => 1, 
+                ]
+            );
+
+            // Autentica al usuario
+            Auth::login($user);
+
+            return redirect()->route('home');
+        } catch (\Exception $e) {
+            return redirect()->route('login')->with('error', 'Error al iniciar sesión con Facebook.');
+        }
+    }
+
+
+    // Redirección a Google
+    public function redirectToGoogle()
+    {
+        return Socialite::driver('google')->redirect();
+    }
+
+    // Callback de Google
+    public function handleGoogleCallback()
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+
+        // Busca o crea el usuario
+        $user = User::firstOrCreate(
+            ['email' => $googleUser->getEmail()],
+            [
+                'name' => $googleUser->getName(),
+                'email' => $googleUser->getEmail(),
+                'avatar' => $googleUser->getAvatar(),
+                'roles_id_roles' => 1,
+            ]
+        );
+
+        // Autentica al usuario
+        Auth::login($user);
+
+        return redirect()->route('home');
     }
 }

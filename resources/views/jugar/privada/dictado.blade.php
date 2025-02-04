@@ -17,7 +17,8 @@
     <section id="pantalla-inicio">
         <h2>Escucha la <span>palabra</span></h2>
         <h2>y escríbela <span>correctamente.</span></h2>
-        <button onclick="comenzarJuego()">JUGAR AHORA!</button>
+        <button onclick="comenzarJuego()">Jugar</button>
+        <button onclick="salir()">Regresar</button>
     </section>
     <section id="pantalla-juego" style="display: none;">
         <h2>Escucha la <span>palabra</span></h2>
@@ -215,7 +216,7 @@
                 x = 1;
                 let elem = document.getElementById("myBar");
                 let width = 1;
-                idInterval = setInterval(frame, 60);
+                idInterval = setInterval(frame, 100);
 
                 function frame() {
                     if (width >= 100) {
@@ -251,6 +252,10 @@
             mostrarNuevoPais();
             document.getElementById("contador").innerHTML = 0;
             document.getElementById("paisIngresado").focus();
+        }
+
+        function salir() {
+            window.location.href = `/sala/personalizada/${datosSala.codigo_sala}`;
         }
 
         window.onload = () => {

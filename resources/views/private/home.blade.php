@@ -49,8 +49,22 @@
                     <li><a href="" class="active">Inicio<br></a></li>
                     <li><a href="/acerca-de">Acerca de Ortographic</a></li>
                     <li><a href="/galeria">Galeria de imagenes</a></li>
+                    @if (Route::has('login'))
+                    @auth
                     <li><a href=""> {{Auth::user()->name}} </a></li>
+                    <li><a href="#salas">Empezar a practicar</a></li>
                     <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
+                    @else
+                    <li class="dropdown"><a href="#"><span>Acciones de usuario</span> <i
+                                class="bi bi-chevron-down toggle-dropdown"></i></a>
+                        <ul>
+                            <li><a href="{{route('login')}}">Iniciar sesión</a></li>
+                            <li><a href="{{route('registro')}}">Registrarse</a></li>
+                            <li><a href="{{route('invitado')}}">Jugar como invitado</a></li>
+                        </ul>
+                    </li>
+                    @endauth
+                    @endif
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -58,14 +72,19 @@
     </header>
 
     <main class="main">
-
         <!-- Hero Section -->
         <section id="hero" class="hero section">
 
             <div class="container">
                 <div class="row gy-4">
                     <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center">
+                        @if (Route::has('login'))
+                        @auth
                         <h1 data-aos="fade-up">¡Bienvenido {{ Auth::user()->name }} a Ortographic!</h1>
+                        @else
+                        <h1 data-aos="fade-up">¡Bienvenido a Ortographic!</h1>
+                        @endauth
+                        @endif
                         <p data-aos="fade-up" data-aos-delay="100">La app que hace de la ortografía un juego</p>
                         <div class="d-flex flex-column flex-md-row" data-aos="fade-up" data-aos-delay="200">
                             <a href="#salas" class="btn-get-started">Empezar a practicar<i class="bi bi-arrow-right"></i></a>
@@ -563,6 +582,9 @@
                 </div>
             </div>
 
+            <!-- Preloader -->
+            <div id="preloader"></div>
+
     </main>
 
     <footer id="footer" class="footer">
@@ -621,6 +643,7 @@
 
     <!-- Main JS File -->
     <script src="{{asset('assets/js/home.js')}}"></script>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             fetch("{{ route('salas.get') }}")
@@ -831,6 +854,42 @@
         gb.addEventListener('click', function() {
             window.location.href = "{{route('entrarGlobal')}}";
         });
+
+        function confirmarSalida(salaId) {
+            Swal.fire({
+                title: "¿Estás seguro?",
+                text: "Si sales de la sala, se eliminarán todos tus datos en ella.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#3085d6",
+                confirmButtonText: "Sí, salir",
+                cancelButtonText: "Cancelar"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Petición al backend para eliminar registros y salir de la sala
+                    fetch(`/salir-sala/${salaId}`, {
+                            method: "DELETE",
+                            headers: {
+                                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute("content"),
+                                "Content-Type": "application/json"
+                            }
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire("Eliminado", "Has salido de la sala correctamente.", "success")
+                                    .then(() => location.reload()); // Recargar la página para actualizar la lista de salas
+                            } else {
+                                Swal.fire("Error", "No se pudo salir de la sala.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            Swal.fire("Error", "Hubo un problema en el servidor.", "error");
+                        });
+                }
+            });
+        }
     </script>
 
 </body>

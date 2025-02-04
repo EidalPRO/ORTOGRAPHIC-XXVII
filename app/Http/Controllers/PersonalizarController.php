@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Evaluacion;
 use App\Models\EvaluacionReactivo;
+use App\Models\Minijuego;
 use App\Models\Reactivo;
 use App\Models\Sala;
 use Illuminate\Http\Request;
@@ -64,7 +65,48 @@ class PersonalizarController extends Controller
                 }
             }
 
-            return view('private.admin', compact('sala', 'tablaDatos', 'usuariosParaSala', 'evaluaciones'));
+            $minijuegos = DB::table('sala_minijuegos_usuario')
+                ->where('sala_id', $sala->id_sala)
+                ->join('minijuegos', 'sala_minijuegos_usuario.minijuegos_id', '=', 'minijuegos.idminijuegos')
+                ->select('minijuegos.idminijuegos', 'minijuegos.nombre')
+                ->distinct()
+                ->get();
+
+
+            $tablaDatosMinijuegos = [];
+
+            $registros = DB::table('sala_minijuegos_usuario')
+                ->where('sala_id', $sala->id_sala)
+                ->join('users', 'sala_minijuegos_usuario.user_id', '=', 'users.id')
+                ->join('minijuegos', 'sala_minijuegos_usuario.minijuegos_id', '=', 'minijuegos.idminijuegos')
+                ->select(
+                    'users.name as usuario',
+                    'minijuegos.nombre as minijuego',
+                    'minijuegos.idminijuegos as minijuego_id', // Esta línea es crucial
+                    'sala_minijuegos_usuario.acerto',
+                    'sala_minijuegos_usuario.fallo',
+                    'sala_minijuegos_usuario.fecha'
+                )
+                ->get();
+
+            foreach ($registros as $index => $registro) {
+                $aciertos = count(json_decode($registro->acerto));
+                $fallos = count(json_decode($registro->fallo));
+                $totalReactivos = $aciertos + $fallos;
+
+                $tablaDatosMinijuegos[] = [
+                    'numero' => $index + 1,
+                    'minijuego' => $registro->minijuego,
+                    'usuario' => $registro->usuario,
+                    'aciertos' => "$aciertos/$totalReactivos",
+                    'fallos' => "$fallos/$totalReactivos",
+                    'estatus' => date('d/m/Y H:i', strtotime($registro->fecha)),
+                    'estatus_color' => 'bg-success',
+                    'minijuego_id' => $registro->minijuego_id // Añadir esta línea
+                ];
+            }
+
+            return view('private.admin', compact('sala', 'tablaDatos', 'usuariosParaSala', 'evaluaciones', 'tablaDatosMinijuegos', 'minijuegos'));
         } else {
             return redirect('/')->with('error', 'No tienes permisos para acceder a esta sección.');
         }

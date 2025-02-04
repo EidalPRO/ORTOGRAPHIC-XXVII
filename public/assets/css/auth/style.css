@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 body {
-    background-color: #1E1E20;
-    color: #717171;
+    background: repeating-linear-gradient(135deg, #000000ff 0% 7%, #1f007aff 10%), radial-gradient(circle farthest-side at 0% 0%, #2600ffff 0%, #0000ff00 100%);
+    background-blend-mode: soft-light;
+    color: #ffffff;
+    /* background-color: #1E1E20;
+    color: #717171; */
     font-family: Inter;
     margin: 0;
     text-align: center;
@@ -20,7 +23,7 @@ body::before {
     width: 200px;
     height: 200px;
     content: '';
-    background-color: #717171;
+    /* background-color: #ffffff; */
     top: 0;
     right: 0;
     border-radius: 10px 30px 600px 100px;
@@ -136,6 +139,7 @@ p a {
 input+p {
     font-size: small;
     text-align: left;
+
 }
 
 select+p {
@@ -146,6 +150,7 @@ select+p {
 .sso+p {
     font-size: small;
 }
+
 
 input:invalid:not(:placeholder-shown) {
     border-color: red;

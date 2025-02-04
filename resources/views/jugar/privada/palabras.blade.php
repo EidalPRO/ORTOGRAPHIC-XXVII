@@ -24,12 +24,13 @@
 
 <body>
     <section id="pantalla-inicial">
-        <h1>PASAPALABRAS</h1>
-        <button id="comenzar">COMENZAR JUEGO</button>
+        <h1 class="titulo">PASAPALABRAS</h1>
+        <button id="comenzar">Comenzar el juego</button>
+        <button id="reg2">Regresar</button>
     </section>
     <section id="pantalla-juego">
         <div class="container">
-            <span id="tiempo">60</span>
+            <span id="tiempo">120</span>
         </div>
 
         <div class="contendor-pregunta">
@@ -286,6 +287,11 @@
 
         var salir = document.getElementById("salir");
         salir.addEventListener("click", function() {
+            window.location.href = `/sala/personalizada/${datosSala.codigo_sala}`;
+        });
+
+        var salir2 = document.getElementById("reg2");
+        salir2.addEventListener("click", function() {
             window.location.href = `/sala/personalizada/${datosSala.codigo_sala}`;
         });
     </script>

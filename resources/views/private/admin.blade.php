@@ -93,72 +93,309 @@
         <section class="section dashboard">
             <div class="row">
                 <div class="col-lg-8">
-                    <div class="row">
-                        <div class="col-xxl-12">
-                            <div class="card info-card customers-card">
-                                <div class="card-body">
-                                    <h5 class="card-title">Usuarios <span>| En sala</span></h5>
+                </div><!-- End Left side columns -->
+                <div class="row">
+                    <div class="col-xxl-12">
+                        <div class="card info-card customers-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Usuarios <span>| En sala</span></h5>
 
-                                    <div class="d-flex align-items-center">
-                                        <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
-                                            <i class="bi bi-people"></i>
-                                        </div>
-                                        <div class="ps-3">
-                                            <h6>{{ $usuariosParaSala }}</h6>
-                                        </div>
+                                <div class="d-flex align-items-center">
+                                    <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                        <i class="bi bi-people"></i>
                                     </div>
-
+                                    <div class="ps-3">
+                                        <h6>{{ $usuariosParaSala }}</h6>
+                                    </div>
                                 </div>
+
                             </div>
-                        </div><!-- End Customers Card -->
+                        </div>
+                    </div><!-- End Customers Card -->
 
 
-                        <div class="col-12">
-                            <div class="card recent-sales overflow-auto">
-                                <div class="filter">
-                                    <a class="icon" href="#" data-bs-toggle="dropdown"><i class="bi bi-three-dots"></i></a>
-                                    <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                                        <li class="dropdown-header text-start">
-                                            <h6>Filtrar</h6>
-                                        </li>
-                                        <li><a class="dropdown-item filter-option" href="#" data-filter="all">Todos</a></li>
-                                        @foreach ($evaluaciones as $evaluacion)
-                                        <li><a class="dropdown-item filter-option" href="#" data-filter="{{ $evaluacion->id_evaluacion }}">{{ $evaluacion->tipo }}</a></li>
-                                        @endforeach
-                                    </ul>
-                                </div>
-
-                                <div class="card-body">
-                                    <h5 class="card-title">Usuarios <span>| Evaluaciones</span></h5>
-
-                                    <table class="table table-borderless datatable">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Evaluación</th>
-                                                <th scope="col">Usuario</th>
-                                                <th scope="col">Acertados</th>
-                                                <th scope="col">Estatus</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody id="evaluaciones-table-body">
-                                            @foreach ($tablaDatos as $dato)
-                                            <tr data-evaluacion-id="{{ $dato['evaluacion_id'] }}">
-                                                <th scope="row">{{ $dato['numero'] }}</th>
-                                                <td>{{ $dato['evaluacion'] }}</td>
-                                                <td>{{ $dato['usuario'] }}</td>
-                                                <td>{{ $dato['aciertos'] }}</td>
-                                                <td><span class="badge {{ $dato['estatus_color'] }}">{{ $dato['estatus'] }}</span></td>
-                                            </tr>
+                    <div class="col-12">
+                        <div class="card recent-sales overflow-auto">
+                            <div class="card-body">
+                                <h5 class="card-title">Usuarios <span>| Evaluaciones</span></h5>
+                                <!-- Agrega estos elementos de control debajo del título -->
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <select id="filterSelect" class="form-select form-select-sm">
+                                            <option value="all">Todos</option>
+                                            @foreach ($evaluaciones as $evaluacion)
+                                            <option value="{{ $evaluacion->id_evaluacion }}">{{ $evaluacion->tipo }}</option>
                                             @endforeach
-                                        </tbody>
-                                    </table>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <select id="perPageSelect" class="form-select form-select-sm">
+                                            <option value="5">5 por página</option>
+                                            <option value="10">10 por página</option>
+                                            <option value="15">15 por página</option>
+                                        </select>
+                                    </div>
                                 </div>
+
+                                <!-- Mantén tu tabla igual pero con el cuerpo vacío -->
+                                <table class="table table-borderless">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">#</th>
+                                            <th scope="col">Evaluación</th>
+                                            <th scope="col">Usuario</th>
+                                            <th scope="col">Acertados</th>
+                                            <th scope="col">Estatus</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableBody"></tbody>
+                                </table>
+
+                                <!-- Controles de paginación -->
+                                <div class="d-flex justify-content-center">
+                                    <nav>
+                                        <ul class="pagination" id="paginationControls">
+                                        </ul>
+                                    </nav>
+                                </div>
+
+                                <!-- Script de manejo -->
+                                <script>
+                                    document.addEventListener('DOMContentLoaded', function() {
+                                        // Datos originales desde PHP
+                                        const allData = @json($tablaDatos);
+                                        let currentPage = 1;
+                                        let currentFilter = 'all';
+                                        let perPage = 5;
+
+                                        // Elementos del DOM
+                                        const tableBody = document.getElementById('tableBody');
+                                        const filterSelect = document.getElementById('filterSelect');
+                                        const perPageSelect = document.getElementById('perPageSelect');
+                                        const paginationControls = document.getElementById('paginationControls');
+
+                                        function renderTable() {
+                                            // Filtrar datos
+                                            let filteredData = currentFilter === 'all' ?
+                                                allData :
+                                                allData.filter(item => item.evaluacion_id == currentFilter);
+
+                                            // Calcular paginación
+                                            const totalPages = Math.ceil(filteredData.length / perPage);
+                                            const start = (currentPage - 1) * perPage;
+                                            const end = start + perPage;
+                                            const pageData = filteredData.slice(start, end);
+
+                                            // Renderizar filas
+                                            tableBody.innerHTML = pageData.map((item, index) => `
+            <tr>
+                <th scope="row">${start + index + 1}</th>
+                <td>${item.evaluacion}</td>
+                <td>${item.usuario}</td>
+                <td>${item.aciertos}</td>
+                <td><span class="badge ${item.estatus_color}">${item.estatus}</span></td>
+            </tr>
+        `).join('');
+
+                                            // Renderizar controles de paginación
+                                            let paginationHTML = '';
+                                            if (currentPage > 1) {
+                                                paginationHTML += `
+                <li class="page-item">
+                    <button class="page-link" onclick="changePage(${currentPage - 1})">Anterior</button>
+                </li>`;
+                                            }
+
+                                            for (let i = 1; i <= totalPages; i++) {
+                                                paginationHTML += `
+                <li class="page-item ${i === currentPage ? 'active' : ''}">
+                    <button class="page-link" onclick="changePage(${i})">${i}</button>
+                </li>`;
+                                            }
+
+                                            if (currentPage < totalPages) {
+                                                paginationHTML += `
+                <li class="page-item">
+                    <button class="page-link" onclick="changePage(${currentPage + 1})">Siguiente</button>
+                </li>`;
+                                            }
+
+                                            paginationControls.innerHTML = paginationHTML;
+                                        }
+
+                                        window.changePage = (newPage) => {
+                                            currentPage = newPage;
+                                            renderTable();
+                                        }
+
+                                        // Event Listeners
+                                        filterSelect.addEventListener('change', function() {
+                                            currentFilter = this.value;
+                                            currentPage = 1;
+                                            renderTable();
+                                        });
+
+                                        perPageSelect.addEventListener('change', function() {
+                                            perPage = parseInt(this.value);
+                                            currentPage = 1;
+                                            renderTable();
+                                        });
+
+                                        // Render inicial
+                                        renderTable();
+                                    });
+                                </script>
+
+                                <style>
+                                    .page-item.active .page-link {
+                                        background-color: #007bff;
+                                        border-color: #007bff;
+                                    }
+
+                                    .page-link {
+                                        color: #007bff;
+                                        cursor: pointer;
+                                    }
+                                </style>
                             </div>
                         </div>
                     </div>
-                </div><!-- End Left side columns -->
+                </div>
 
+
+                <div class="col-12 mt-4">
+                    <div class="card recent-sales overflow-auto">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <h5 class="card-title mb-0">Usuarios <span>| Minijuegos</span></h5>
+                            <div class="d-flex gap-2">
+                                <!-- Filtro -->
+                                <select class="form-select form-select-sm" id="minijuegosFilterSelect">
+                                    <option value="all">Todos</option>
+                                    @foreach ($minijuegos as $minijuego)
+                                    <option value="{{ $minijuego->idminijuegos }}">{{ $minijuego->nombre }}</option>
+                                    @endforeach
+                                </select>
+
+                                <!-- Elementos por página -->
+                                <select class="form-select form-select-sm" id="minijuegosPerPageSelect">
+                                    <option value="5">5 por página</option>
+                                    <option value="10">10 por página</option>
+                                    <option value="15">15 por página</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">Minijuego</th>
+                                        <th scope="col">Usuario</th>
+                                        <th scope="col">Acertados</th>
+                                        <th scope="col">Fallados</th>
+                                        <th scope="col">Fecha</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="minijuegos-table-body"></tbody>
+                            </table>
+
+                            <!-- Paginación -->
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-center" id="minijuegosPagination"></ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                        const minijuegosData = @json($tablaDatosMinijuegos);
+                        let currentMinijuegoPage = 1;
+                        let minijuegosFilter = 'all';
+                        let minijuegosPerPage = 5;
+
+                        // Elementos del DOM
+                        const minijuegosTableBody = document.getElementById('minijuegos-table-body');
+                        const minijuegosFilterSelect = document.getElementById('minijuegosFilterSelect');
+                        const minijuegosPerPageSelect = document.getElementById('minijuegosPerPageSelect');
+                        const minijuegosPagination = document.getElementById('minijuegosPagination');
+
+                        function renderMinijuegosTable() {
+                            let filteredData = minijuegosFilter === 'all' ?
+                                minijuegosData :
+                                minijuegosData.filter(item => {
+                                    // Verificar si existe minijuego_id
+                                    const itemId = item.minijuego_id ? item.minijuego_id.toString() : '';
+                                    const filterId = minijuegosFilter.toString();
+                                    return itemId === filterId;
+                                });
+                            // Calcular paginación
+                            const totalPages = Math.ceil(filteredData.length / minijuegosPerPage);
+                            const start = (currentMinijuegoPage - 1) * minijuegosPerPage;
+                            const end = start + minijuegosPerPage;
+                            const pageData = filteredData.slice(start, end);
+
+                            // Renderizar filas
+                            minijuegosTableBody.innerHTML = pageData.map((item, index) => `
+            <tr>
+                <th scope="row">${start + index + 1}</th>
+                <td>${item.minijuego}</td>
+                <td>${item.usuario}</td>
+                <td>${item.aciertos}</td>
+                <td>${item.fallos}</td>
+                <td><span class="badge ${item.estatus_color}">${item.estatus}</span></td>
+            </tr>
+        `).join('');
+
+                            // Renderizar controles de paginación
+                            let paginationHTML = '';
+                            if (currentMinijuegoPage > 1) {
+                                paginationHTML += `
+                <li class="page-item">
+                    <button class="page-link" onclick="changeMinijuegosPage(${currentMinijuegoPage - 1})">Anterior</button>
+                </li>`;
+                            }
+
+                            for (let i = 1; i <= totalPages; i++) {
+                                paginationHTML += `
+                <li class="page-item ${i === currentMinijuegoPage ? 'active' : ''}">
+                    <button class="page-link" onclick="changeMinijuegosPage(${i})">${i}</button>
+                </li>`;
+                            }
+
+                            if (currentMinijuegoPage < totalPages) {
+                                paginationHTML += `
+                <li class="page-item">
+                    <button class="page-link" onclick="changeMinijuegosPage(${currentMinijuegoPage + 1})">Siguiente</button>
+                </li>`;
+                            }
+
+                            minijuegosPagination.innerHTML = paginationHTML;
+                        }
+
+                        window.changeMinijuegosPage = (newPage) => {
+                            currentMinijuegoPage = newPage;
+                            renderMinijuegosTable();
+                        }
+
+                        // Event Listeners
+                        minijuegosFilterSelect.addEventListener('change', function() {
+                            minijuegosFilter = this.value;
+                            currentMinijuegoPage = 1;
+                            renderMinijuegosTable();
+                        });
+
+                        minijuegosPerPageSelect.addEventListener('change', function() {
+                            minijuegosPerPage = parseInt(this.value);
+                            currentMinijuegoPage = 1;
+                            renderMinijuegosTable();
+                        });
+
+                        // Render inicial
+                        renderMinijuegosTable();
+                    });
+                </script>
 
                 <!-- Right side columns -->
                 <div class="col-lg-4">

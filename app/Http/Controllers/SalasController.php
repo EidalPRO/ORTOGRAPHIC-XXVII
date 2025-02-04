@@ -46,7 +46,7 @@ class SalasController extends Controller
     public function dictadoGlobal()
     {
 
-        $reactivos = Palabra::all()->shuffle();
+        $reactivos = Palabra::all()->shuffle()->take(10);
 
         return view('jugar.global.dictado', compact('reactivos'));
     }
@@ -112,7 +112,7 @@ class SalasController extends Controller
     // dicatadp
     public function dictadoPrivada($codigo_sala)
     {
-        $reactivos = Palabra::all()->shuffle();
+        $reactivos = Palabra::all()->shuffle()->take(10);
         $sala = Sala::where('codigo_sala', $codigo_sala)->first();
 
         return view('jugar.privada.dictado', compact('reactivos', 'sala'));
