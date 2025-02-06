@@ -71,6 +71,14 @@
                 </a>
             </li>
 
+            <li class="nav-item">
+                <a class="nav-link" id="reg" style="cursor: pointer;" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+                    <i class="bi bi-grid"></i>
+                    <span>Generar reporte</span>
+                </a>
+            </li>
+
+
             <li class="nav-heading">Acciones</li>
 
             <li class="nav-item">
@@ -459,6 +467,38 @@
             </div>
         </div>
 
+        <!-- modal crear reporte -->
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="staticBackdropLabel">Generar Reporte de Evaluación</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">Seleccionar Evaluación:</label>
+                            <select class="form-select" id="selectEvaluacion">
+                                @forelse($sala->evaluaciones as $evaluacion)
+                                <option value="{{ $evaluacion->id_evaluacion }}">{{ $evaluacion->tipo }}</option>
+                                @empty
+                                <option disabled>No hay evaluaciones en esta sala</option>
+                                @endforelse
+                            </select>
+                        </div>
+
+                        <div id="previewReporte" class="mt-3">
+                            <!-- Aquí se mostrará la previsualización -->
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary" id="btnGenerarPdf" disabled>Generar PDF</button>
+                    </div>
+                </div>
+            </div>
+        </div>
 
     </main><!-- End #main -->
 
@@ -706,6 +746,26 @@
             // Cargar reactivos al abrir el modal
             const crearEvaluacionModal = document.getElementById("crearEvaluacionModal");
             crearEvaluacionModal.addEventListener("show.bs.modal", cargarReactivos);
+        });
+
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const selectEvaluacion = document.getElementById('selectEvaluacion');
+            const btnGenerarPdf = document.getElementById('btnGenerarPdf');
+
+            function verificarSeleccion() {
+                btnGenerarPdf.disabled = !selectEvaluacion.value || selectEvaluacion.value === "null";
+            }
+
+            selectEvaluacion.addEventListener('change', verificarSeleccion);
+            verificarSeleccion();
+
+            btnGenerarPdf.addEventListener('click', function() {
+                const evaluacionId = selectEvaluacion.value;
+                if (evaluacionId) {
+                    window.open(`/generar-reporte/${evaluacionId}`, '_blank');
+                }
+            });
         });
     </script>
 

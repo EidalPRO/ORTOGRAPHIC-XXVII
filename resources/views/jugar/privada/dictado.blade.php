@@ -10,6 +10,7 @@
     <title>Ortographic - Dictado Ortográfico</title>
     <link rel="stylesheet" href="{{asset('assets/css/sala/estilo.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -37,6 +38,28 @@
             <span id="contador">0</span>
         </div>
     </section>
+    <!-- Modal de resultados -->
+    <div class="modal fade" id="modalResultados" tabindex="-1" aria-labelledby="modalResultadosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResultadosLabel">Juego Finalizado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <p>Acertaste <strong id="cantidadAcertadas"></strong> palabras.</p>
+                    <p><strong>Palabras fallidas y retroalimentación:</strong></p>
+                    <div id="listaPalabrasFallidas"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="location.reload()">Jugar de nuevo</button>
+                    <button type="button" class="btn btn-secondary" onclick="salir()">Salir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         let reactivos = @json($reactivos);
         let datosSala = @json($sala);
@@ -140,29 +163,15 @@
             clearInterval(idInterval);
 
             let palabrasConRetro = palabrasFallidas.map(item => {
-                return `<strong>${item.palabra}:</strong> ${item.retroalimentacion}`;
-            }).join('<br><br>');
+                return `<p><strong>${item.palabra}:</strong> ${item.retroalimentacion}</p>`;
+            }).join('');
 
-            Swal.fire({
-                title: 'Juego finalizado',
-                html: `
-                <p>Acertaste <strong>${cantidadAcertados}</strong> palabras.</p>
-                <p><strong>Palabras fallidas y retroalimentación:</strong></p>
-                <div style="text-align: justify;">
-                    ${palabrasConRetro || "¡No hubo fallos!"}
-                </div>
-            `,
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Jugar de nuevo',
-                cancelButtonText: 'Salir',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    window.location.href = `/sala/personalizada/${datosSala.codigo_sala}`;
-                }
-            });
+            document.getElementById("cantidadAcertadas").innerText = cantidadAcertados;
+            document.getElementById("listaPalabrasFallidas").innerHTML = palabrasConRetro || "<p>¡No hubo fallos!</p>";
+
+            // Mostrar el modal de Bootstrap
+            let modal = new bootstrap.Modal(document.getElementById('modalResultados'));
+            modal.show();
 
             const sala_id = datosSala.id_sala;
             const acertos = palabrasAcertadas.map(item => item.id_palabra);

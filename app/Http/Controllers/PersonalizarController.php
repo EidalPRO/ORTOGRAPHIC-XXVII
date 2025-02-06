@@ -7,9 +7,12 @@ use App\Models\EvaluacionReactivo;
 use App\Models\Minijuego;
 use App\Models\Reactivo;
 use App\Models\Sala;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\View;
+use Mpdf\Mpdf;
 
 class PersonalizarController extends Controller
 {
@@ -154,5 +157,41 @@ class PersonalizarController extends Controller
 
             return response()->json(['message' => 'Error al guardar la evaluación', 'error' => $e->getMessage()], 500);
         }
+    }
+
+    // reportes 
+    public function generarReporte(Evaluacion $evaluacion)
+    {
+        $data = $this->obtenerDatosReporte($evaluacion);
+        $pdf = app('dompdf.wrapper')->loadView('private.reportes', $data);
+
+        return $pdf->download("reporte-{$evaluacion->tipo}.pdf");
+    }
+
+    private function obtenerDatosReporte($evaluacion)
+    {
+        return [
+            'evaluacion' => $evaluacion,
+            'sala' => $evaluacion->sala,
+            'usuarios' => EvaluacionReactivo::with('usuario')
+                ->where('evaluacion_id', $evaluacion->id_evaluacion)
+                ->get()
+                ->map(function ($item) {
+                    $aciertos = Reactivo::whereIn('id_reactivos', json_decode($item->acerto ?? '[]', true))->get();
+                    $fallos = Reactivo::whereIn('id_reactivos', json_decode($item->fallo ?? '[]', true))->get();
+                    $totalReactivos = $aciertos->count() + $fallos->count();
+                    $acerto = $aciertos->count();
+                    $calificacion = number_format(($aciertos->count() / $totalReactivos) * 100, 3);
+
+
+                    return [
+                        'usuario' => optional($item->usuario)->name ?? 'Desconocido',
+                        'aciertos' => $aciertos,
+                        'fallos' => $fallos,
+                        'total' => "$acerto/$totalReactivos", 
+                        'calificacion' => $calificacion, 
+                    ];
+                })
+        ];
     }
 }

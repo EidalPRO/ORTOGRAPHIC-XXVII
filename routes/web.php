@@ -74,4 +74,8 @@ Route::middleware("auth")->group(function () {
 
     Route::get('/reactivos', [PersonalizarController::class, 'obtenerReactivos'])->name('reactivos.obtener');
     Route::post('/guardar-evaluacion', [PersonalizarController::class, 'crearEvaluacion'])->name('guardarEvaluacion');
+
+    // reportes 
+    Route::get('/generar-reporte/{evaluacion}', [PersonalizarController::class, 'generarReporte'])->name('reporte.evaluacion');
+
 });

@@ -1,33 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Rammetto+One&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;600;700&display=swap');
-*{
+
+* {
     box-sizing: border-box;
 }
-body{
+
+body {
     font-family: 'Rajdhani';
     background: url(../../img/juego/global/bd-pasa.webp);
     background-attachment: fixed;
     background-size: cover;
 
 }
-#pantalla-inicial{
+
+#pantalla-inicial {
     display: block;
     max-width: 700px;
     margin: 50px auto;
     text-align: center;
-    background:rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     padding: 30px;
     border: 2px solid #000;
-    border-radius: 20px; 
+    border-radius: 20px;
 }
-#pantalla-inicial h1{
+
+#pantalla-inicial h1 {
     font-family: 'Rammetto One';
     font-size: 50px;
-    color:#5972d9;
+    color: #5972d9;
 }
-#pantalla-juego{
+
+
+@media screen and (max-width: 768px) {
+    #pantalla-inicial h1 {
+        font-family: 'Rammetto One';
+        font-size: 28px;
+        color: #5972d9;
+    }
+
+}
+
+#pantalla-juego {
     display: none;
 }
+
 .container {
     position: relative;
     width: 250px;
@@ -35,12 +51,13 @@ body{
     margin: 50px auto;
     border: 2px solid #000;
     border-radius: 50%;
-    background:rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
 }
-.container #tiempo{
+
+.container #tiempo {
     font-size: 50px;
     font-weight: bold;
 }
@@ -62,21 +79,23 @@ body{
     text-transform: uppercase;
 }
 
-.pregunta-actual{
+.pregunta-actual {
     background-color: #000;
     color: #fff;
 }
-.bien-respondida{
+
+.bien-respondida {
     background-color: #3edbbb;
     color: #fff;
 }
-.mal-respondida{
-    background-color:#fb797b;
+
+.mal-respondida {
+    background-color: #fb797b;
     color: #fff;
 }
 
-.contendor-pregunta{
-    background:rgba(255, 255, 255, 0.7);
+.contendor-pregunta {
+    background: rgba(255, 255, 255, 0.7);
     text-align: center;
     max-width: 700px;
     margin: auto;
@@ -84,8 +103,9 @@ body{
     border-radius: 20px;
     padding: 0 20px;
 }
-.contendor-pregunta #letra-pregunta{
-    border: 2px solid #000 ;
+
+.contendor-pregunta #letra-pregunta {
+    border: 2px solid #000;
     display: inline-block;
     color: #000;
     font-weight: bold;
@@ -95,11 +115,13 @@ body{
     bottom: 25px;
     background-color: #fff;
 }
-.contendor-pregunta #pregunta{
+
+.contendor-pregunta #pregunta {
     margin: 0;
     font-weight: normal;
 }
-.contendor-pregunta input{
+
+.contendor-pregunta input {
     display: inline-block;
     margin: 10px 0;
     font-size: 25px;
@@ -111,10 +133,12 @@ body{
     outline: none;
     border: 2px solid #ccc;
 }
-.botones{
+
+.botones {
     margin-bottom: 20px;
 }
-button{
+
+button {
     background-color: #c466fc;
     border: none;
     color: #fff;
@@ -123,23 +147,26 @@ button{
     cursor: pointer;
     margin: 0 20px;
     border-radius: 30px;
-    border-bottom: 4px solid #4b0872 ;
+    border-bottom: 4px solid #4b0872;
 }
-button:hover{
+
+button:hover {
     border-bottom: 4px solid transparent;
     background-color: #7705b9;
 }
-#pantalla-final{
+
+#pantalla-final {
     display: none;
     max-width: 700px;
     margin: auto;
     text-align: center;
-    background:rgba(255, 255, 255, 0.7);
+    background: rgba(255, 255, 255, 0.7);
     padding: 30px;
     border: 2px solid #000;
-    border-radius: 20px; 
+    border-radius: 20px;
 }
-#pantalla-final span{
+
+#pantalla-final span {
     display: block;
     background: #000;
     width: 100px;
@@ -155,4 +182,3 @@ button:hover{
     border-radius: 50%;
     margin-bottom: 30px;
 }
-
