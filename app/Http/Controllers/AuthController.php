@@ -78,9 +78,9 @@ class AuthController extends Controller
                 ['email' => $facebookUser->getEmail()],
                 [
                     'name' => $facebookUser->getName(),
-                    'email'=> $facebookUser->getEmail(),
+                    'email' => $facebookUser->getEmail(),
                     'avatar' => $facebookUser->getAvatar(),
-                    'roles_id_roles' => 1, 
+                    'roles_id_roles' => 1,
                 ]
             );
 
@@ -120,5 +120,18 @@ class AuthController extends Controller
         Auth::login($user);
 
         return redirect()->route('home');
+    }
+
+    public function updateName(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255'
+        ]);
+
+        $user = Auth::user();
+        $user->name = $request->name;
+        $user->save();
+
+        return response()->json(['message' => 'Nombre actualizado correctamente']);
     }
 }

@@ -143,7 +143,7 @@
             @foreach($evaluacionesPendientes as $evaluacion)
             <div class="item">
                 <a href="{{ route('evaluacion.mostrar', ['id' => $evaluacion->id_evaluacion, 'codigoSala' => $sala->codigo_sala]) }}" class="link">
-                    <img src="{{ asset('assets/img/salas/evaluacion.webp') }}" alt="Evaluación">
+                    <img src="{{ asset('assets/img/salas/evaluacion-bg.webp') }}" alt="Evaluación">
                     <div class="content">
                         <p style="color: black;">{{ $evaluacion->tipo }}</p>
                     </div>

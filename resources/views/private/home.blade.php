@@ -31,6 +31,7 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 
 <body class="index-page">
@@ -51,7 +52,7 @@
                     <li><a href="/galeria">Galeria de imagenes</a></li>
                     @if (Route::has('login'))
                     @auth
-                    <li><a href=""> {{Auth::user()->name}} </a></li>
+                    <li><a href="#" onclick="showNameChangeDialog()"> {{Auth::user()->name}} </a></li>
                     <li><a href="#salas">Empezar a practicar</a></li>
                     <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
                     @else
@@ -127,7 +128,7 @@
                             <img src="{{asset('assets/img//Task list.svg')}}" class="img-fluid" alt="">
                             <h3>Salas personalizadas</h3>
                             <p>Las Salas Personalizadas son espacios creados por docentes para un aprendizaje más estructurado y adaptado a las necesidades de sus estudiantes. En estas salas, se guarda el progreso de cada estudiante, permitiéndoles visualizar su nivel de mejora a lo largo del tiempo. Además, los docentes pueden aplicar evaluaciones, tanto diagnósticas como de fin de curso, para medir el avance y el dominio de las habilidades ortográficas.</p>
-                            <button class="btn btn-outline-primary" style="position:absolute; bottom:10px" data-bs-toggle="modal" data-bs-target="#salasModal">Entrar</button>
+                            <button id="btnEntrar" class="btn btn-outline-primary" style="position:absolute; bottom:10px" data-bs-toggle="modal" data-bs-target="#salasModal">Entrar</button>
                         </div>
                     </div><!-- End Card Item -->
                     <div class="col-lg-2" data-aos="fade-up" data-aos-delay="100"></div>
@@ -144,15 +145,20 @@
 
                 <div class="row gy-4">
                     <div class="col-lg-2"></div>
+                    @php
+                    $usuariosRegistrados = \App\Models\User::count();
+                    @endphp
+
                     <div class="col-lg-4 col-md-6">
                         <div class="stats-item d-flex align-items-center w-100 h-100">
                             <i class="bi bi-emoji-smile color-blue flex-shrink-0"></i>
                             <div>
-                                <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+                                <span data-purecounter-start="0" data-purecounter-end="{{ $usuariosRegistrados }}" data-purecounter-duration="1" class="purecounter"></span>
                                 <p>Usuarios</p>
                             </div>
                         </div>
                     </div><!-- End Stats Item -->
+
 
                     <div class="col-lg-4 col-md-6">
                         <div class="stats-item d-flex align-items-center w-100 h-100">
@@ -168,6 +174,113 @@
             </div>
 
         </section><!-- /Stats Section -->
+
+        <!-- Services Section -->
+        <section id="services" class="stats section">
+
+            <!-- Section Title -->
+            <div class="container section-title" data-aos="fade-up">
+                <h2>¿Comó funciona Ortographic?</h2>
+                <p>Puedes dercargar cualquiera de nuestros dos manuales en cualquier momento.</p>
+            </div><!-- End Section Title -->
+
+            <div class="container">
+
+                <div class="row gy-4">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stats-item d-flex align-items-center w-100 h-100">
+                            <i class="bi bi-cloud-arrow-down color-orange flex-shrink-0" style="color:rgb(178, 22, 22);"></i>
+                            <div>
+                                <p>Modos de practica</p>
+                            </div>
+                        </div>
+                    </div><!-- End Stats Item -->
+
+                    <div class="col-lg-4 col-md-6">
+                        <div class="stats-item d-flex align-items-center w-100 h-100">
+                            <i class="bi bi-cloud-arrow-down color-orange flex-shrink-0" style="color:rgb(13, 26, 150);"></i>
+                            <div>
+                                <p>Modos de practica</p>
+                            </div>
+                        </div>
+                    </div><!-- End Stats Item -->
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+
+        </section><!-- /Services Section -->
+
+        <!-- Alt Features Section -->
+        <section id="alt-features" class="alt-features section">
+
+            <div class="container">
+                <!-- Section Title -->
+                <div class="container section-title" data-aos="fade-up">
+                    <h2>¿Qué ofrecemos?</h2>
+                    <p>Ortographic tiene.</p>
+                </div><!-- End Section Title -->
+
+                <div class="row gy-5">
+
+                    <div class="col-xl-7 d-flex order-2 order-xl-1" data-aos="fade-up" data-aos-delay="200">
+
+                        <div class="row align-self-center gy-5">
+
+                            <div class="col-md-6 icon-box">
+                                <i class="bi bi-award"></i>
+                                <div>
+                                    <!-- <h4>Entretenimiento</h4> -->
+                                    <h4>Aprendizaje divertido con <strong>minijuegos interactivos</strong></h4>
+                                </div>
+                            </div><!-- End Feature Item -->
+
+                            <div class="col-md-6 icon-box">
+                                <i class="bi bi-card-checklist"></i>
+                                <div>
+                                    <h4>Más de <strong>50 reactivos</strong> para mejorar la ortografía</h4>
+                                    <!-- <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt</p> -->
+                                </div>
+                            </div><!-- End Feature Item -->
+
+                            <div class="col-md-6 icon-box">
+                                <i class="bi bi-book"></i>
+                                <div>
+                                    <h4>Seguimiento personalizado</strong> del progreso del estudiante</h4>
+                                    <!-- <p>Aut suscipit aut cum nemo deleniti aut omnis. Doloribus ut maiores omnis facere</p> -->
+                                </div>
+                            </div><!-- End Feature Item -->
+
+                            <!-- <div class="col-md-6 icon-box">
+                                <i class="bi bi-lightning-charge"></i>
+                                <div>
+                                    <h4>Logros y <strong>recompensas</strong> para motivarte a aprender</h4>
+                                </div>
+                            </div> -->
+
+                            <div class="col-md-6 icon-box">
+                                <i class="bi bi-patch-check"></i>
+                                <div>
+                                    <h4>Diseño <strong>intuitivo</strong> y accesible desde cualquier
+                                        dispositivo</h4>
+                                    <!-- <p>Est autem dicta beatae suscipit. Sint veritatis et sit quasi ab aut inventore</p> -->
+                                </div>
+                            </div><!-- End Feature Item -->
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-xl-5 d-flex align-items-center order-1 order-xl-2" data-aos="fade-up" data-aos-delay="100">
+                        <img src="{{asset('assets/img/alt-features.png')}}" class="img-fluid" alt="">
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section><!-- /Alt Features Section -->
+
 
         <!-- Services Section -->
         <section id="services" class="services section">
@@ -187,7 +300,7 @@
                             <i class="bi bi-activity icon"></i>
                             <h3>¿Qué es la Ortografía?</h3>
                             <p>La ortografía es el conjunto de reglas que regulan la escritura correcta de las palabras. Es esencial para garantizar una comunicación clara y efectiva en cualquier idioma.</p>
-                            <a href="#" class="read-more stretched-link"><span>Read More</span> <i class="bi bi-arrow-right"></i></a>
+                            <a href="#salas" class="read-more stretched-link"><span>Practicar</span> <i class="bi bi-arrow-right"></i></a>
                         </div>
                     </div><!-- End Service Item -->
 
@@ -582,9 +695,6 @@
                 </div>
             </div>
 
-            <!-- Preloader -->
-            <div id="preloader"></div>
-
     </main>
 
     <footer id="footer" class="footer">
@@ -886,6 +996,61 @@
                         })
                         .catch(error => {
                             Swal.fire("Error", "Hubo un problema en el servidor.", "error");
+                        });
+                }
+            });
+        }
+
+
+        var isLogged = @json(auth() -> check());
+
+        document.getElementById('btnEntrar').addEventListener('click', function(e) {
+            if (!isLogged) {
+                e.preventDefault(); // Evita que se abra el modal
+
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Debes iniciar sesión',
+                    text: 'Para continuar, por favor inicia sesión.',
+                    confirmButtonText: 'Aceptar',
+                    allowOutsideClick: false,
+                    allowEscapeKey: false
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "{{ route('login') }}";
+                    }
+                });
+            }
+        });
+
+        axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        function showNameChangeDialog() {
+            Swal.fire({
+                title: 'Cambiar nombre de usuario',
+                input: 'text',
+                inputValue: '{{ Auth::user()->name }}',
+                showCancelButton: true,
+                confirmButtonText: 'Actualizar',
+                cancelButtonText: 'Cancelar',
+                inputValidator: (value) => {
+                    if (!value) {
+                        return 'El nombre no puede estar vacío!';
+                    }
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Llamada AJAX para actualizar
+                    axios.put('/update-username', {
+                            name: result.value
+                        })
+                        .then(response => {
+                            Swal.fire('Éxito!', response.data.message, 'success');
+                            // Actualizar el nombre en la vista
+                            document.querySelector('[href="#"]').textContent = result.value;
+                        })
+                        .catch(error => {
+                            Swal.fire('Error', error.response.data.message, 'error');
                         });
                 }
             });

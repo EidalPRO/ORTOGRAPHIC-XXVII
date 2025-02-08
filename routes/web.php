@@ -38,6 +38,7 @@ Route::middleware("guest")->group(function () {
 
 Route::middleware("auth")->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+    Route::put('/update-username', [AuthController::class, 'updateName'])->middleware('auth');
 
     // crear, agregar y mostrar salas 
     Route::post('/sala/create', [HomeController::class, 'createSala'])->name('sala.create');
