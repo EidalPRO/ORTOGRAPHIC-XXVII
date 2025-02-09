@@ -294,6 +294,7 @@
         salir2.addEventListener("click", function() {
             window.location.href = `/sala/personalizada/${datosSala.codigo_sala}`;
         });
+        
     </script>
 
 </body>

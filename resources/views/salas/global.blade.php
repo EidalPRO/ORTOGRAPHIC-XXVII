@@ -8,8 +8,10 @@
     <link href="{{asset('assets/img/logo-ortographic.webp')}}" rel="icon">
     <link href="{{asset('assets/img/logo-ortographic.webp')}}" rel="apple-touch-icon">
     <title>Ortographic - Sala Global</title>
-    <link rel="stylesheet" href="{{asset('assets/css/sala/style.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <link rel="stylesheet" href="{{asset('assets/css/sala/style.css')}}">
 </head>
 
 <body>
@@ -18,6 +20,8 @@
         <div class="logo">Ortographic</div>
         <ul class="menu">
             <li><a href="{{route('home')}}">Inicio</a></li>
+            <li><a href="#" data-bs-toggle="modal" data-bs-target="#tablaPosicionesModal">Tabla de posiciones</a>
+            </li>
             <!-- <li><button class="ques"><i class="bi bi-question-circle"></i></button></li> -->
         </ul>
 
@@ -128,11 +132,110 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="tablaPosicionesModal" tabindex="-1" aria-labelledby="tablaPosicionesLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="tablaPosicionesLabel" style="color: black;">Tablas de Posiciones por Minijuego</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Navegación entre minijuegos -->
+                    <ul class="nav nav-tabs" id="minijuegosTabs" role="tablist"></ul>
+
+                    <!-- Contenido de las tablas -->
+                    <div class="tab-content" id="minijuegosTabContent" style="color: black;"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            fetch('/obtener-minijuegos')
+                .then(response => response.json())
+                .then(minijuegos => {
+                    let tabsContainer = document.getElementById("minijuegosTabs");
+                    let contentContainer = document.getElementById("minijuegosTabContent");
+
+                    tabsContainer.innerHTML = "";
+                    contentContainer.innerHTML = "";
+
+                    minijuegos.forEach((minijuego, index) => {
+                        let isActive = index === 0 ? "active" : "";
+
+                        // Crear pestaña
+                        let tab = document.createElement("li");
+                        tab.className = "nav-item";
+                        tab.innerHTML = `
+                    <button class="nav-link ${isActive}" id="tab-${minijuego.idminijuegos}" data-bs-toggle="tab" data-bs-target="#content-${minijuego.idminijuegos}" type="button" role="tab">
+                        ${minijuego.nombre}
+                    </button>`;
+                        tabsContainer.appendChild(tab);
+
+                        // Crear contenido
+                        let content = document.createElement("div");
+                        content.className = `tab-pane fade show ${isActive}`;
+                        content.id = `content-${minijuego.idminijuegos}`;
+                        content.setAttribute("role", "tabpanel");
+                        content.innerHTML = `
+                    <h4 class="mt-3">${minijuego.nombre}</h4>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Posición</th>
+                                <th>Jugador</th>
+                                <th>Partidas Jugadas</th>
+                                <th>Aciertos</th>
+                                <th>Fallos</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaPosiciones-${minijuego.idminijuegos}">
+                            <tr><td colspan="5">Cargando...</td></tr>
+                        </tbody>
+                    </table>`;
+                        contentContainer.appendChild(content);
+
+                        // Cargar datos para cada minijuego
+                        cargarTabla(minijuego.idminijuegos);
+                    });
+                })
+                .catch(error => console.error('Error al obtener los minijuegos:', error));
+        });
+
+        function cargarTabla(minijuegoId) {
+            fetch(`/obtener-tabla-posiciones/${minijuegoId}`)
+                .then(response => response.json())
+                .then(data => {
+                    let tbody = document.getElementById(`tablaPosiciones-${minijuegoId}`);
+                    tbody.innerHTML = "";
+                    if (data.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="5">No hay datos disponibles</td></tr>`;
+                    } else {
+                        data.forEach((usuario, index) => {
+                            let row = `<tr>
+                        <td>${index + 1}</td>
+                        <td>${usuario.name}</td>
+                        <td>${usuario.partidas_jugadas}</td>
+                        <td>${usuario.total_aciertos}</td>
+                        <td>${usuario.total_fallos}</td>
+                    </tr>`;
+                            tbody.innerHTML += row;
+                        });
+                    }
+                })
+                .catch(error => console.error(`Error al obtener la tabla de posiciones del minijuego ${minijuegoId}:`, error));
+        }
+    </script>
+
+
     <script src="{{asset('assets/js/sala/app.js')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         const bt1 = document.getElementById('1');
         const bt2 = document.getElementById('2');
-        const bt3 =document.getElementById('3');
+        const bt3 = document.getElementById('3');
 
         function showSpinner() {
             document.getElementById('spinner').style.display = 'flex';

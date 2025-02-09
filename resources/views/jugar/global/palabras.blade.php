@@ -24,12 +24,13 @@
 
 <body>
     <section id="pantalla-inicial">
-        <h1>PASAPALABRAS</h1>
-        <button id="comenzar">Comenzar juego</button>
+        <h1 class="titulo">PASAPALABRAS</h1>
+        <button id="comenzar">Comenzar el juego</button>
+        <button id="reg2">Regresar</button>
     </section>
     <section id="pantalla-juego">
         <div class="container">
-            <span id="tiempo"></span>
+            <span id="tiempo">120</span>
         </div>
 
         <div class="contendor-pregunta">
@@ -60,14 +61,12 @@
         </div>
     </section>
 
-
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         const TOTAL_PREGUNTAS = 10;
         const TIEMPO_DEL_JUEGO = 120;
 
         let reactivos = @json($reactivos);
-        console.log(reactivos);
 
         const bd_juego = reactivos.map((reactivo, index) => {
             return {
@@ -86,7 +85,6 @@
         var cantidadAcertadas = 0;
 
         var numPreguntaActual = -1;
-
         const timer = document.getElementById("tiempo");
         let timeLeft = TIEMPO_DEL_JUEGO;
         var countdown;
@@ -162,7 +160,6 @@
             const opcionesElemento = document.getElementById("opciones");
             opcionesElemento.innerHTML = opciones.map(opcion => `<span class="opcion">${opcion}</span>`).join('');
         }
-
 
         var respuesta = document.getElementById("respuesta");
         var botonResponder = document.getElementById("responder");
@@ -249,6 +246,34 @@
             });
             document.getElementById("pantalla-juego").style.display = "none";
             document.getElementById("pantalla-final").style.display = "block";
+
+            var acertos = bd_juego.filter((pregunta, index) => respuestasUsuario[index] === pregunta.respuesta).map(pregunta => pregunta.id);
+            var fallos = bd_juego.filter((pregunta, index) => respuestasUsuario[index] !== pregunta.respuesta && respuestasUsuario[index] !== null).map(pregunta => pregunta.id);
+
+            fetch("{{ route('guardarResultadosGlobal') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        minijuego: 1,
+                        acerto: acertos,
+                        fallo: fallos
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Resultados guardados exitosamente');
+                    } else {
+                        console.error('Error al guardar los resultados:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al guardar los resultados:', error);
+                });
         }
 
         var recomenzar = document.getElementById("recomenzar");
@@ -258,7 +283,12 @@
 
         var salir = document.getElementById("salir");
         salir.addEventListener("click", function() {
-            window.location.href = "{{route('entrarGlobal')}}";
+            window.location.href = `{{route('entrarGlobal')}}`;
+        });
+
+        var salir2 = document.getElementById("reg2");
+        salir2.addEventListener("click", function() {
+            window.location.href = `{{route('entrarGlobal')}}`;
         });
     </script>
 

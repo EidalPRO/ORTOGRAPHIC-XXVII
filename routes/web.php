@@ -48,9 +48,12 @@ Route::middleware("auth")->group(function () {
 
     // enntrar y jugar en salas 
     Route::get('/sala/global', [SalasController::class, 'entrar'])->name('entrarGlobal');
-    Route::get('/sala/glonal/trivia', [SalasController::class, 'mostrarTriviaGlobal'])->name('globalTrivia');
+    Route::get('/sala/global/trivia', [SalasController::class, 'mostrarTriviaGlobal'])->name('globalTrivia');
     Route::get('/sala/global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
     Route::get('/sala/global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
+    Route::post('/juego/guardarResultados/global', [SalasController::class, 'guardarResultadosGlobal'])->name('guardarResultadosGlobal');
+    Route::get('/obtener-minijuegos', [SalasController::class, 'obtenerMinijuegos']);
+    Route::get('/obtener-tabla-posiciones/{minijuegoId}', [SalasController::class, 'obtenerTablaPosiciones']);
 
     Route::get('/sala/personalizada/{codigo_sala}', [SalasController::class, 'privada'])->name('entrarPrivada');
     Route::get('/sala/personalizada/pasapalabras/{codigo_sala}', [SalasController::class, 'palabrasPrivada'])->name('privadaPalabras');

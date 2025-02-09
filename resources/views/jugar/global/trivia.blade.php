@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link rel="stylesheet" href="{{asset('assets/css/juego/invitado.css')}}">
     <title>Ortographic - Invitado</title>
 
@@ -71,6 +72,7 @@
 
     <!-- <script src="{{asset('assets/js/juego/invitado/juego.js')}}"></script> -->
     <script>
+        // Elementos del DOM
         const op1 = document.getElementById("1");
         const op2 = document.getElementById("2");
         const op3 = document.getElementById("3");
@@ -79,118 +81,159 @@
         const mostrarReactivo = document.getElementById("mostrar-reactivo");
         const contador = document.getElementById("contador");
 
-        var id;
-        var res;
-        var preg;
-        var d1;
-        var d2;
-        var d3;
-        var retroalimentacion;
-        var cont;
-        var num;
-        var preguntasRespondidas = 1;
-        var porcentajeEfectividad;
-        var tiempoTotal;
-        var preguntasMostradas = [];
-        var numerosGenerados = [];
-        var reactivos = [];
-        var fallo = 0;
-        var salaId = 1;
-        var posCorrect;
-        var tiempoInicio;
+        // Variables del juego
+        let id;
+        let reactivos = @json($reactivos);
+        let preguntasMostradas = [];
+        let numerosGenerados = [];
+        let aciertos = [];
+        let fallos = []; 
+        let tiempoInicio;
+        const sala = @json($sala); // Obtener código de sala desde el controlador
 
-        reactivos = @json($reactivos);
-        // console.log(reactivos);
-
+        // Inicializar juego
         tiempoInicio = performance.now();
         iniciarJuego();
 
-        function iniciarJuego() {
+        async function iniciarJuego() {
+            // Verificar fin del juego
             if (preguntasMostradas.length >= reactivos.length) {
                 const tiempoFinal = performance.now();
-                tiempoTotal = (tiempoFinal - tiempoInicio) / 1000;
+                const tiempoTotal = (tiempoFinal - tiempoInicio) / 1000;
 
-                Swal.fire({
-                    title: '¡Juego Terminado!',
-                    html: `Has respondido todas las preguntas<br>
-                    Tiempo total: ${tiempoTotal.toFixed(2)} segundos`,
-                    icon: 'info',
-                    showCancelButton: true,
-                    confirmButtonText: 'Jugar de nuevo',
-                    cancelButtonText: 'Salir',
-                    allowOutsideClick: false
-                }).then((result) => {
-                    if (result.isConfirmed) {
-                        window.location.reload();
-                    } else {
-                        window.location.href = "{{route('entrarGlobal')}}";
-                    }
-                });
+                try {
+                    // Guardar resultados primero
+                    await guardarResultadosTri();
+
+                    // Mostrar alerta después de guardar
+                    Swal.fire({
+                        title: '¡Juego Terminado!',
+                        html: `Has respondido todas las preguntas<br>
+                        Tiempo total: ${tiempoTotal.toFixed(2)} segundos`,
+                        icon: 'info',
+                        showCancelButton: true,
+                        confirmButtonText: 'Jugar de nuevo',
+                        cancelButtonText: 'Salir',
+                        allowOutsideClick: false
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            window.location.reload();
+                        } else {
+                            window.location.href = `{{route('entrarGlobal')}}`;
+                        }
+                    });
+                } catch (error) {
+                    console.error('Error:', error);
+                    Swal.fire('Error', 'No se pudieron guardar los resultados', 'error');
+                }
                 return;
             }
 
+            // Generar nueva pregunta
             do {
                 id = generarNumeroUnico(0, reactivos.length - 1);
             } while (preguntasMostradas.includes(id));
 
             preguntasMostradas.push(id);
 
-            var n = Math.floor(Math.random() * 4);
-            posCorrect = (n == 1) ? 1 : (n == 2) ? 2 : (n == 3) ? 3 : 4;
-            // posCorrect = 2;
+            // Configurar pregunta actual
+            const reactivoActual = reactivos[id];
+            mostrarReactivo.innerText = reactivoActual.reactivo;
+            contador.innerText = `${preguntasMostradas.length}/${reactivos.length}`;
 
-            preg = reactivos[id].reactivo;
-            d1 = reactivos[id].distractor1;
-            d2 = reactivos[id].distractor2;
-            d3 = reactivos[id].distractor3;
-            res = reactivos[id].respuesta;
-            retroalimentacion = reactivos[id].retroalimentacion;
-
-            // console.log(d1);
-            // console.log(d2);
-            // console.log(d3);
-            // console.log(res);
-
-
-            contador.innerText = preguntasMostradas.length + "/" + reactivos.length;
-            mostrarReactivo.innerText = preg;
-
+            // Mezclar opciones de respuesta
             const opciones = [{
-                    texto: res,
+                    texto: reactivoActual.respuesta,
                     esCorrecta: true
                 },
                 {
-                    texto: d1,
+                    texto: reactivoActual.distractor1,
                     esCorrecta: false
                 },
                 {
-                    texto: d2,
+                    texto: reactivoActual.distractor2,
                     esCorrecta: false
                 },
                 {
-                    texto: d3,
+                    texto: reactivoActual.distractor3,
                     esCorrecta: false
                 }
             ];
-
             mezclarArray(opciones);
 
-
-            op1.innerText = opciones[0].texto;
-            op1.dataset.esCorrecta = opciones[0].esCorrecta;
-
-            op2.innerText = opciones[1].texto;
-            op2.dataset.esCorrecta = opciones[1].esCorrecta;
-
-            op3.innerText = opciones[2].texto;
-            op3.dataset.esCorrecta = opciones[2].esCorrecta;
-
-            op4.innerText = opciones[3].texto;
-            op4.dataset.esCorrecta = opciones[3].esCorrecta;
+            // Asignar opciones a los botones
+            [op1, op2, op3, op4].forEach((boton, index) => {
+                boton.innerText = opciones[index].texto;
+                boton.dataset.esCorrecta = opciones[index].esCorrecta;
+            });
         }
 
+        // Función para guardar resultados en el servidor
+        async function guardarResultadosTri() {
+            try {
+                const response = await fetch("{{ route('guardarResultadosGlobal') }}", {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                    },
+                    body: JSON.stringify({
+                        minijuego: 3,
+                        acerto: aciertos,
+                        fallo: fallos
+                    })
+                });
+
+                const data = await response.json();
+                if (!data.success) {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                console.error('Error al guardar resultados:', error);
+                throw error;
+            }
+        }
+
+        // Eventos de interacción
+        document.querySelectorAll('.opcion').forEach(opcion => {
+            opcion.addEventListener('click', (e) => {
+                const seleccionada = e.target;
+                const esCorrecta = seleccionada.dataset.esCorrecta === "true";
+                const reactivoId = reactivos[id].id_reactivos;
+
+                // Registrar resultado
+                if (esCorrecta) {
+                    aciertos.push(reactivoId);
+                    seleccionada.classList.add('correcta');
+                    Swal.fire("¡Correcto!", reactivos[id].retroalimentacion, "success");
+                } else {
+                    fallos.push(reactivoId);
+                    seleccionada.classList.add('incorrecta');
+                    document.querySelector('[data-es-correcta="true"]').classList.add('correcta');
+                    Swal.fire("Incorrecto", reactivos[id].retroalimentacion, "error");
+                }
+
+                // Deshabilitar opciones
+                document.querySelectorAll('.opcion').forEach(btn => {
+                    btn.classList.add('no-events');
+                });
+
+                // Habilitar siguiente
+                sig.classList.remove('desabilitada');
+            });
+        });
+
+        sig.addEventListener('click', () => {
+            document.querySelectorAll('.opcion').forEach(btn => {
+                btn.classList.remove('correcta', 'incorrecta', 'no-events');
+            });
+            sig.classList.add('desabilitada');
+            iniciarJuego();
+        });
+
+        // Funciones utilitarias
         function generarNumeroUnico(min, max) {
-            var nuevoNumero;
+            let nuevoNumero;
             do {
                 nuevoNumero = Math.floor(Math.random() * (max - min + 1)) + min;
             } while (numerosGenerados.includes(nuevoNumero));
@@ -198,52 +241,12 @@
             return nuevoNumero;
         }
 
-        // Función para mezclar un arreglo aleatoriamente
         function mezclarArray(array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [array[i], array[j]] = [array[j], array[i]];
             }
         }
-
-        // Evento de clic para manejar la selección de opciones
-        document.querySelectorAll('.opcion').forEach(opcion => {
-            opcion.addEventListener('click', (e) => {
-                const seleccionada = e.target;
-                const esCorrecta = seleccionada.dataset.esCorrecta === "true";
-
-                if (esCorrecta) {
-                    seleccionada.classList.add('correcta');
-                    Swal.fire("¡Correcto!", `${retroalimentacion}`, "success");
-                } else {
-                    seleccionada.classList.add('incorrecta'); // Marca en rojo la respuesta incorrecta
-                    document.querySelector('[data-es-correcta="true"]').classList.add('correcta'); // Marca en verde la correcta
-                    Swal.fire("Incorrecto", `${retroalimentacion}`, "error");
-                }
-
-                // Deshabilitar todas las opciones después de la selección
-                document.querySelectorAll('.opcion').forEach(btn => {
-                    btn.classList.add('no-events'); // Añade la clase que deshabilita eventos
-                });
-
-                // Habilitar el botón "Siguiente" después de una selección
-                sig.classList.remove('desabilitada');
-            });
-        });
-
-        // Botón "Siguiente" para reiniciar los estilos y cargar una nueva pregunta
-        sig.addEventListener('click', () => {
-            // Reiniciar estilos de los botones
-            document.querySelectorAll('.opcion').forEach(btn => {
-                btn.classList.remove('correcta', 'incorrecta', 'no-events');
-            });
-
-            // Deshabilitar temporalmente el botón "Siguiente"
-            sig.classList.add('desabilitada');
-
-            // Cargar una nueva pregunta
-            iniciarJuego();
-        });
     </script>
 </body>
 

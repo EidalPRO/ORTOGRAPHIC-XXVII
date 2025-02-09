@@ -10,6 +10,7 @@
     <title>Ortographic - Dictado Ortográfico</title>
     <link rel="stylesheet" href="{{asset('assets/css/sala/estilo.css')}}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
@@ -17,7 +18,8 @@
     <section id="pantalla-inicio">
         <h2>Escucha la <span>palabra</span></h2>
         <h2>y escríbela <span>correctamente.</span></h2>
-        <button onclick="comenzarJuego()">JUGAR AHORA!</button>
+        <button onclick="comenzarJuego()">Jugar</button>
+        <button onclick="salir()">Regresar</button>
     </section>
     <section id="pantalla-juego" style="display: none;">
         <h2>Escucha la <span>palabra</span></h2>
@@ -37,13 +39,36 @@
         </div>
     </section>
 
+    <!-- Modal de resultados -->
+    <div class="modal fade" id="modalResultados" tabindex="-1" aria-labelledby="modalResultadosLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalResultadosLabel">Juego Finalizado</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
+                    <p>Acertaste <strong id="cantidadAcertadas"></strong> palabras.</p>
+                    <p><strong>Palabras fallidas y retroalimentación:</strong></p>
+                    <div id="listaPalabrasFallidas"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" onclick="location.reload()">Jugar de nuevo</button>
+                    <button type="button" class="btn btn-secondary" onclick="salir()">Salir</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
         let reactivos = @json($reactivos);
-
+        let codigo_sala = 'ORT001';
         let paises = reactivos.map(reactivo => reactivo.palabra);
         let retroalimentaciones = reactivos.map(reactivo => reactivo.retroalimentacion);
         let paisesDesordenados = [];
         let palabrasFallidas = [];
+        let palabrasAcertadas = [];
         let posJuegoActual = 0;
         let cantidadAcertados = 0;
 
@@ -64,12 +89,12 @@
             await Swal.fire({
                 title: 'Aviso importante',
                 html: `
-                    <p>Este minijuego está en fase beta. Puede presentar errores y no ser compatible con algunos navegadores.</p>
-                    <p>Selecciona la voz que prefieres para escuchar las palabras:</p>
-                    <select id="voiceSelector" class="swal2-input">
-                        ${voices.map((voice, index) => `<option value="${index}">${voice.name} (${voice.lang})</option>`).join('')}
-                    </select>
-                `,
+                <p>Este minijuego está en fase beta. Puede presentar errores y no ser compatible con algunos navegadores.</p>
+                <p>Selecciona la voz que prefieres para escuchar las palabras:</p>
+                <select id="voiceSelector" class="swal2-input">
+                    ${voices.map((voice, index) => `<option value="${index}">${voice.name} (${voice.lang})</option>`).join('')}
+                </select>
+            `,
                 icon: 'warning',
                 confirmButtonText: 'Aceptar',
                 allowOutsideClick: false,
@@ -139,30 +164,44 @@
             clearInterval(idInterval);
 
             let palabrasConRetro = palabrasFallidas.map(item => {
-                return `
-            <strong>${item.palabra}:</strong> ${item.retroalimentacion}`;
-            }).join('<br><br>');
+                return `<p><strong>${item.palabra}:</strong> ${item.retroalimentacion}</p>`;
+            }).join('');
 
-            Swal.fire({
-                title: 'Juego finalizado',
-                html: `
-            <p>Acertaste <strong>${cantidadAcertados}</strong> palabras.</p>
-            <p><strong>Palabras fallidas y retroalimentación:</strong></p>
-            <div style="text-align: justify;">
-                ${palabrasConRetro || "¡No hubo fallos!"}
-            </div>
-        `,
-                icon: 'info',
-                showCancelButton: true,
-                confirmButtonText: 'Jugar de nuevo',
-                cancelButtonText: 'Salir',
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    location.reload();
-                } else if (result.dismiss === Swal.DismissReason.cancel) {
-                    window.location.href = "{{route('entrarGlobal')}}";
-                }
-            });
+            document.getElementById("cantidadAcertadas").innerText = cantidadAcertados;
+            document.getElementById("listaPalabrasFallidas").innerHTML = palabrasConRetro || "<p>¡No hubo fallos!</p>";
+
+            // Mostrar el modal de Bootstrap
+            let modal = new bootstrap.Modal(document.getElementById('modalResultados'));
+            modal.show();
+
+            const sala_id = 1;
+            const acertos = palabrasAcertadas.map(item => item.id_palabra);
+            const fallos = palabrasFallidas.map(item => item.id_palabra);
+
+            fetch("{{ route('guardarResultadosGlobal') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        minijuego: 2,
+                        acerto: acertos,
+                        fallo: fallos
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        console.log('Resultados guardados exitosamente');
+                    } else {
+                        console.error('Error al guardar los resultados:', data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error al guardar los resultados:', error);
+                });
         }
 
         function comparar() {
@@ -170,6 +209,7 @@
             let paisIngresado = document.getElementById("paisIngresado").value;
 
             if (paisOrdenado === paisIngresado) {
+                palabrasAcertadas.push(reactivos[posJuegoActual]);
                 posJuegoActual++;
                 cantidadAcertados++;
                 document.getElementById("contador").innerHTML = cantidadAcertados;
@@ -186,7 +226,7 @@
                 x = 1;
                 let elem = document.getElementById("myBar");
                 let width = 1;
-                idInterval = setInterval(frame, 60);
+                idInterval = setInterval(frame, 100);
 
                 function frame() {
                     if (width >= 100) {
@@ -194,6 +234,7 @@
                         x = 0;
 
                         palabrasFallidas.push({
+                            ...reactivos[posJuegoActual],
                             palabra: paises[posJuegoActual],
                             retroalimentacion: retroalimentaciones[posJuegoActual]
                         });
@@ -212,6 +253,7 @@
         function comenzarJuego() {
             paisesDesordenados = [];
             palabrasFallidas = [];
+            palabrasAcertadas = [];
             posJuegoActual = 0;
             cantidadAcertados = 0;
             desordenarPaises();
@@ -220,6 +262,10 @@
             mostrarNuevoPais();
             document.getElementById("contador").innerHTML = 0;
             document.getElementById("paisIngresado").focus();
+        }
+
+        function salir() {
+            window.location.href = `{{route('entrarGlobal')}}`;
         }
 
         window.onload = () => {

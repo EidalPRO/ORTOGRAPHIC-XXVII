@@ -89,7 +89,7 @@
         let aciertos = []; // IDs de reactivos acertados
         let fallos = []; // IDs de reactivos fallados
         let tiempoInicio;
-        const sala= @json($sala); // Obtener código de sala desde el controlador
+        const sala = @json($sala); // Obtener código de sala desde el controlador
 
         // Inicializar juego
         tiempoInicio = performance.now();
@@ -199,7 +199,7 @@
             opcion.addEventListener('click', (e) => {
                 const seleccionada = e.target;
                 const esCorrecta = seleccionada.dataset.esCorrecta === "true";
-                const reactivoId = reactivos[id].id;
+                const reactivoId = reactivos[id].id_reactivos;
 
                 // Registrar resultado
                 if (esCorrecta) {

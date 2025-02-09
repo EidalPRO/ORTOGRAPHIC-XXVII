@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Evaluacion;
 use App\Models\EvaluacionReactivo;
 use App\Models\Leccion;
+use App\Models\Minijuego;
 use App\Models\Palabra;
 use App\Models\Reactivo;
 use App\Models\ReactivoLeccion;
@@ -22,17 +23,12 @@ class SalasController extends Controller
         return view('salas.global');
     }
 
-    public function leccionesGlobal()
-    {
-        $lecciones = Leccion::all();
-        return view('jugar.global.trivia', compact('lecciones'));
-    }
-
     public function mostrarTriviaGlobal()
     {
         $reactivos = Reactivo::all()->shuffle()->take(10);
+        $sala = Sala::where('codigo_sala', 'ORT001')->firstOrFail();
 
-        return view('jugar.global.trivia', compact('reactivos'));
+        return view('jugar.global.trivia', compact('reactivos', 'sala'));
     }
 
     public function palabrasGlobal()
@@ -51,7 +47,55 @@ class SalasController extends Controller
         return view('jugar.global.dictado', compact('reactivos'));
     }
 
+    public function guardarResultadosGlobal(Request $request)
+    {
+        $sala = Sala::where('codigo_sala', 'ORT001')->firstOrFail();
 
+        $resultados = new SalaMinijuegoUsuario([
+            'sala_id' => $sala->id_sala,
+            'minijuegos_id' => $request->minijuego,
+            'user_id' => Auth::id(),
+            'acerto' => json_encode($request->acerto),
+            'fallo' => json_encode($request->fallo),
+            'fecha' => now(),
+        ]);
+
+        $resultados->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Resultados guardados exitosamente'
+        ]);
+    }
+
+    public function obtenerMinijuegos()
+    {
+        $minijuegos = Minijuego::all();
+        return response()->json($minijuegos);
+    }
+    public function obtenerTablaPosiciones($minijuegoId)
+    {
+        $salaId = 1;
+
+        $posiciones = DB::table('sala_minijuegos_usuario')
+            ->join('users', 'sala_minijuegos_usuario.user_id', '=', 'users.id')
+            ->select(
+                'users.id',
+                'users.name',
+                DB::raw('COUNT(sala_minijuegos_usuario.user_id) as partidas_jugadas'),
+                DB::raw('SUM(JSON_LENGTH(sala_minijuegos_usuario.acerto)) as total_aciertos'),
+                DB::raw('SUM(JSON_LENGTH(sala_minijuegos_usuario.fallo)) as total_fallos')
+            )
+            ->where('sala_minijuegos_usuario.sala_id', $salaId)
+            ->where('sala_minijuegos_usuario.minijuegos_id', $minijuegoId)
+            ->groupBy('users.id', 'users.name')
+            ->orderBy('total_aciertos', 'desc') // Primero, más aciertos
+            ->orderBy('partidas_jugadas', 'desc') // Luego, más partidas jugadas
+            ->orderBy('total_fallos', 'asc') // Finalmente, menos fallos
+            ->get();
+
+        return response()->json($posiciones);
+    }
     //  SALAS PRVADAS 
 
     public function privada($codigo_sala)
@@ -152,12 +196,6 @@ class SalasController extends Controller
 
     public function guardarResultadosTri(Request $request)
     {
-        $request->validate([
-            'codigo_sala' => 'required|string',
-            'acerto' => 'required|array',
-            'fallo' => 'required|array'
-        ]);
-
         $sala = Sala::where('codigo_sala', $request->codigo_sala)->firstOrFail();
 
         $resultados = new SalaMinijuegoUsuario([
