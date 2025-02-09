@@ -28,11 +28,11 @@ class SalasController extends Controller
         return view('jugar.global.trivia', compact('lecciones'));
     }
 
-    public function mostrarTrivia($leccion_id)
+    public function mostrarTriviaGlobal()
     {
-        $leccion = Leccion::with('reactivos')->find($leccion_id);
+        $reactivos = Reactivo::all()->shuffle()->take(10);
 
-        return view('jugar.global.tjuego', compact('leccion'));
+        return view('jugar.global.trivia', compact('reactivos'));
     }
 
     public function palabrasGlobal()
@@ -142,6 +142,41 @@ class SalasController extends Controller
         return response()->json(['success' => true, 'message' => 'Resultados guardados exitosamente']);
     }
 
+    public function triviaPrivada($codigo_sala)
+    {
+        $reactivos = Reactivo::all()->shuffle()->take(10);
+        $sala = Sala::where('codigo_sala', $codigo_sala)->first();
+
+        return view('jugar.privada.trivia', compact('reactivos', 'sala'));
+    }
+
+    public function guardarResultadosTri(Request $request)
+    {
+        $request->validate([
+            'codigo_sala' => 'required|string',
+            'acerto' => 'required|array',
+            'fallo' => 'required|array'
+        ]);
+
+        $sala = Sala::where('codigo_sala', $request->codigo_sala)->firstOrFail();
+
+        $resultados = new SalaMinijuegoUsuario([
+            'sala_id' => $sala->id_sala,
+            'minijuegos_id' => 3,
+            'user_id' => Auth::id(),
+            'acerto' => json_encode($request->acerto),
+            'fallo' => json_encode($request->fallo),
+            'fecha' => now(),
+        ]);
+
+        $resultados->save();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Resultados guardados exitosamente'
+        ]);
+    }
+
     // evaluaciones
     public function mostrarEvaluacion($id, $codigo_sala)
     {
@@ -156,7 +191,7 @@ class SalasController extends Controller
         }
 
         $reactivos = Reactivo::whereIn('id_reactivos', $reactivosJson)->get();
-        
+
         $evaluacionRealizada = EvaluacionReactivo::where('evaluacion_id', $id)
             ->where('sala_id', $sala->id_sala)
             ->where('user_id', $usuario->id)

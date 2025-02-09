@@ -18,7 +18,7 @@
         <div class="logo">Ortographic</div>
         <ul class="menu">
             <li><a href="{{route('home')}}">Inicio</a></li>
-            <li><button class="ques"><i class="bi bi-question-circle"></i></button></li>
+            <!-- <li><button class="ques"><i class="bi bi-question-circle"></i></button></li> -->
         </ul>
 
     </header>
@@ -89,7 +89,7 @@
                 </div>
             </div>
             <div class="item">
-                <img src="{{asset('assets/img/salas/ordena.webp')}}">
+                <img src="{{asset('assets/img/salas/bd-trivia.webp')}}">
                 <div class="content">
                     <p>Lecciones</p>
                     <h2>Trivia</h2>
@@ -120,7 +120,7 @@
                 </div>
             </div>
             <div class="item" id="3">
-                <img src="{{asset('assets/img/salas/ordena.webp')}}">
+                <img src="{{asset('assets/img/salas/bd-trivia.webp')}}">
                 <div class="content">
                     Trivia
                 </div>
@@ -132,8 +132,8 @@
     <script>
         const bt1 = document.getElementById('1');
         const bt2 = document.getElementById('2');
+        const bt3 =document.getElementById('3');
 
-        // Mostrar spinner al hacer clic en cualquier elemento interactivo
         function showSpinner() {
             document.getElementById('spinner').style.display = 'flex';
         }
@@ -153,6 +153,14 @@
                 window.location.href = "{{route('globalDictado')}}";
             });
         });
+
+        bt3.addEventListener('click', function() {
+            showSpinner();
+            setTimeout(() => {
+                window.location.href = "{{route('globalTrivia')}}";
+            });
+        });
+
         // Opcional: Ocultar spinner si la página carga rápidamente
         window.addEventListener('load', function() {
             document.getElementById('spinner').style.display = 'none';

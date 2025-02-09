@@ -1022,7 +1022,10 @@
                 });
             }
         });
-
+    </script>
+    @if (Route::has('login'))
+    @auth
+    <script>
         axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         function showNameChangeDialog() {
@@ -1056,6 +1059,8 @@
             });
         }
     </script>
+    @endauth
+    @endif
 
 </body>
 

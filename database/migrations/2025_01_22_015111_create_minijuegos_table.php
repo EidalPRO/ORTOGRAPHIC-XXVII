@@ -29,6 +29,11 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nombre' => 'Trivia Ortographica',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 

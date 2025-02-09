@@ -98,16 +98,16 @@
                     </p>
                 </div>
             </div>
-            <!-- <div class="item">
-                <img src="{{asset('assets/img/salas/ordena.webp')}}">
+            <div class="item">
+                <img src="{{asset('assets/img/salas/bd-trivia.webp')}}">
                 <div class="content">
                     <p>Lecciones</p>
                     <h2>Trivia</h2>
                     <p>
-                        Pequeñas trivias de práctica sin límite de tiempo, ideales para aprender a tu propio ritmo.
+                        Responde las preguntas sin un limite de tiempo.
                     </p>
                 </div>
-            </div> -->
+            </div>
             @foreach($evaluacionesPendientes as $evaluacion)
             <div class="item">
                 <img src="{{ asset('assets/img/salas/evaluacion.webp') }}" alt="Evaluación">
@@ -140,6 +140,12 @@
                     Desordenados
                 </div>
             </div>
+            <div class="item" id="3">
+                <img src="{{asset('assets/img/salas/bd-trivia.webp')}}">
+                <div class="content">
+                    Trivia
+                </div>
+            </div>
             @foreach($evaluacionesPendientes as $evaluacion)
             <div class="item">
                 <a href="{{ route('evaluacion.mostrar', ['id' => $evaluacion->id_evaluacion, 'codigoSala' => $sala->codigo_sala]) }}" class="link">
@@ -165,6 +171,7 @@
         var nombreSala = datosSala.nombre;
         const bt1 = document.getElementById('1');
         const bt2 = document.getElementById('2');
+        const bt3 = document.getElementById('3');
         const codigoText = document.getElementById('codigoText');
         codigoText.innerText = "Sala: " + codigoSala;
         const admin = document.getElementById('admin');
@@ -188,6 +195,14 @@
             showSpinner();
             setTimeout(() => {
                 window.location.href = `/sala/personalizada/escribe-correctamente/${codigoSala}`;
+            }, 100);
+        });
+
+        bt3.addEventListener('click', function(e) {
+            e.preventDefault();
+            showSpinner();
+            setTimeout(() => {
+                window.location.href = `/sala/personalizada/trivia/${codigoSala}`;
             }, 100);
         });
 

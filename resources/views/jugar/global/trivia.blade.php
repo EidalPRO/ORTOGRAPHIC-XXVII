@@ -31,7 +31,7 @@
             </div>
             <h5>Trivia Ortografía</h5>
             <div class="jugador">
-                <span class="nombre" id="nombre">-</span>
+                <span class="nombre" id="nombre">{{Auth::user() -> name}}</span>
                 <img src="{{asset('assets/img/juego/invitado/user.png')}}" alt="">
             </div>
         </header>
@@ -78,10 +78,6 @@
         const sig = document.getElementById('siguiente');
         const mostrarReactivo = document.getElementById("mostrar-reactivo");
         const contador = document.getElementById("contador");
-        const nombre = document.getElementById("nombre");
-
-        var name = localStorage.getItem('nombre');
-        nombre.innerText = name;
 
         var id;
         var res;
@@ -127,7 +123,7 @@
                     if (result.isConfirmed) {
                         window.location.reload();
                     } else {
-                        window.location.href = '/';
+                        window.location.href = "{{route('entrarGlobal')}}";
                     }
                 });
                 return;

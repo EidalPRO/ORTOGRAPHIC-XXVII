@@ -18,7 +18,7 @@ Route::get('/inicio', [HomeController::class, 'home'])->name('home');
 Route::middleware("guest")->group(function () {
     Route::get('/jugar/invitado', [JugarController::class, 'invitado'])->name('invitado');
     // Invitado 
-    // Route::get('/jugar/invitado/trivia', [JugarController::class, 'jugarInvitado']);
+    Route::get('/jugar/invitado/trivia', [JugarController::class, 'jugarInvitado']);
     // Route::get('/preguntas-sin-login', [JugarController::class, 'obtenerPreguntasInvitado']);
 
     // login register 
@@ -48,18 +48,18 @@ Route::middleware("auth")->group(function () {
 
     // enntrar y jugar en salas 
     Route::get('/sala/global', [SalasController::class, 'entrar'])->name('entrarGlobal');
-    Route::get('/sala/global/lecciones', [SalasController::class, 'leccionesGlobal'])->name('globalLecciones');
-    Route::get('/sala/glonal/lecciones/trivia/{id_leccion}', [SalasController::class, 'mostrarTrivia'])->name('trivia');
+    Route::get('/sala/glonal/trivia', [SalasController::class, 'mostrarTriviaGlobal'])->name('globalTrivia');
     Route::get('/sala/global/pasapalabras', [SalasController::class, 'palabrasGlobal'])->name('globalPalabras');
     Route::get('/sala/global/escribe-correctamente', [SalasController::class, 'dictadoGlobal'])->name('globalDictado');
 
     Route::get('/sala/personalizada/{codigo_sala}', [SalasController::class, 'privada'])->name('entrarPrivada');
     Route::get('/sala/personalizada/pasapalabras/{codigo_sala}', [SalasController::class, 'palabrasPrivada'])->name('privadaPalabras');
     Route::get('/sala/personalizada/escribe-correctamente/{codigo_sala}', [SalasController::class, 'dictadoPrivada'])->name('privadaDictado');
+    Route::get('/sala/personalizada/trivia/{codigo_sala}', [SalasController::class, 'triviaPrivada'])->name('privadaTrivia');
 
     Route::post('/juego/guardarResultados/palabras', [SalasController::class, 'guardarResultados'])->name('guardarResultados');
     Route::post('/juego/guardarResultados/dictado', [SalasController::class, 'guardarResultadosDic'])->name('guardarResultados2');
-
+    Route::post('/juego/guardarResultados/trivia', [SalasController::class, 'guardarResultadosTri'])->name('guardarResultados3');
 
 
     // personalizar sala 
