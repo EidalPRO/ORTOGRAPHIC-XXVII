@@ -61,6 +61,7 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.responsivevoice.org/responsivevoice.js?key=4Zvd5aBo"></script>
     <script>
         let reactivos = @json($reactivos);
         let codigo_sala = 'ORT001';
@@ -72,59 +73,51 @@
         let posJuegoActual = 0;
         let cantidadAcertados = 0;
 
-        let voices = [];
-        let selectedVoice = null;
-
-        // Cargar voces y seleccionar las de es-MX
-        function loadVoices() {
-            voices = window.speechSynthesis.getVoices();
-            voices = voices.filter(voice => voice.lang === "es-MX" || voice.lang.startsWith("es"));
-            if (!selectedVoice && voices.length > 0) {
-                selectedVoice = voices[0]; // Seleccionar la primera voz como predeterminada
-            }
-        }
-
-        // Mostrar el SweetAlert inicial para seleccionar la voz
-        async function showInitialAlert() {
-            await Swal.fire({
-                title: 'Aviso importante',
-                html: `
-                <p>Este minijuego está en fase beta. Puede presentar errores y no ser compatible con algunos navegadores.</p>
-                <p>Selecciona la voz que prefieres para escuchar las palabras:</p>
-                <select id="voiceSelector" class="swal2-input">
-                    ${voices.map((voice, index) => `<option value="${index}">${voice.name} (${voice.lang})</option>`).join('')}
-                </select>
-            `,
-                icon: 'warning',
-                confirmButtonText: 'Aceptar',
-                allowOutsideClick: false,
-                didOpen: () => {
-                    document.getElementById('voiceSelector').value = voices.findIndex(voice => voice === selectedVoice);
-                }
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    const voiceIndex = document.getElementById('voiceSelector').value;
-                    selectedVoice = voices[voiceIndex];
-                }
-            });
-        }
-
         async function speakText(text) {
-            return new Promise((resolve) => {
-                const utterance = new SpeechSynthesisUtterance(text);
-                utterance.voice = selectedVoice;
-                utterance.onend = resolve;
-                window.speechSynthesis.speak(utterance);
-            });
+            try {
+                // Verificar si ResponsiveVoice está disponible
+                if (typeof responsiveVoice !== "undefined") {
+                    responsiveVoice.speak(text, "Spanish Latin American Female", {
+                        rate: 0.9
+                    });
+                } else {
+                    throw new Error("ResponsiveVoice no está cargado correctamente.");
+                }
+            } catch (error) {
+                console.error("Error al reproducir el audio:", error);
+            }
+            // ElevenLabs 
+            // try {
+            //     const response = await fetch("/generar-audio", {
+            //         method: "POST",
+            //         headers: {
+            //             "Content-Type": "application/json",
+            //             "X-CSRF-TOKEN": "{{ csrf_token() }}"
+            //         },
+            //         body: JSON.stringify({
+            //             texto: text
+            //         })
+            //     });
+
+            //     if (!response.ok) {
+            //         throw new Error("Error al generar el audio");
+            //     }
+
+            //     const audioBlob = await response.blob();
+            //     const audioUrl = URL.createObjectURL(audioBlob);
+            //     const audio = new Audio(audioUrl);
+            //     audio.play();
+            // } catch (error) {
+            //     console.error("Error al reproducir el audio:", error);
+            // }
         }
 
         async function speakNextWord() {
             if (posJuegoActual < paises.length) {
                 await speakText(paises[posJuegoActual]);
+                // await speakText(`La palabra es: ${paises[posJuegoActual]}`);
             }
         }
-
-        window.speechSynthesis.onvoiceschanged = loadVoices;
 
         function desordenarPaises() {
             paisesDesordenados = paises.map(pais => {
@@ -170,11 +163,9 @@
             document.getElementById("cantidadAcertadas").innerText = cantidadAcertados;
             document.getElementById("listaPalabrasFallidas").innerHTML = palabrasConRetro || "<p>¡No hubo fallos!</p>";
 
-            // Mostrar el modal de Bootstrap
             let modal = new bootstrap.Modal(document.getElementById('modalResultados'));
             modal.show();
 
-            const sala_id = 1;
             const acertos = palabrasAcertadas.map(item => item.id_palabra);
             const fallos = palabrasFallidas.map(item => item.id_palabra);
 
@@ -267,11 +258,6 @@
         function salir() {
             window.location.href = `{{route('entrarGlobal')}}`;
         }
-
-        window.onload = () => {
-            loadVoices();
-            showInitialAlert();
-        };
     </script>
 </body>
 

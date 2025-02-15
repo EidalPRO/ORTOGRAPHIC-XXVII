@@ -1,10 +1,13 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ElevenLabsController;
+use App\Http\Controllers\ElevenLabsTTSController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JugarController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\SalasController;
+use App\Http\Controllers\VozController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,4 +85,8 @@ Route::middleware("auth")->group(function () {
     // reportes 
     Route::get('/generar-reporte/{evaluacion}', [PersonalizarController::class, 'generarReporte'])->name('reporte.evaluacion');
 
+
+    // voces
+    Route::post('/generar-audio', [ElevenLabsController::class, 'convertirTexto']);
+    // Route::post('/generar-audio', [VozController::class, 'convertirTexto']);
 });

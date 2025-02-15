@@ -880,7 +880,7 @@
                                 </div>
                                 <div>
                                     <a href="/sala/personalizada/${sala.codigo_sala}" class="btn btn-success btn-sm">Entrar</a>
-                                    <a class="btn btn-danger btn-sm" onclick="confirmarSalida('${sala.id_sala}')">Salir</a>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmarSalida('${sala.id_sala}')">Salir</button>
                                 </div>
                             `;
                                 listaSalas.appendChild(listItem);
@@ -1036,9 +1036,9 @@
                             text: data.message,
                             icon: 'success'
                         }).then(() => {
-                            location.reload();
-                            // Abrir el modal de salas personalizadas
-                            $('#salasModal').modal('show');
+                            // location.reload();
+                            // $('#salasModal').modal('show');
+                            window.location.href = `/sala/personalizada/${codigo}`
                         });
                     } else {
                         Swal.fire({
@@ -1131,6 +1131,10 @@
         axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         function showNameChangeDialog() {
+                
+            document.getElementById('spinner').style.display = 'none';
+
+                
             Swal.fire({
                 title: 'Cambiar nombre de usuario',
                 input: 'text',
