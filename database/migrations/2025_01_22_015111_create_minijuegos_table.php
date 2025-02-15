@@ -25,7 +25,7 @@ return new class extends Migration
                 'updated_at' => now(),
             ],
             [
-                'nombre' => 'Escuchanos',
+                'nombre' => 'Escúchanos',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

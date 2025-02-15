@@ -86,7 +86,7 @@
                 <img src="{{asset('assets/img/salas/ordena.webp')}}">
                 <div class="content">
                     <p>Minijuego</p>
-                    <h2>Escuchanos</h2>
+                    <h2>Escúchanos</h2>
                     <p>
                         ¡Pon a prueba tu mente! Escucha las palabras para escribirlas correctamente. ¿Cuántas podrás resolver?
                     </p>
@@ -120,7 +120,7 @@
             <div class="item" id="2">
                 <img src="{{asset('assets/img/salas/ordena.webp')}}">
                 <div class="content">
-                    Desordenados
+                    Escúchanos
                 </div>
             </div>
             <div class="item" id="3">
@@ -266,6 +266,23 @@
 
         // Opcional: Ocultar spinner si la página carga rápidamente
         window.addEventListener('load', function() {
+            document.getElementById('spinner').style.display = 'none';
+        });
+
+        // Resetear spinner al cargar/recargar la página
+        window.addEventListener('pageshow', function(event) {
+            if (event.persisted) {
+                document.getElementById('spinner').style.display = 'none';
+            }
+        });
+
+        // Mostrar spinner al inicio de la carga
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('spinner').style.display = 'flex';
+        });
+
+        // Ocultar cuando todo esté cargado (imágenes, etc.)
+        window.addEventListener('load', () => {
             document.getElementById('spinner').style.display = 'none';
         });
     </script>
