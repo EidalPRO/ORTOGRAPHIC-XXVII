@@ -30,6 +30,13 @@ return new class extends Migration
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'codigo_sala' => 'ORT002',
+                'nombre' => 'Sala de experimentación',
+                'user_id' => 1,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ]);
     }
 

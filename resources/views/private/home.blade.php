@@ -128,7 +128,7 @@
                         @endif
                         <p data-aos="fade-up" data-aos-delay="100">La app que hace de la ortografía un juego</p>
                         <div class="d-flex flex-column flex-md-row" data-aos="fade-up" data-aos-delay="200">
-                            <a href="#salas" class="btn-get-started">Empezar a practicar<i class="bi bi-arrow-right"></i></a>
+                            <button href="#salas" class="btn-get-started">Empezar a practicar<i class="bi bi-arrow-right"></i></button>
                             <!-- <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center justify-content-center ms-0 ms-md-4 mt-4 mt-md-0"><i class="bi bi-play-circle"></i><span>Watch Video</span></a> -->
                         </div>
                     </div>
@@ -779,7 +779,7 @@
     </footer>
 
     <!-- Scroll Top -->
-    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <button href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></button>
 
     <!-- Vendor JS Files -->
     <script src="{{asset('assets/vendor/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
