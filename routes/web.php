@@ -5,6 +5,7 @@ use App\Http\Controllers\ElevenLabsController;
 use App\Http\Controllers\ElevenLabsTTSController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\JugarController;
+use App\Http\Controllers\MailController;
 use App\Http\Controllers\PersonalizarController;
 use App\Http\Controllers\SalasController;
 use App\Http\Controllers\VozController;
@@ -13,10 +14,11 @@ use Illuminate\Support\Facades\Auth;
 
 
 Route::get('/', [HomeController::class, 'home'])->name('home');
+Route::get('/casa', [HomeController::class,'c']);
 Route::get('/acerca-de', [HomeController::class, 'about'])->name('about');
 Route::get('/galeria', [HomeController::class, 'galeria'])->name('galeria');
 Route::get('/inicio', [HomeController::class, 'home'])->name('home');
-
+Route::post('/enviar-correo', [MailController::class, 'enviarCorreo']);
 
 Route::middleware("guest")->group(function () {
     Route::get('/jugar/invitado', [JugarController::class, 'invitado'])->name('invitado');

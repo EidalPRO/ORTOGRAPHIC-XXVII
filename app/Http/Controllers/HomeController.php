@@ -12,9 +12,9 @@ use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    // public function index()
+    // public function c()
     // {
-    //     return view('welcome');
+    //     return view('home');
     // }
 
     public function home()
