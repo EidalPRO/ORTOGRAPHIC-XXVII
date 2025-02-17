@@ -58,7 +58,7 @@
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
                             <li><a href="{{route('login')}}">Iniciar sesión</a></li>
-                            <li><a href="{{route('registro')}}">Registrarse</a></li>
+                            <li><a href="{{route('login')}}">Registrarse</a></li>
                             <li><a href="{{route('invitado')}}">Jugar como invitado</a></li>
                         </ul>
                     </li>
@@ -136,7 +136,13 @@
                         </p>
                         <div class="cta-buttons" data-aos="fade-up" data-aos-delay="300">
                             <a href="#jugar" class="btn btn-primary no-spinner">Jugar</a>
+                            @if (Route::has('login'))
+                            @auth
+                            <a href="{{ route('logout') }}" class="btn btn-outline">Cerrar sesión</a>
+                            @else
                             <a href="{{route('invitado')}}" class="btn btn-outline">Jugar como invitado</a>
+                            @endauth
+                            @endif
                         </div>
                         <div class="hero-stats" data-aos="fade-up" data-aos-delay="400">
                             @php
@@ -911,7 +917,7 @@
         });
 
         document.getElementById('descargarManual').addEventListener('click', function(event) {
-            event.preventDefault(); 
+            event.preventDefault();
 
             const url = "{{ asset('assets/pdf/Manual_de_usuario_Ortographic.pdf') }}";
             const filename = 'Manual-de-Usuario-Ortographic.pdf';
@@ -1212,9 +1218,7 @@
         axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
 
         function showNameChangeDialog() {
-
             document.getElementById('spinner').style.display = 'none';
-
 
             Swal.fire({
                 title: 'Cambiar nombre de usuario',
@@ -1230,13 +1234,11 @@
                 }
             }).then((result) => {
                 if (result.isConfirmed) {
-                    // Llamada AJAX para actualizar
                     axios.put('/update-username', {
                             name: result.value
                         })
                         .then(response => {
                             Swal.fire('Éxito!', response.data.message, 'success');
-                            // Actualizar el nombre en la vista
                             document.querySelector('[href="#"]').textContent = result.value;
                         })
                         .catch(error => {

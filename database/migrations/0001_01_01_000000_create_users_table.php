@@ -45,7 +45,7 @@ return new class extends Migration
 
         DB::table('users')->insert([
             [
-                'name' => 'Eidalvx Admmin',
+                'name' => 'Eidalvx Admin',
                 'email' => 'eidaloaxaca@gmail.com',
                 'avatar' => 'https://lh3.googleusercontent.com/a/ACg8ocKa7pwn8pibawEcJKF8DZMQQMStsOTuK1MmAuepliqs9RMaiflU=s96-c',
                 'roles_id_roles' => 3,

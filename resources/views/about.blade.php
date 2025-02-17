@@ -22,7 +22,7 @@
                     class="bi bi-chevron-down toggle-dropdown"></i></a>
             <ul>
                 <li><a href="{{route('login')}}">Iniciar sesión</a></li>
-                <li><a href="{{route('registro')}}">Registrarse</a></li>
+                <li><a href="{{route('login')}}">Registrarse</a></li>
                 <li><a href="{{route('invitado')}}">Jugar como invitado</a></li>
             </ul>
         </li>
