@@ -1,0 +1,30 @@
+services:
+  - type: web
+    name: laravel-app
+    runtime: docker
+    env: docker
+    repo: https://github.com/EidalPRO/ORTOGRAPHIC-XXVII.git
+    plan: free
+    region: oregon
+    branch: master
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: APP_DEBUG
+        value: false
+      - key: APP_KEY
+        generateValue: true
+      - key: APP_URL
+        value: https://tu-app-en-render.onrender.com
+      - key: DB_CONNECTION
+        value: mysql
+      - key: DB_HOST
+        value: 65.99.225.56
+      - key: DB_PORT
+        value: 3306
+      - key: DB_DATABASE
+        value: cbtised3_ortographic
+      - key: DB_USERNAME
+        value: cbtised3_ortographic
+      - key: DB_PASSWORD
+        value: CBTis150ortographic@
