@@ -7,15 +7,16 @@ services:
     plan: free
     region: oregon
     branch: master
+    startCommand: "php artisan serve --host 0.0.0.0 --port 10000"
     envVars:
       - key: APP_ENV
         value: production
       - key: APP_DEBUG
         value: false
       - key: APP_KEY
-        generateValue: true
+        value: tu-clave-generada-manualmente  # Genera una clave con "php artisan key:generate"
       - key: APP_URL
-        value: https://tu-app-en-render.onrender.com
+        value: https://laravel-app.onrender.com  # Actualiza con la URL real de Render
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
