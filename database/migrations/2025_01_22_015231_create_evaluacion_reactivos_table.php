@@ -15,8 +15,10 @@ return new class extends Migration
             $table->unsignedBigInteger('evaluacion_id');
             $table->unsignedBigInteger('sala_id');
             $table->unsignedBigInteger('user_id'); // Relación con tabla users
-            $table->json('acerto')->nullable()->default(json_encode([]));
-            $table->json('fallo')->nullable()->default(json_encode([]));
+            $table->json('acerto')->nullable();
+            $table->json('fallo')->nullable();
+            
+
             $table->timestamps();
 
             $table->foreign('evaluacion_id')->references('id_evaluacion')->on('evaluacion')->onDelete('cascade');
