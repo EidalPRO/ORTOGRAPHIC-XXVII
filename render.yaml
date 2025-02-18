@@ -14,7 +14,7 @@ services:
       - key: APP_DEBUG
         value: false
       - key: APP_KEY
-        value: tu-clave-generada-manualmente  # Genera una clave con "php artisan key:generate"
+        value: base64:YlnyKa3U8QI/AobLw2EeynLSugtEyvs+YucGIZCxSSA=  
       - key: APP_URL
         value: https://laravel-app.onrender.com  # Actualiza con la URL real de Render
       - key: DB_CONNECTION
