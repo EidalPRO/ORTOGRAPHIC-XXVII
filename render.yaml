@@ -1,13 +1,16 @@
 services:
   - type: web
     name: laravel-app
-    runtime: docker
-    env: docker
+    runtime: php
+    env: php
     repo: https://github.com/EidalPRO/ORTOGRAPHIC-XXVII.git
     plan: free
     region: oregon
     branch: master
-    startCommand: "php artisan serve --host 0.0.0.0 --port 10000"
+    buildCommand: |
+      composer install --no-dev --optimize-autoloader
+      php artisan key:generate
+    startCommand: "php artisan serve --host 0.0.0.0 --port 8000"
     envVars:
       - key: APP_ENV
         value: production
@@ -16,7 +19,7 @@ services:
       - key: APP_KEY
         value: base64:YlnyKa3U8QI/AobLw2EeynLSugtEyvs+YucGIZCxSSA=  
       - key: APP_URL
-        value: https://laravel-app.onrender.com  # Actualiza con la URL real de Render
+        value: https://laravel-app.onrender.com  # Reemplaza con tu dominio real
       - key: DB_CONNECTION
         value: mysql
       - key: DB_HOST
