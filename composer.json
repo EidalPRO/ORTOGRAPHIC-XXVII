@@ -12,6 +12,7 @@
         "laravel/framework": "^11.31",
         "laravel/socialite": "^5.17",
         "laravel/tinker": "^2.9",
+        "livewire/livewire": "^3.5",
         "mpdf/mpdf": "^8.2",
         "phpmailer/phpmailer": "^6.9",
         "socialiteproviders/facebook": "^4.1",

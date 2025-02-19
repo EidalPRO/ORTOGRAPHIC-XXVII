@@ -86,6 +86,7 @@
             } catch (error) {
                 console.error("Error al reproducir el audio:", error);
             }
+            
             // ElevenLabs 
             // try {
             //     const response = await fetch("/generar-audio", {
