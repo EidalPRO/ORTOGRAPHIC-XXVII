@@ -6,7 +6,7 @@
 <ul>
 @if (Route::has('login'))
         @auth
-            <li><a href="{{route('home')}}">Inicio<br></a></li>
+            <li><a href="/">Inicio<br></a></li>
         @else
             <li><a href="/">Inicio<br></a></li>
         @endauth
@@ -186,7 +186,7 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="100">
                 <div class="team-member">
                     <div class="member-img">
-                        <img src="assets/img/team/team-1.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/team/autor1.webp') }}" class="img-fluid" alt="">
                         <div class="social">
                             <a href="https://www.facebook.com/eidal.marquezambrosio?locale=es_LA" target="_blank"><i class="bi bi-facebook"></i></a>
                             <a href="https://www.instagram.com/eidalvx_7/" target="_blank"><i class="bi bi-instagram"></i></a>
@@ -202,7 +202,7 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="200">
                 <div class="team-member">
                     <div class="member-img">
-                        <img src="assets/img/team/team-2.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/team/autor2.webp') }}" class="img-fluid" alt="">
                         <div class="social">
                             <a href=""><i class="bi bi-facebook"></i></a>
                             <a href=""><i class="bi bi-instagram"></i></a>
@@ -219,14 +219,14 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
                 <div class="team-member">
                     <div class="member-img">
-                        <img src="assets/img/team/team-3.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/team/acesor1.webp') }}" class="img-fluid" alt="">
                         <div class="social">
                             <a href=""><i class="bi bi-facebook"></i></a>
-                            <a href=""><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.instagram.com/roberrume?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==" target="_blank"><i class="bi bi-instagram"></i></a>
                         </div>
                     </div>
                     <div class="member-info">
-                        <h4>Roberto Ruiz Mendoza</h4>
+                        <h4 style="margin-top: 20px;">Roberto Ruiz Mendoza</h4>
                         <span>Asesor técnico</span>
                     </div>
                 </div>
@@ -235,7 +235,7 @@
             <div class="col-lg-3 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="400">
                 <div class="team-member">
                     <div class="member-img">
-                        <img src="assets/img/team/team-4.jpg" class="img-fluid" alt="">
+                        <img src="{{ asset('assets/img/team/acesor2.webp') }}" class="img-fluid" alt="">
                         <div class="social">
                             <a href=""><i class="bi bi-facebook"></i></a>
                             <a href=""><i class="bi bi-instagram"></i></a>

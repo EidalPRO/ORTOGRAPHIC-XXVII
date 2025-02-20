@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Ortographic - Inicio</title>
+    <title>Ortographic - La app que hace de la ortografía un juego</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
 
@@ -514,40 +514,41 @@
                         <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
                             <div class="portfolio-card">
                                 <div class="portfolio-image">
-                                    <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="" loading="lazy">
+                                    <img src="{{ asset('assets/img/portfolio/imagen1.webp') }}" class="img-fluid" alt="" loading="lazy">
                                     <div class="portfolio-overlay">
                                         <div class="portfolio-actions">
-                                            <a href="assets/img/portfolio/app-1.jpg" class="glightbox preview-link" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
+                                            <a href="{{ asset('assets/img/portfolio/imagen1.webp') }}" class="glightbox preview-link" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
                                             <!-- <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a> -->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="portfolio-content">
-                                    <span class="category">Web Design</span>
-                                    <h3>Modern Dashboard Interface</h3>
-                                    <p>Maecenas faucibus mollis interdum sed posuere consectetur est at lobortis.</p>
+                                    <span class="category">Ortographic</span>
+                                    <h3>Usuario jugando Trivia Ortografíca</h3>
+                                    <p>Desafiando su concimiento.</p>
                                 </div>
                             </div>
                         </div><!-- End Portfolio Item -->
 
-                        <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-graphics">
+                        <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
                             <div class="portfolio-card">
                                 <div class="portfolio-image">
-                                    <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="" loading="lazy">
+                                    <img src="{{ asset('assets/img/portfolio/imagen2.webp') }}" class="img-fluid" alt="" loading="lazy">
                                     <div class="portfolio-overlay">
                                         <div class="portfolio-actions">
-                                            <a href="assets/img/portfolio/product-1.jpg" class="glightbox preview-link" data-gallery="portfolio-gallery-graphics"><i class="bi bi-eye"></i></a>
+                                            <a href="{{ asset('assets/img/portfolio/imagen2.webp') }}" class="glightbox preview-link" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
                                             <!-- <a href="portfolio-details.html" class="details-link"><i class="bi bi-arrow-right"></i></a> -->
                                         </div>
                                     </div>
                                 </div>
                                 <div class="portfolio-content">
-                                    <span class="category">Graphics</span>
-                                    <h3>Creative Brand Identity</h3>
-                                    <p>Vestibulum id ligula porta felis euismod semper at vulputate.</p>
+                                    <span class="category">Ortographic</span>
+                                    <h3>Entrega de documentos</h3>
+                                    <p>Entrega y revicion de reactivos con la asesora metodológico.</p>
                                 </div>
                             </div>
                         </div><!-- End Portfolio Item -->
+                        
                     </div><!-- End Portfolio Container -->
                 </div>
             </div>
@@ -565,7 +566,7 @@
                         <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
                     </svg>
                 </div>
-                <p>¿Qué te parecio Ortographic?</p>
+                <p>¿Qué te pareció Ortographic?</p>
             </div><!-- End Section Title -->
 
             <div class="container" data-aos="fade-up" data-aos-delay="100">
@@ -592,24 +593,21 @@
                             <div class="testimonial-item">
                                 <div class="row">
                                     <div class="col-lg-8">
-                                        <h2>Sed ut perspiciatis unde omnis</h2>
+                                        <h2>Muy interesante.</h2>
                                         <p>
-                                            Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                                        </p>
-                                        <p>
-                                            Beatae magnam dolore quia ipsum. Voluptatem totam et qui dolore dignissimos. Amet quia sapiente laudantium nihil illo et assumenda sit cupiditate. Nam perspiciatis perferendis minus consequatur. Enim ut eos quo.
+                                            "Es una aplicación muy buena para mejorar tu ortografía, lo recomiendo para todos ya que algunos o todos los podemos utilizar, y lo mejor que es gratis, y aprendes mucho"
                                         </p>
                                         <div class="profile d-flex align-items-center">
-                                            <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}" class="profile-img" alt="">
+                                            <img src="{{ asset('assets/img/testimonials/testimonio-rubi.webp') }}" class="profile-img" alt="">
                                             <div class="profile-info">
-                                                <h3>Saul Goodman</h3>
-                                                <span>Client</span>
+                                                <h3>Rubí Chavez</Ruby></h3>
+                                                <span>Usuario</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 d-none d-lg-block">
                                         <div class="featured-img-wrapper">
-                                            <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}" class="featured-img" alt="">
+                                            <img src="{{ asset('assets/img/testimonials/testimonio-rubi.webp') }}" class="featured-img" alt="">
                                         </div>
                                     </div>
                                 </div>
@@ -619,24 +617,22 @@
                             <div class="testimonial-item">
                                 <div class="row">
                                     <div class="col-lg-8">
-                                        <h2>Sed ut perspiciatis unde omnis</h2>
+                                        <h2>Divertido y entretenido</h2>
+                                        <p>"Al principio pensé que iba a ser aburrido, pero los juegos son súper entretenidos y te enganchan un montón."</p>
                                         <p>
-                                            Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
-                                        </p>
-                                        <p>
-                                            Beatae magnam dolore quia ipsum. Voluptatem totam et qui dolore dignissimos. Amet quia sapiente laudantium nihil illo et assumenda sit cupiditate. Nam perspiciatis perferendis minus consequatur. Enim ut eos quo.
+                                            "Lo mejor es que puedes practicar cuando quieras y desde tu celular, así que ya no hay excusa para no saber escribir bien."
                                         </p>
                                         <div class="profile d-flex align-items-center">
-                                            <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}" class="profile-img" alt="">
+                                            <img src="{{ asset('assets/img/testimonials/testimonio-elia.webp') }}" class="profile-img" alt="">
                                             <div class="profile-info">
-                                                <h3>Saul Goodman</h3>
-                                                <span>Client</span>
+                                                <h3>Elía Ayelene</h3>
+                                                <span>Usuario</span>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="col-lg-4 d-none d-lg-block">
                                         <div class="featured-img-wrapper">
-                                            <img src="{{ asset('assets/img/testimonials/testimonials-1.jpg') }}" class="featured-img" alt="">
+                                            <img src="{{ asset('assets/img/testimonials/testimonio-elia.webp') }}" class="featured-img" alt="">
                                         </div>
                                     </div>
                                 </div>

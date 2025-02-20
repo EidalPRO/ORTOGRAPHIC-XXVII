@@ -13,7 +13,7 @@
                 </div>
 
                 <div class="heading">
-                    <h2>Hola, Bienvenido de nuevo!</h2>
+                    <h2>Hola, Bienvenido de nuevo.</h2>
                     <h6>¿No tienes cuenta?</h6>
                     <a href="#" class="toggle">Registrate gratis</a>
                 </div>
@@ -38,7 +38,7 @@
                         <label>Contraseña</label>
                     </div>
 
-                    <input type="submit" value="Iniciar sesion" class="sign-btn" />
+                    <input type="submit" value="Iniciar sesión" class="sign-btn" />
 
                     <!-- <p class="text">
                         Al iniciar sesion usted esta aceptando <a>Los terminos del servicio</a> y la<a>Politica de privacidad</a>.
@@ -68,7 +68,7 @@
                 </div>
 
                 <div class="heading">
-                    <h2>Bienvenido a Ortographic!</h2>
+                    <h2>Bienvenido a Ortographic.</h2>
                     <h6>¿Ya tienes cuenta?</h6>
                     <a href="#" class="toggle">Inicia sesión</a>
                 </div>
@@ -110,7 +110,7 @@
                         <option value="docente">Docente</option>
                     </select>
 
-                    <input type="submit" value=Registrarse" class="sign-btn" />
+                    <input type="submit" value="Registrarse" class="sign-btn" />
 
                     <p class="text">
                         Al registrarse usted esta aceptando <a>Los terminos del servicio</a> y la<a>Politica de privacidad</a>.

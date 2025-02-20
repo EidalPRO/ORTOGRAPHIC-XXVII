@@ -139,7 +139,7 @@
                 <button type="submit" class="btn btn-primary" id="finalizarBtn">Finalizar Evaluación</button>
             </div>
             <div class="mt-4">
-                <button type="submit" class="btn btn-primary btn-regresar" style="display:none;" onclick="regresar()">Regresar</button>
+                <button class="btn btn-primary btn-regresar" style="display:none;" onclick="regresar()">Regresar</button>
             </div>
         </form>
         @endif
@@ -147,10 +147,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        console.log("{{$usuario->id}}");
-        console.log("{{$evaluacion->id_evaluacion}}");
-        console.log("{{$sala->id_sala}}");
-
         // Restaurar respuestas del almacenamiento local
         document.addEventListener('DOMContentLoaded', () => {
             const storedRespuestas = JSON.parse(localStorage.getItem('respuestas')) || {};
@@ -181,6 +177,7 @@
 
             let correctas = [];
             let incorrectas = [];
+            let preguntasSinResponder = [];
             const formElements = document.querySelectorAll('select');
 
             formElements.forEach(select => {
@@ -195,23 +192,22 @@
                         incorrectas.push(reactivoId);
                         select.closest('.form-group').style.backgroundColor = 'rgba(244, 67, 54, 0.2)';
                     }
+                } else {
+                    preguntasSinResponder.push(select);
                 }
             });
 
-            if (correctas.length + incorrectas.length === 0) {
+            if (preguntasSinResponder.length > 0) {
                 Swal.fire({
-                    title: 'Error',
-                    text: 'Debes responder al menos una pregunta.',
-                    icon: 'error',
+                    title: 'Faltan preguntas por responder',
+                    text: 'Debes responder todas las preguntas antes de finalizar la evaluación.',
+                    icon: 'warning',
                     confirmButtonText: 'Aceptar'
                 });
                 return;
             }
 
             const calificacion = (correctas.length / (correctas.length + incorrectas.length)) * 10;
-
-            console.log(correctas);
-            console.log(incorrectas);
 
             Swal.fire({
                 title: '¡Evaluación terminada!',
@@ -238,7 +234,7 @@
                     if (!response.ok) throw new Error('Error en el servidor');
 
                     const data = await response.json();
-                    console.log('Datos guardados correctamente:', data);
+                    // console.log('Datos guardados correctamente:', data);
 
                     localStorage.removeItem('respuestas');
 

@@ -17,12 +17,12 @@
 <body>
     <!-- header -->
     <header>
-        <div class="logo">Ortographic</div>
+        <div class="logo"></div>
         <ul class="menu">
             <li><a href="{{route('home')}}">Inicio</a></li>
             <li><a href="#" data-bs-toggle="modal" data-bs-target="#tablaPosicionesModal">Tabla de posiciones</a>
             </li>
-            <!-- <li><button class="ques"><i class="bi bi-question-circle"></i></button></li> -->
+            <li><button class="ques">Sala Global</i></button></li>
         </ul>
 
     </header>
@@ -181,6 +181,7 @@
                         content.setAttribute("role", "tabpanel");
                         content.innerHTML = `
                     <h4 class="mt-3">${minijuego.nombre}</h4>
+                    <div class="table-responsive">
                     <table class="table table-bordered">
                         <thead>
                             <tr>
@@ -194,7 +195,8 @@
                         <tbody id="tablaPosiciones-${minijuego.idminijuegos}">
                             <tr><td colspan="5">Cargando...</td></tr>
                         </tbody>
-                    </table>`;
+                    </table>
+                    </div>`;
                         contentContainer.appendChild(content);
 
                         // Cargar datos para cada minijuego

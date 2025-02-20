@@ -54,34 +54,22 @@
             <div class="row gy-4 isotope-container" data-aos="fade-up" data-aos-delay="200">
 
                 <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
-                    <img src="assets/img/portfolio/app-1.jpg" class="img-fluid" alt="">
+                    <img src="{{ asset('assets/img/portfolio/imagen1.webp') }}" class="img-fluid" alt="">
                     <div class="portfolio-info">
-                        <h4>App 1</h4>
-                        <p>Lorem ipsum, dolor sit amet consectetur</p>
-                        <a href="assets/img/portfolio/app-1.jpg" title="App 1" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                        <h4>Usuario</h4>
+                        <p>Usuario practicando su ortografía.</p>
+                        <a href="{{ asset('assets/img/portfolio/imagen1.webp') }}" title="Usuario" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                     </div>
                 </div><!-- End Portfolio Item -->
 
-                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-product">
-                    <img src="assets/img/portfolio/product-1.jpg" class="img-fluid" alt="">
+                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-app">
+                    <img src="{{ asset('assets/img/portfolio/imagen2.webp') }}" class="img-fluid" alt="">
                     <div class="portfolio-info">
-                        <h4>Product 1</h4>
-                        <p>Lorem ipsum, dolor sit amet consectetur</p>
-                        <a href="assets/img/portfolio/product-1.jpg" title="Product 1" data-gallery="portfolio-gallery-product" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
+                        <h4>Entrega de documentos</h4>
+                        <p>Entrega y revicion de reactivos con la asesora metodológico.</p>
+                        <a href="{{ asset('assets/img/portfolio/imagen2.webp') }}" title="Usuario" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                     </div>
                 </div><!-- End Portfolio Item -->
-
-                <div class="col-lg-4 col-md-6 portfolio-item isotope-item filter-branding">
-                    <img src="assets/img/portfolio/branding-1.jpg" class="img-fluid" alt="">
-                    <div class="portfolio-info">
-                        <h4>Branding 1</h4>
-                        <p>Lorem ipsum, dolor sit amet consectetur</p>
-                        <a href="assets/img/portfolio/branding-1.jpg" title="Branding 1" data-gallery="portfolio-gallery-branding" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
-                    </div>
-                </div><!-- End Portfolio Item -->
-
-            </div><!-- End Porfolio Container -->
-
         </div>
 
     </div>
