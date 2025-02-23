@@ -52,11 +52,17 @@
                 <p>Ingresa tu nombre para jugar</p>
                 <input type="text" id="nombre">
                 <button class="btn" id="comenzar">Comenzar</button>
+                <button class="btn" id="regresar" onclick="regresar()">Regresar</button>
             </main>
             <br>
         </div>
     </div>
 
+    <script>
+        function regresar() {
+            window.location.href = '/';
+        }
+    </script>
     <script src="{{asset('assets/js/juego/invitado/index.js')}}"></script>
 </body>
 

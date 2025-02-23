@@ -17,7 +17,7 @@ Route::get('/', [HomeController::class, 'home'])->name('home');
 Route::get('/casa', [HomeController::class,'c']);
 Route::get('/acerca-de', [HomeController::class, 'about'])->name('about');
 Route::get('/galeria', [HomeController::class, 'galeria'])->name('galeria');
-Route::get('/inicio', [HomeController::class, 'home'])->name('home');
+// Route::get('/inicio', [HomeController::class, 'home'])->name('home');
 Route::post('/enviar-correo', [MailController::class, 'enviarCorreo']);
 
 Route::middleware("guest")->group(function () {
@@ -91,4 +91,9 @@ Route::middleware("auth")->group(function () {
     // voces
     Route::post('/generar-audio', [ElevenLabsController::class, 'convertirTexto']);
     // Route::post('/generar-audio', [VozController::class, 'convertirTexto']);
+
+    // usuario 
+    Route::get('/buscar-usuarios', [AuthController::class, 'buscar'])->name('buscar.usuarios');
+    Route::get('/usuario/{id}', [AuthController::class, 'mostrarPerfil'])->name('usuario.perfil');
+
 });
