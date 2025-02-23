@@ -25,7 +25,7 @@
     <link href="{{ asset('assets/vendor/swiper/swiper-bundle.min.css') }}" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="{{ asset('assets/css/main2.css') }}" rel="stylesheet">
+    <link href="{{ asset('assets/css/main2.css') }}?v={{ time() }}" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -53,13 +53,13 @@
                     <!-- <li><a href="#" onclick="showNameChangeDialog()" class="no-spinner"> {{Auth::user()->name}} </a></li> -->
                     <li>
                         <a href id="abrirPerfil" class="no-spinner">
-                            Mi Peril
+                            Mi Perfil
                         </a>
                     </li>
                     <li><a href="#jugar" class="no-spinner">Empezar a practicar</a></li>
                     <li><a href="{{ route('logout') }}">Cerrar sesión</a></li>
                     @else
-                    <li class="dropdown"><a href="#"><span>Acciones de usuario</span> <i
+                    <li class="dropdown"><a href="#" class="no-spinner"><span>Acciones de usuario</span> <i
                                 class="bi bi-chevron-down toggle-dropdown"></i></a>
                         <ul>
                             <li><a href="{{route('login')}}">Iniciar sesión</a></li>
@@ -74,7 +74,7 @@
             </nav>
 
             <div class="header-social-links">
-                <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+                <a href="#" class="instagram no-spinner"><i class="bi bi-instagram"></i></a>
             </div>
 
         </div>
@@ -629,7 +629,7 @@
                                         <div class="profile d-flex align-items-center">
                                             <img src="{{ asset('assets/img/testimonials/testimonio-elia.webp') }}" class="profile-img" alt="">
                                             <div class="profile-info">
-                                                <h3>Elía Ayelene</h3>
+                                                <h3>Elía Ayelén</h3>
                                                 <span>Usuario</span>
                                             </div>
                                         </div>
@@ -909,35 +909,7 @@
                 </div>
             </div>
         </div>
-
-        <!-- Modal para mostrar el perfil de un usuario -->
-        <!-- Modal para mostrar el perfil de un usuario -->
-        <div class="modal fade" id="perfilUsuarioModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="perfilUsuarioLabel" aria-hidden="true">
-            <div class="modal-dialog modal-lg">
-                <div class="modal-content">
-                    <div class="card">
-                        <!-- Fondo con SVG -->
-                        <div class="card__img">
-                        </div>
-
-                        <!-- Imagen de perfil -->
-                        <div class="card__avatar">
-                            <img id="perfil-avatar" src="{{ asset('assets/img/testimonials/user.webp') }}" alt="Avatar">
-                        </div>
-
-                        <!-- Nombre y Rol -->
-                        <div class="card__title" id="perfil-username">Nombre del usuario</div>
-                        <div class="card__subtitle" id="perfil-role">Usuario</div>
-
-                        <!-- Botones -->
-                        <div class="card__wrapper">
-                            <button class="card__btn" data-bs-dismiss="modal">Cerrar</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+<!-- 
         <script>
             document.getElementById('buscarUsuario').addEventListener('input', function() {
                 let query = this.value;
@@ -993,7 +965,7 @@
                     })
                     .catch(error => console.log(error));
             }
-        </script>
+        </script> -->
         @endauth
         @endif
     </main>
