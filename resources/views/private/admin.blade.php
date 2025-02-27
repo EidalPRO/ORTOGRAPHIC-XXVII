@@ -516,7 +516,7 @@
                     <div class="col-6 footer-links">
                         {{-- <h4>Useful Links</h4> --}}
                         <ul>
-                            <p>Proyecto presentado como prototipo de software para la DEGETI.</p>
+                            <p>Proyecto presentado como prototipo de software para la DGETI.</p>
                             <p>CBTis No 150.</p>
                             <p>Ocotlán de Morelos, Oaxaca, México.</p>
                         </ul>

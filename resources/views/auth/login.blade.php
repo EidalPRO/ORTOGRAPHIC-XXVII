@@ -13,9 +13,9 @@
                 </div>
 
                 <div class="heading">
-                    <h2>Hola, Bienvenido de nuevo.</h2>
+                    <h2>Hola, bienvenido de nuevo.</h2>
                     <h6>¿No tienes cuenta?</h6>
-                    <a href="#" class="toggle">Registrate gratis</a>
+                    <a href="#" class="toggle">Regístrate gratis</a>
                 </div>
 
                 <div class="actual-form">
@@ -25,7 +25,7 @@
                             name="email"
                             class="input-field"
                             required>
-                        <label>Correo electronico</label>
+                        <label>Correo electrónico</label>
                     </div>
 
                     <div class="input-wrap">
@@ -44,7 +44,7 @@
                         Al iniciar sesion usted esta aceptando <a>Los terminos del servicio</a> y la<a>Politica de privacidad</a>.
                     </p> -->
                 </div>
-                <div class="or">o tambien puedes</div>
+                <div class="or">o también puedes</div>
                 <button class="sso" type="button" onclick="google()"><i class="bi bi-google"></i> Inicia con google</button>
                 <!-- <button class="sso" type="button" onclick="facebook()"><i class="bi bi-facebook"></i> Inicia con facebook</button> -->
 
@@ -90,7 +90,7 @@
                             class="input-field"
                             autocomplete="off"
                             required>
-                        <label>Correo electronico</label>
+                        <label>Correo electrónico</label>
                     </div>
 
                     <div class="input-wrap">
@@ -113,10 +113,10 @@
                     <input type="submit" value="Registrarse" class="sign-btn" />
 
                     <p class="text">
-                        Al registrarse usted esta aceptando <a>Los terminos del servicio</a> y la<a>Politica de privacidad</a>.
+                        Al registrarse usted esta aceptando <a>Los términos del servicio</a> y la<a>Política de privacidad</a>.
                     </p>
                 </div>
-                <div class="or">o tambien puedes</div>
+                <div class="or">o también puedes</div>
                 <button class="sso" type="button" onclick="google()"><i class="bi bi-google"></i> Inicia con google</button>
                 <!-- <button class="sso" type="button" onclick="facebook()"><i class="bi bi-facebook"></i> Inicia con facebook</button> -->
 

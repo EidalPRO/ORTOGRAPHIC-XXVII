@@ -47,7 +47,7 @@
                 <ul>
                     <li><a href="" class="active">Inicio<br></a></li>
                     <li><a href="/acerca-de">Acerca de Ortographic</a></li>
-                    <li><a href="/galeria">Galeria de imagenes</a></li>
+                    <li><a href="/galeria">Galería de imágenes</a></li>
                     @if (Route::has('login'))
                     @auth
                     <!-- <li><a href="#" onclick="showNameChangeDialog()" class="no-spinner"> {{Auth::user()->name}} </a></li> -->
@@ -159,7 +159,7 @@
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">3</span>
-                                <span class="stat-label">Modos de practica</span>
+                                <span class="stat-label">Modos de práctica</span>
                             </div>
                             <div class="stat-item">
                                 <span class="stat-number">3</span>
@@ -199,7 +199,7 @@
 
                 <div class="row align-items-center">
                     <div class="col-lg-4 mb-5 mb-lg-0">
-                        <h2 class="fw-bold mb-4 servies-title">Diviertete practicando la Ortografía</h2>
+                        <h2 class="fw-bold mb-4 servies-title">Diviertete practicando la ortografía</h2>
                         <p class="mb-4">En las salas perzonalizadas, se guarda el progreso de cada estudiante, permitiéndoles visualizar su nivel de mejora a lo largo del tiempo. Además, los docentes pueden aplicar evaluaciones, tanto diagnósticas como de fin de curso, para medir el avance y el dominio de las habilidades ortográficas.</p>
                         <!-- <a href="#"  class="btn btn-outline-primary">See all services</a> -->
                     </div>
@@ -343,7 +343,7 @@
                                 </div>
                                 <div class="signature-info">
                                     <h4>Tecnologías utilizadas</h4>
-                                    <p>El proyecto fue creado principalmente con el Framework de php Laravel, este en su versioón 11. Y para la base de datos se útilizo MySQL.</p>
+                                    <p>El proyecto fue creado principalmente con el Framework de php Laravel, este en su versioón 11. Y para la base de datos se utilizó MySQL.</p>
                                 </div>
                             </div>
                         </div>
@@ -502,7 +502,7 @@
 
             <!-- Section Title -->
             <div class="container section-title" data-aos="fade-up">
-                <h2>Imagenes</h2>
+                <h2>Imágenes</h2>
                 <div class="title-shape">
                     <svg viewBox="0 0 200 20" xmlns="http://www.w3.org/2000/svg">
                         <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
@@ -548,7 +548,7 @@
                                 <div class="portfolio-content">
                                     <span class="category">Ortographic</span>
                                     <h3>Entrega de documentos</h3>
-                                    <p>Entrega y revicion de reactivos con la asesora metodológico.</p>
+                                    <p>Entrega y revisión de reactivos con la asesora metodológica.</p>
                                 </div>
                             </div>
                         </div><!-- End Portfolio Item -->
@@ -988,7 +988,7 @@
                     <div class="col-6 footer-links">
                         {{-- <h4>Useful Links</h4> --}}
                         <ul>
-                            <p>Proyecto presentado como prototipo de software para la DEGETI.</p>
+                            <p>Proyecto presentado como prototipo de software para la DGETI.</p>
                             <p>CBTis No 150.</p>
                             <p>Ocotlán de Morelos, Oaxaca, México.</p>
                         </ul>

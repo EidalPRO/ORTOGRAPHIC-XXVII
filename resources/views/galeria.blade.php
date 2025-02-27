@@ -12,7 +12,7 @@
     @endauth
     @endif
     <li><a href="/acerca-de">Acerca de Ortographic</a></li>
-    <li><a href="/galeria" class="active">Galeria de imagenes</a></li>
+    <li><a href="/galeria" class="active">Galería de imágenes</a></li>
     @if (Route::has('login'))
     @auth
     <li><a href="{{ route('home') }}">Empezar a practicar</a></li>
@@ -35,11 +35,11 @@
 <!-- Page Title -->
 <div class="page-title dark-background" data-aos="fade" style="background-image: url(assets/img/hero-bg.webp);">
     <div class="container">
-        <h1>Galeria fotografica</h1>
+        <h1>Galería fotográfica</h1>
         <nav class="breadcrumbs">
             <ol>
                 <li><a href="/">Inicio</a></li>
-                <li class="current">Galeria de fotos</li>
+                <li class="current">Galería de fotos</li>
             </ol>
         </nav>
     </div>
@@ -74,7 +74,7 @@
                     <img src="{{ asset('assets/img/portfolio/imagen3.webp') }}" class="img-fluid" alt="">
                     <div class="portfolio-info">
                         <h4>Presentación</h4>
-                        <p>Alumnos de secundaria técnica #38 probando la Trivia Ortografíca.</p>
+                        <p>Alumnos de secundaria técnica #38 probando la Trivia Ortográfica.</p>
                         <a href="{{ asset('assets/img/portfolio/imagen3.webp') }}" title="Presentación" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                     </div>
                 </div><!-- End Portfolio Item -->
@@ -92,7 +92,7 @@
                     <img src="{{ asset('assets/img/portfolio/imagen2.webp') }}" class="img-fluid" alt="">
                     <div class="portfolio-info">
                         <h4>Entrega de documentos</h4>
-                        <p>Entrega y revicion de reactivos con la asesora metodológico.</p>
+                        <p>Entrega y revisión de reactivos con la asesora metodológica.</p>
                         <a href="{{ asset('assets/img/portfolio/imagen2.webp') }}" title="Entrega de documentos" data-gallery="portfolio-gallery-app" class="glightbox preview-link"><i class="bi bi-zoom-in"></i></a>
                     </div>
                 </div><!-- End Portfolio Item -->

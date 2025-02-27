@@ -12,7 +12,7 @@
         @endauth
     @endif
     <li><a href="/acerca-de" class="active">Acerca de Ortographic</a></li>
-    <li><a href="/galeria">Galeria de imagenes</a></li>
+    <li><a href="/galeria">Galería de imágenes</a></li>
     @if (Route::has('login'))
         @auth
         <li><a href="{{ route('home') }}">Empezar a practicar</a></li>

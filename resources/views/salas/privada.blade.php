@@ -104,7 +104,7 @@
                     <p>Lecciones</p>
                     <h2>Trivia</h2>
                     <p>
-                        Responde las preguntas sin un limite de tiempo.
+                        Responde las preguntas sin un lÍmite de tiempo.
                     </p>
                 </div>
             </div>
