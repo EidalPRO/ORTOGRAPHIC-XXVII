@@ -146,6 +146,7 @@
                             <a href="{{ route('logout') }}" class="btn btn-outline">Cerrar sesión</a>
                             @else
                             <a href="{{route('invitado')}}" class="btn btn-outline">Jugar como invitado</a>
+                            <a href="{{route('login')}}" class="btn btn-outline">Iniciar sesión</a>
                             @endauth
                             @endif
                         </div>

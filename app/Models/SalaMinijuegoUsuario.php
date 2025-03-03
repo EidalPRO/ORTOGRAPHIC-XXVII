@@ -10,11 +10,14 @@ class SalaMinijuegoUsuario extends Model
     use HasFactory;
 
     protected $table = 'sala_minijuegos_usuario';
+    protected $primaryKey = null;
+    public $incrementing = false;
 
     protected $fillable = [
         'sala_id',
         'minijuegos_id',
         'user_id',
+        'puntos',
         'acerto',
         'fallo',
         'fecha',

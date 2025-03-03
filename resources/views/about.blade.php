@@ -189,7 +189,7 @@
                         <img src="{{ asset('assets/img/team/autor1.webp') }}" class="img-fluid" alt="">
                         <div class="social">
                             <a href="https://www.facebook.com/eidal.marquezambrosio?locale=es_LA" target="_blank"><i class="bi bi-facebook"></i></a>
-                            <a href="https://www.instagram.com/eidalvx_7/" target="_blank"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.instagram.com/eimar.dev_/" target="_blank"><i class="bi bi-instagram"></i></a>
                         </div>
                     </div>
                     <div class="member-info">

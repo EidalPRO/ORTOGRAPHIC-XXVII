@@ -48,7 +48,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body" style="max-height: 400px; overflow-y: auto;">
-                    <p>Acertaste <strong id="cantidadAcertadas"></strong> palabras.</p>
+                    <p>Acertaste <strong id="cantidadAcertadas"></strong> palabras. Y obtuviste <strong id="puntosM"></strong> puntos.</p>
                     <p><strong>Palabras fallidas y retroalimentación:</strong></p>
                     <div id="listaPalabrasFallidas"></div>
                 </div>
@@ -72,12 +72,14 @@
         let palabrasAcertadas = [];
         let posJuegoActual = 0;
         let cantidadAcertados = 0;
+        let puntos = 0;
 
         async function showInitialAlert() {
             await Swal.fire({
                 title: 'Aviso importante',
                 html: `
-                <p>Para este minijuego se recomienda usar audifonos y/o subir el volumen.</p>
+                <p>Para este minijuego se recomienda usar audifonos y/o subir el volumen. Al igual que tener buena conexion a internet.</p>
+                
             `,
                 icon: 'warning',
                 confirmButtonText: 'Aceptar',
@@ -174,6 +176,7 @@
             }).join('');
 
             document.getElementById("cantidadAcertadas").innerText = cantidadAcertados;
+            document.getElementById("puntosM").innerText = puntos;
             document.getElementById("listaPalabrasFallidas").innerHTML = palabrasConRetro || "<p>¡No hubo fallos!</p>";
 
             let modal = new bootstrap.Modal(document.getElementById('modalResultados'));
@@ -192,7 +195,8 @@
                     body: JSON.stringify({
                         minijuego: 2,
                         acerto: acertos,
-                        fallo: fallos
+                        fallo: fallos,
+                        puntos: puntos,
                     })
                 })
                 .then(response => response.json())
@@ -216,6 +220,7 @@
                 palabrasAcertadas.push(reactivos[posJuegoActual]);
                 posJuegoActual++;
                 cantidadAcertados++;
+                puntos += 10;
                 document.getElementById("contador").innerHTML = cantidadAcertados;
                 document.getElementById("paisIngresado").value = "";
                 mostrarNuevoPais();

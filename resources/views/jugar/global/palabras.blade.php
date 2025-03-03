@@ -50,6 +50,7 @@
         <h1>Resumen</h1>
         <h3>Acertadas</h3>
         <span id="acertadas">10</span>
+        <h3 id="puntosM"></h3>
         <h3 id="score">40% de acierto</h3>
         <button id="recomenzar">Jugar de Nuevo</button>
         <button id="salir">Salir</button>
@@ -67,6 +68,7 @@
         const TIEMPO_DEL_JUEGO = 120;
 
         let reactivos = @json($reactivos);
+        let puntos = 0;
 
         const bd_juego = reactivos.map((reactivo, index) => {
             return {
@@ -168,6 +170,7 @@
             respuestasUsuario[numPreguntaActual] = txtRespuesta;
             if (txtRespuesta === bd_juego[numPreguntaActual].respuesta) {
                 cantidadAcertadas++;
+                puntos += 10;
                 estadoPreguntas[numPreguntaActual] = 1;
                 var letra = bd_juego[numPreguntaActual].id;
                 document.getElementById(`circle-${letra}`).classList.remove("pregunta-actual");
@@ -228,6 +231,7 @@
         }
 
         function mostrarPantallaFinal() {
+            document.getElementById("puntosM").innerText = `Obtuviste ${puntos} puntos.`;
             document.getElementById("acertadas").textContent = cantidadAcertadas;
             document.getElementById("score").textContent = ((cantidadAcertadas * 100) / bd_juego.length).toFixed(2) + "% de acierto";
             const listaRespuestas = document.getElementById("lista-respuestas");
@@ -260,7 +264,8 @@
                     body: JSON.stringify({
                         minijuego: 1,
                         acerto: acertos,
-                        fallo: fallos
+                        fallo: fallos,
+                        puntos: puntos
                     })
                 })
                 .then(response => response.json())

@@ -51,16 +51,19 @@ class SalasController extends Controller
     {
         $sala = Sala::where('codigo_sala', 'ORT001')->firstOrFail();
 
-        $resultados = new SalaMinijuegoUsuario([
-            'sala_id' => $sala->id_sala,
-            'minijuegos_id' => $request->minijuego,
-            'user_id' => Auth::id(),
-            'acerto' => json_encode($request->acerto),
-            'fallo' => json_encode($request->fallo),
-            'fecha' => now(),
-        ]);
-
-        $resultados->save();
+        SalaMinijuegoUsuario::updateOrInsert(
+            [
+                'sala_id' => $sala->id_sala,
+                'minijuegos_id' => $request->minijuego,
+                'user_id' => Auth::id(),
+            ],
+            [
+                'puntos' => DB::raw("puntos + {$request->puntos}"), // Suma puntos sin sobrescribir
+                'acerto' => json_encode($request->acerto),
+                'fallo' => json_encode($request->fallo),
+                'fecha' => now(),
+            ]
+        );
 
         return response()->json([
             'success' => true,
@@ -83,19 +86,18 @@ class SalasController extends Controller
                 'users.id',
                 'users.name',
                 DB::raw('COUNT(sala_minijuegos_usuario.user_id) as partidas_jugadas'),
-                DB::raw('SUM(JSON_LENGTH(sala_minijuegos_usuario.acerto)) as total_aciertos'),
-                DB::raw('SUM(JSON_LENGTH(sala_minijuegos_usuario.fallo)) as total_fallos')
+                DB::raw('SUM(sala_minijuegos_usuario.puntos) as total_puntos') // Solo se suma el total de puntos
             )
             ->where('sala_minijuegos_usuario.sala_id', $salaId)
             ->where('sala_minijuegos_usuario.minijuegos_id', $minijuegoId)
             ->groupBy('users.id', 'users.name')
-            ->orderBy('total_aciertos', 'desc') // Primero, más aciertos
-            ->orderBy('partidas_jugadas', 'desc') // Luego, más partidas jugadas
-            ->orderBy('total_fallos', 'asc') // Finalmente, menos fallos
+            ->orderByDesc('total_puntos') // Ordenar por más puntos
+            ->orderByDesc('partidas_jugadas') // Luego por más partidas jugadas
             ->get();
 
         return response()->json($posiciones);
     }
+
     //  SALAS PRVADAS 
 
     public function privada($codigo_sala)

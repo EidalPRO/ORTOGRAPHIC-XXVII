@@ -89,6 +89,7 @@
         let aciertos = [];
         let fallos = []; 
         let tiempoInicio;
+        let puntos = 0;
         const sala = @json($sala); // Obtener código de sala desde el controlador
 
         // Inicializar juego
@@ -108,8 +109,9 @@
                     // Mostrar alerta después de guardar
                     Swal.fire({
                         title: '¡Juego Terminado!',
-                        html: `Has respondido todas las preguntas<br>
-                        Tiempo total: ${tiempoTotal.toFixed(2)} segundos`,
+                        html: `Has respondido todas las preguntas.<br>
+                        Tiempo total: ${tiempoTotal.toFixed(2)} segundos. <br>
+                        Puntos obtenidos: ${puntos}.`,
                         icon: 'info',
                         showCancelButton: true,
                         confirmButtonText: 'Jugar de nuevo',
@@ -180,7 +182,8 @@
                     body: JSON.stringify({
                         minijuego: 3,
                         acerto: aciertos,
-                        fallo: fallos
+                        fallo: fallos,
+                        puntos: puntos
                     })
                 });
 
@@ -205,6 +208,7 @@
                 if (esCorrecta) {
                     aciertos.push(reactivoId);
                     seleccionada.classList.add('correcta');
+                    puntos += 10;
                     Swal.fire("¡Correcto!", reactivos[id].retroalimentacion, "success");
                 } else {
                     fallos.push(reactivoId);

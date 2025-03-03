@@ -15,6 +15,7 @@ return new class extends Migration
             $table->unsignedBigInteger('sala_id');
             $table->unsignedBigInteger('minijuegos_id');
             $table->unsignedBigInteger('user_id');
+            $table->integer('puntos');
             $table->json('acerto');
             $table->json("fallo");
             $table->timestamp('fecha');

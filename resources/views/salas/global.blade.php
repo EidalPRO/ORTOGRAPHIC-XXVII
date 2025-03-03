@@ -105,9 +105,8 @@
         </div>
         <!-- button arrows -->
         <div class="arrows">
-            <button id="prev">
-                < </button>
-                    <button id="next">></button>
+            <button id="prev">< </button>
+            <button id="next">></button>
         </div>
         <!-- thumbnail -->
         <div class="thumbnail">
@@ -187,13 +186,11 @@
                             <tr>
                                 <th>Posición</th>
                                 <th>Jugador</th>
-                                <th>Partidas Jugadas</th>
-                                <th>Aciertos</th>
-                                <th>Fallos</th>
+                                <th>Puntos</th>
                             </tr>
                         </thead>
                         <tbody id="tablaPosiciones-${minijuego.idminijuegos}">
-                            <tr><td colspan="5">Cargando...</td></tr>
+                            <tr><td colspan="4">Cargando...</td></tr>
                         </tbody>
                     </table>
                     </div>`;
@@ -213,16 +210,14 @@
                     let tbody = document.getElementById(`tablaPosiciones-${minijuegoId}`);
                     tbody.innerHTML = "";
                     if (data.length === 0) {
-                        tbody.innerHTML = `<tr><td colspan="5">No hay datos disponibles</td></tr>`;
+                        tbody.innerHTML = `<tr><td colspan="4">No hay datos disponibles</td></tr>`;
                     } else {
                         data.forEach((usuario, index) => {
                             let row = `<tr>
-                        <td>${index + 1}</td>
-                        <td>${usuario.name}</td>
-                        <td>${usuario.partidas_jugadas}</td>
-                        <td>${usuario.total_aciertos}</td>
-                        <td>${usuario.total_fallos}</td>
-                    </tr>`;
+                            <td>${index + 1}</td>
+                            <td>${usuario.name}</td>
+                            <td>${usuario.total_puntos}</td>
+                        </tr>`;
                             tbody.innerHTML += row;
                         });
                     }
@@ -230,6 +225,7 @@
                 .catch(error => console.error(`Error al obtener la tabla de posiciones del minijuego ${minijuegoId}:`, error));
         }
     </script>
+
 
 
     <script src="{{asset('assets/js/sala/app.js')}}"></script>
