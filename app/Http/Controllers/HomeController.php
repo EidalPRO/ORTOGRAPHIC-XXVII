@@ -12,10 +12,6 @@ use Illuminate\Support\Facades\Log;
 
 class HomeController extends Controller
 {
-    // public function c()
-    // {
-    //     return view('home');
-    // }
 
     public function home()
     {
@@ -144,7 +140,7 @@ class HomeController extends Controller
         $userId = Auth::id();
 
         try {
-            // Eliminar registros del usuario en las tablas relacionadas
+            
             DB::table('sala_usuario')->where('sala_id', $salaId)->where('user_id', $userId)->delete();
             DB::table('sala_minijuegos_usuario')->where('sala_id', $salaId)->where('user_id', $userId)->delete();
 
