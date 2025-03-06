@@ -538,6 +538,43 @@
                         <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
                             <div class="portfolio-card">
                                 <div class="portfolio-image">
+                                    <img src="{{ asset('assets/img/portfolio/imagen7.webp') }}" class="img-fluid" alt="" loading="lazy">
+                                    <div class="portfolio-overlay">
+                                        <div class="portfolio-actions">
+                                            <a href="{{ asset('assets/img/portfolio/imagen7.webp') }}" class="glightbox preview-link no-spinner" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
+                                            <a href="{{ route('galeria') }}" class="details-link"><i class="bi bi-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-content">
+                                    <span class="category">Ortographic</span>
+                                    <h3>Ortographic llegó a la secundaria técnica #223</h3>
+                                    <p>Dejamos claro que la programación es una herramienta clave para el futuro y que nuestra app ofrece una forma divertida de mejorar la ortografía.</p>
+                                </div>
+                            </div>
+                        </div><!-- End Portfolio Item -->
+
+                        <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
+                            <div class="portfolio-card">
+                                <div class="portfolio-image">
+                                    <img src="{{ asset('assets/img/portfolio/FB_IMG_1740633339943.webp') }}" class="img-fluid" alt="" loading="lazy">
+                                    <div class="portfolio-overlay">
+                                        <div class="portfolio-actions">
+                                            <a href="{{ asset('assets/img/portfolio/FB_IMG_1740633339943.webp') }}" class="glightbox preview-link no-spinner" data-gallery="portfolio-gallery-web"><i class="bi bi-eye"></i></a>
+                                            <a href="{{ route('galeria') }}" class="details-link"><i class="bi bi-arrow-right"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="portfolio-content">
+                                    <span class="category">Ortographic</span>
+                                    <h3>Inspirando a futuros programadores en la secundaria técnica #223</h3>
+                                    <p>Visitamos a estudiantes de la secundaria técnica #223 para mostrarles la importancia de la programación y cómo Ortographic, nuestra app, puede hacer del aprendizaje de la ortografía una experiencia divertida.</p>
+                                </div>
+                            </div>
+                        </div><!-- End Portfolio Item -->
+                        <!-- <div class="col-lg-6 col-md-6 portfolio-item isotope-item filter-web">
+                            <div class="portfolio-card">
+                                <div class="portfolio-image">
                                     <img src="{{ asset('assets/img/portfolio/imagen2.webp') }}" class="img-fluid" alt="" loading="lazy">
                                     <div class="portfolio-overlay">
                                         <div class="portfolio-actions">
@@ -552,7 +589,7 @@
                                     <p>Entrega y revisión de reactivos con la asesora metodológica.</p>
                                 </div>
                             </div>
-                        </div><!-- End Portfolio Item -->
+                        </div> -->
 
                     </div><!-- End Portfolio Container -->
                 </div>
@@ -656,9 +693,9 @@
 
 
         <!-- Faq Section -->
-        <section id="faq" class="faq section">
+        <!-- <section id="faq" class="faq section">
 
-            <!-- Section Title -->
+         
             <div class="container section-title" data-aos="fade-up">
                 <h2>Preguntas frecuentes</h2>
                 <div class="title-shape">
@@ -666,8 +703,7 @@
                         <path d="M 0,10 C 40,0 60,20 100,10 C 140,0 160,20 200,10" fill="none" stroke="currentColor" stroke-width="2"></path>
                     </svg>
                 </div>
-                <!-- <p>Encuentra respuestas a las preguntas más frecuentes sobre el uso de nuestra plataforma.</p> -->
-            </div><!-- End Section Title -->
+            </div>
 
             <div class="container">
                 <div class="row justify-content-center">
@@ -679,7 +715,7 @@
                                     <p>Para iniciar sesión, haz clic en <strong>Iniciar sesión</strong>, que se encuentra dentro de <strong>Acciones de usuario</strong> en la barra de navegación.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item -->
+                            </div>
 
                             <div class="faq-item">
                                 <h3>¿Cómo puedo entrar a una sala?</h3>
@@ -687,7 +723,7 @@
                                     <p>Para entrar a una sala, debes ingresar el código de sala proporcionado por el creador de la misma.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item -->
+                            </div>
 
                             <div class="faq-item">
                                 <h3>¿Necesito una cuenta para jugar un minijuego?</h3>
@@ -695,7 +731,7 @@
                                     <p>Sí, debes tener una cuenta creada y haber iniciado sesión para poder jugar un minijuego.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item -->
+                            </div>
 
                             <div class="faq-item">
                                 <h3>¿Cómo puedo cambiar mi nombre de usuario?</h3>
@@ -703,7 +739,7 @@
                                     <p>Para cambiar tu nombre de usuario, haz clic en tu nombre que aparece en la barra de navegación y selecciona la opción de edición.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item -->
+                            </div>
 
                             <div class="faq-item">
                                 <h3>¿Qué hacer si olvidé mi contraseña?</h3>
@@ -711,13 +747,14 @@
                                     <p>Puedes restablecer tu contraseña haciendo clic en <strong>¿Olvidaste tu contraseña?</strong> en la página de inicio de sesión y siguiendo las instrucciones.</p>
                                 </div>
                                 <i class="faq-toggle bi bi-chevron-right"></i>
-                            </div><!-- End Faq item -->
+                            </div>
                         </div>
-                    </div><!-- End Faq Column -->
+                    </div>
                 </div>
             </div>
-        </section><!-- /Faq Section -->
+        </section> -->
 
+        
         <!-- Modales -->
         <div class="modal fade" id="salasModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
             <div class="modal-dialog">
